@@ -1,0 +1,6 @@
+{
+  "template": "../../changelog-template.hbs",
+	"commitLimit": false,
+	"sortCommits": "date",
+	"commitUrl": "https://github.com/dmoyadev/lnx/commit/{id}"
+}

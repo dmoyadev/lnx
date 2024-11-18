@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LnxButton } from 'lnxjs';
+import { LnxButton } from '@lnxjs/components';
 </script>
 
 <template>
