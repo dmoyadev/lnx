@@ -1,0 +1,29 @@
+{
+  "name": "lnxjs",
+  "version": "0.0.1",
+  "description": "Lynx Library",
+  "author": "Daniel Moya",
+  "workspaces": [ "src", "sandbox" ],
+  "type": "module",
+  "main": "packages/components/index.ts",
+  "types": "./dist/types/src/index.d.ts",
+  "scripts": {
+    "build": "pnpm -r build",
+    "check-typing": "vue-tsc --noEmit"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.0",
+    "auto-changelog": "^2.5.0",
+    "sass": "^1.81.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.1.10"
+  },
+  "engines": {
+    "node": ">=22.7.0",
+    "pnpm": ">=9.4.0",
+    "npm": "please-use-pnpm",
+    "yarn": "please-use-pnpm"
+  }
+}

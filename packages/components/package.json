@@ -1,0 +1,13 @@
+{
+	"name": "@lnxjs/components",
+	"version": "0.0.1",
+	"description": "Lynx Components Library",
+	"author": "Daniel Moya",
+	"type": "module",
+	"main": "index.ts",
+	"scripts": {
+		"build": "rm -rf dist && vite build && pnpm build:tsc",
+		"build:tsc": "vue-tsc --declaration --emitDeclarationOnly",
+		"version": "auto-changelog -p && git add CHANGELOG.md"
+	}
+}

@@ -1,0 +1,8 @@
+{
+	"name": "@lnxjs/components",
+	"version": "1.0.0",
+	"description": "Lynx Components Library",
+	"author": "Daniel Moya",
+	"type": "module",
+	"main": "index.ts"
+}

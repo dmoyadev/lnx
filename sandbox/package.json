@@ -1,0 +1,14 @@
+{
+	"name": "@lnxjs/sandbox",
+	"version": "1.0.0",
+	"description": "Lynx Library Sandbox",
+	"author": "Daniel Moya",
+	"type": "module",
+	"main": "index.ts",
+	"scripts": {
+		"dev": "vite --port 9999"
+	},
+	"dependencies": {
+		"@lnxjs/components": "workspace:^"
+	}
+}
