@@ -13,11 +13,15 @@
   "scripts": {
     "build": "pnpm -r build",
     "version": "pnpm -r version",
-    "check-typing": "vue-tsc --noEmit"
+    "check-typing": "vue-tsc --noEmit && eslint --fix"
   },
   "devDependencies": {
+    "@types/node": "^22.9.1",
     "@vitejs/plugin-vue": "^5.2.0",
+    "@vue/eslint-config-typescript": "^14.1.3",
     "auto-changelog": "^2.5.0",
+    "eslint": "^9.15.0",
+    "eslint-plugin-vue": "^9.31.0",
     "sass": "^1.81.0",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",

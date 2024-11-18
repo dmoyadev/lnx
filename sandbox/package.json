@@ -9,6 +9,6 @@
 		"dev": "vite --port 9999"
 	},
 	"dependencies": {
-		"@lnxjs/components": "workspace:^"
+		"lnxjs-components": "workspace:^"
 	}
 }
