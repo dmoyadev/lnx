@@ -4,7 +4,11 @@
 	"description": "Lynx Components Library",
 	"author": "Daniel Moya",
 	"type": "module",
-	"main": "index.ts",
+	"main": "./dist/lnxjs-components.js",
+	"types": "./dist/types/index.d.ts",
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "rm -rf dist && vite build && pnpm build:tsc",
 		"build:tsc": "vue-tsc --declaration --emitDeclarationOnly",

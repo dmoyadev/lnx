@@ -1,7 +1,7 @@
 {
-	"name": "@lnxjs/sandbox",
+	"name": "sandbox",
 	"version": "1.0.0",
-	"description": "Lynx Library Sandbox",
+	"description": "Sandbox",
 	"author": "Daniel Moya",
 	"type": "module",
 	"main": "index.ts",

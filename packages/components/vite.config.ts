@@ -18,8 +18,8 @@ export default defineConfig({
 		},
 
 		lib: {
-			entry: './index.ts',
-			fileName: 'lnx',
+			entry: './src/index.ts',
+			fileName: 'lnxjs-components',
 			formats: ['es'],
 		},
 	},

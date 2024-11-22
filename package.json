@@ -4,16 +4,18 @@
   "description": "Lynx Library",
   "author": "Daniel Moya",
   "workspaces": [
-    "src",
+    "packages/*",
     "sandbox"
   ],
   "type": "module",
-  "main": "packages/components/index.ts",
-  "types": "./dist/types/src/index.d.ts",
   "scripts": {
     "build": "pnpm -r build",
     "version": "pnpm -r version",
-    "check-typing": "vue-tsc --noEmit && eslint --fix"
+    "check-typing": "vue-tsc --noEmit && eslint --fix",
+    "release:patch": "pnpm version patch && pnpm create-release",
+    "release:minor": "pnpm version minor && pnpm create-release",
+    "release:major": "pnpm version major && pnpm create-release",
+    "create-release": "pnpm build && pnpm publish --filter \"lnxjs-*\""
   },
   "devDependencies": {
     "@types/node": "^22.9.1",
