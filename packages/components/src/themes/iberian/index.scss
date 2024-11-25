@@ -1,0 +1,34 @@
+@use 'tokens/typography';
+
+:root {
+	html {
+		font-size: 100%; /* Default to 16px; easy to scale with rem units */
+		line-height: 1.6; /* Good default for body text */
+	}
+
+	font-family: var(--lnx-font-family-body), sans-serif;
+	font-size: var(--lnx-font-size-body);
+	font-weight: var(--lnx-font-weight-regular);
+	color: var(--lnx-text-color);
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: var(--lnx-font-family-heading), serif;
+		font-weight: var(--lnx-font-weight-black);
+	}
+
+	h1 {
+		font-size: var(--lnx-font-size-title);
+		line-height: var(--lnx-line-height-title);
+	}
+
+	h2, h3, h4, h5, h6 {
+		font-size: var(--lnx-font-size-big);
+		line-height: var(--lnx-line-height-big);
+	}
+
+	small {
+		font-size: var(--lnx-font-size-legal);
+		line-height: var(--lnx-line-height-legal);
+		font-weight: var(--lnx-font-weight-thin);
+	}
+}

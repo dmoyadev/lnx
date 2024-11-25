@@ -1,7 +1,7 @@
 <script setup lang="ts">
 withDefaults(
 	defineProps<{
-		variant?: 'normal' | 'danger';
+		variant?: 'normal' | 'light';
 	}>(),
 	{ variant: 'normal' },
 );
@@ -15,9 +15,9 @@ withDefaults(
 
 <style scoped lang="scss">
 .normal {
-	background-color: green;
+	background-color: var(--lnx-color-primary);
 }
-.danger {
-	background-color: red;
+.light {
+	background-color: var(--lnx-color-primary-light);
 }
 </style>

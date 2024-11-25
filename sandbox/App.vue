@@ -3,5 +3,6 @@ import { LnxButton } from 'lnxjs-components';
 </script>
 
 <template>
-	<LnxButton variant="danger" />
+	<LnxButton />
+	<LnxButton variant="light" />
 </template>
