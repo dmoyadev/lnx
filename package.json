@@ -15,7 +15,9 @@
     "release:patch": "pnpm version patch && pnpm create-release",
     "release:minor": "pnpm version minor && pnpm create-release",
     "release:major": "pnpm version major && pnpm create-release",
-    "create-release": "pnpm build && pnpm publish --filter \"lnxjs-*\""
+    "create-release": "pnpm build && pnpm publish --filter \"lnxjs-*\"",
+    "docs:dev": "vitepress dev docs --port 9998",
+    "docs:build": "vitepress build docs"
   },
   "devDependencies": {
     "@types/node": "^22.9.1",
@@ -27,6 +29,7 @@
     "sass": "^1.81.0",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",
+    "vitepress": "^1.5.0",
     "vue": "^3.5.13",
     "vue-tsc": "^2.1.10"
   },
