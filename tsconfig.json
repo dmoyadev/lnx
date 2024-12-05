@@ -13,4 +13,12 @@
     "strict": true,
     "skipLibCheck": true
   },
+  "include": [
+    "docs/**/*.ts",
+    "docs/**/*.vue",
+    "docs/**/*.md",
+  ],
+  "vueCompilerOptions": {
+    "vitePressExtensions": [".md"],
+  }
 }
