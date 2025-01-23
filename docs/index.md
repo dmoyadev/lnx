@@ -10,12 +10,6 @@ hero:
     - theme: brand
       text: Know-Hows
       link: /know-hows
-    - theme: alt
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
 
 features:
   - title: Feature A

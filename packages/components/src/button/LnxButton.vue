@@ -14,10 +14,16 @@ withDefaults(
 </template>
 
 <style scoped lang="scss">
-.normal {
-	background-color: var(--lnx-color-primary);
-}
-.light {
-	background-color: var(--lnx-color-primary-light);
+button {
+	--lnx-button-bg-color: var(--lnx-color-primary);
+	--lnx-button-bg-color-light: var(--lnx-color-primary-light);
+
+	&.normal {
+		background-color: var(--lnx-button-bg-color);
+	}
+
+	&.light {
+		background-color: var(--lnx-button-bg-color-light);
+	}
 }
 </style>

@@ -10,5 +10,5 @@ dist
 .DS_Store
 
 # Vitepress
-.vitepress/dist
-.vitepress/cache
+**/.vitepress/dist
+**/.vitepress/cache
