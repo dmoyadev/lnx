@@ -3,7 +3,17 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.1.4](https://github.com/dmoyadev/lnx/compare/v0.1.3...v0.1.4)
+
+### ✨ New things
+
+- 🎨 Add ripple styles to button [`e65e38a`](https://github.com/dmoyadev/lnx/commit/e65e38ab34cf90f708dd3947c7cab142b36fbe81) <small>Daniel Moya</small>
+### 🐛 Fixes
+
+- 🐛 Fix VitePress path in deploy workflow configuration [`b9a0572`](https://github.com/dmoyadev/lnx/commit/b9a05722e3b24a363fe6ee1afbde3ce465d0252d) <small>Daniel Moya</small>
 ### [v0.1.3](https://github.com/dmoyadev/lnx/compare/v0.1.2...v0.1.3)
+
+> 📅 Released on: 25 January 2025
 
 ### 🐛 Fixes
 
