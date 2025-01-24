@@ -8,3 +8,5 @@ export default {
 } as Plugin;
 
 export { LnxButton };
+
+export * from './types';

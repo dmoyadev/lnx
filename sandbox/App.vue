@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { LnxButton } from 'lnxjs-components';
+import { ButtonVariants, LnxButton } from 'lnxjs-components/src';
 </script>
 
 <template>
-	<LnxButton />
-	<LnxButton variant="light" />
+	<LnxButton
+		:variant="ButtonVariants.DANGER"
+		href="/hola"
+		is-block
+	>
+		Test
+	</LnxButton>
 </template>

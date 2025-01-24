@@ -12,7 +12,7 @@
 	"scripts": {
 		"build:tsc": "vue-tsc --declaration --emitDeclarationOnly",
 		"build": "rm -rf dist && vite build && pnpm build:tsc",
-		"version": "pnpm version:sync && auto-changelog -p && git add CHANGELOG.md",
-		"version:sync": "node ../../scripts/sync-versions.js ../.. ."
+		"version:sync": "node ../../scripts/sync-versions.js ../.. .",
+		"version": "pnpm version:sync && auto-changelog -p && git add CHANGELOG.md"
 	}
 }
