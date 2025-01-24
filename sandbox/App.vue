@@ -3,11 +3,7 @@ import { ButtonVariants, LnxButton } from 'lnxjs-components/src';
 </script>
 
 <template>
-	<LnxButton
-		:variant="ButtonVariants.DANGER"
-		href="/hola"
-		is-block
-	>
+	<LnxButton :variant="ButtonVariants.DANGER">
 		Test
 	</LnxButton>
 </template>

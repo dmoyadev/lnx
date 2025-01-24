@@ -32,6 +32,13 @@ const props = withDefaults(defineProps<{
 	href: undefined,
 });
 
+defineSlots<{
+	default(): unknown; /* The actual content of the button */
+	prepend(): unknown; /* The icon that should be prepended to the content */
+	append(): unknown; /* The icon that should be appended to the content */
+	loading(): unknown; /* The content that should be displayed when the button is loading */
+}>();
+
 const $attrs = useAttrs();
 const isDisabled = computed(() => 'disabled' in $attrs && ($attrs.disabled || $attrs.disabled === ''));
 
@@ -73,7 +80,7 @@ function createRippleEffect(event: MouseEvent) {
 <template>
 	<component
 		:is="href ? 'a' : (to ? 'router-link' : 'button')"
-		ref="element"
+		ref="$button"
 		v-bind="$attrs"
 		:to="to"
 		:disabled="!!isLoading"
@@ -86,24 +93,20 @@ function createRippleEffect(event: MouseEvent) {
 		}"
 		@click="createRippleEffect($event)"
 	>
-		<!-- @slot Content of a loading button -->
 		<slot
 			v-if="isLoading"
 			name="loading"
 		>
 			<!-- TODO Add loading icon -->
 		</slot>
-		
+
 		<template v-else>
-			<!-- @slot Prepended icon -->
 			<slot name="prepend">
 				<!-- TODO Add prepend icon -->
 			</slot>
 
-			<!-- @slot Content of the button -->
 			<slot />
 
-			<!-- @slot Appended icon -->
 			<slot name="append">
 				<!-- TODO Add append icon -->
 			</slot>
@@ -112,11 +115,26 @@ function createRippleEffect(event: MouseEvent) {
 </template>
 
 <style scoped lang="scss">
-button {
-	--lnx-button-bg-color: var(--lnx-color-primary);
+button,
+a,
+router-link {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+}
 
-	&.button-variant-primary {
-		background-color: var(--lnx-button-bg-color);
+:global(.ripple) {
+	position: absolute;
+	border-radius: 50%;
+	transform: scale(0);
+	animation: ripple 600ms linear;
+	background-color: rgba(255, 255, 255, .3);
+
+	@keyframes ripple {
+		to {
+			transform: scale(4);
+			opacity: 0;
+		}
 	}
 }
 </style>
