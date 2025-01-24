@@ -8,6 +8,10 @@
 		"src/**/*.vue"
 	],
 
+	"exclude": [
+		"**/*.md"
+	],
+
 	"compilerOptions": {
 		"declarationDir": "./dist/types"
 	}

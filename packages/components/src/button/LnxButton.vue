@@ -74,6 +74,7 @@ function createRippleEffect(event: MouseEvent) {
 	<component
 		:is="href ? 'a' : (to ? 'router-link' : 'button')"
 		ref="element"
+		v-bind="$attrs"
 		:to="to"
 		:disabled="!!isLoading"
 		:class="{
