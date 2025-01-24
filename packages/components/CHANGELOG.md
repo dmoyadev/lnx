@@ -3,7 +3,14 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.1.3](https://github.com/dmoyadev/lnx/compare/v0.1.2...v0.1.3)
+
+### 🐛 Fixes
+
+- 🐛 Fix reset not being correctly added to the styles [`5882c5c`](https://github.com/dmoyadev/lnx/commit/5882c5c132b62225ffed457bf6eba1a9d3def7e7) <small>Daniel Moya</small>
 ### [v0.1.2](https://github.com/dmoyadev/lnx/compare/v0.1.1...v0.1.2)
+
+> 📅 Released on: 24 January 2025
 
 ### ✨ New things
 
