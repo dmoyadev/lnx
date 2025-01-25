@@ -20,11 +20,7 @@ export default defineConfig({
 		},
 
 		lib: {
-			entry: {
-				'base': './src/index.ts',
-				'bobcat': './src/themes/bobcat/index.scss',
-				'iberian': './src/themes/iberian/index.scss',
-			},
+			entry: { 'base': './src/index.ts' },
 			fileName: 'lnxjs-components',
 			formats: ['es'],
 		},

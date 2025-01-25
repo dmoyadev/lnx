@@ -121,6 +121,7 @@ router-link {
 	position: relative;
 	overflow: hidden;
 	cursor: pointer;
+	background: var(--lnx-color-primary);
 }
 
 :global(.ripple) {

@@ -2,11 +2,10 @@
 
 ## VitePress
 ### Publishing to GitHub Pages
-1. Create a file named `.github/workdflows/deploy.yml` with [the build process](https://vitepress.dev/guide/deploy#github-pages)
+1. Create a file named `.github/workflows/deploy.yml` with [the build process](https://vitepress.dev/guide/deploy#github-pages)
 
-::: warning
-Make sure the `base` option in your VitePress is properly configured
-:::
+> [!WARNING]
+> Make sure the `base` option in your VitePress is properly configured
 
 2. Create the subdomain
 3. Add a `CNAME` file JUST with the subdomain name
@@ -34,16 +33,7 @@ Make sure the `base` option in your VitePress is properly configured
    import 'lnxjs-components/dist/base.css';
    ```
    :::
-3. Import also the styles for the preferred theme:
-   ::: code-group
-   ```ts [./main.ts]
-   // Bobcat theme (colder colors)
-   import 'lnxjs-components/dist/themes/bobcat.css';
-   // Iberian theme (warmer colors)
-   import 'lnxjs-components/dist/themes/iberian.css';
-   ```
-   :::
-4. If you don't want to use default themes, create a .scss file where you want with your custom css variables:
+3. If you don't want to use default themes, create a .scss file where you want with your custom css variables:
    ::: code-group
    ```scss [custom-theme.scss]
    :root {
@@ -61,9 +51,8 @@ Make sure the `base` option in your VitePress is properly configured
    import 'custom-theme.css';
    ```
    :::
-   ::: tip
-   You can check available css variables in each theme docs for global styles or in each component docs for component-specific styles 
-   :::
+   > [!TIP]
+   > You can check available css variables in each theme docs for global styles or in each component docs for component-specific styles 
 
 ## Tooling
 ### Deploying a new version

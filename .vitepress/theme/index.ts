@@ -1,4 +1,14 @@
-import Theme from 'vitepress/theme';
-import 'virtual:group-icons.css';
+import DefaultTheme from 'vitepress/theme';
+import DemoContainer from '../components/DemoContainer.vue';
 
-export default Theme;
+import 'virtual:group-icons.css';
+import '../../packages/components/src/themes/base/index.scss';
+import './custom.scss';
+
+export default {
+	...DefaultTheme,
+
+	enhanceApp: ({ app }) => {
+		app.component('DemoContainer', DemoContainer);
+	},
+};
