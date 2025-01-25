@@ -24,7 +24,12 @@
 		line-height: var(--lnx-line-height-title);
 	}
 
-	h2, h3, h4, h5, h6 {
+	h2 {
+		font-size: var(--lnx-font-size-bigger);
+		line-height: var(--lnx-line-height-bigger);
+	}
+
+	h3, h4, h5, h6 {
 		font-size: var(--lnx-font-size-big);
 		line-height: var(--lnx-line-height-big);
 	}
