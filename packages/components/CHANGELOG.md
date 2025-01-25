@@ -3,6 +3,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.1.5](https://github.com/dmoyadev/lnx/compare/v0.1.4...v0.1.5)
+
+> 📅 Released on: 25 January 2025
+
+### ✨ New things
+
+- 🎨 Customize docs and make theme switching dynamic on runtime [`0a85973`](https://github.com/dmoyadev/lnx/commit/0a8597397cb5bb2241b9da9e2b23e31f9a79d3f0) <small>Daniel Moya</small>
 ### [v0.1.4](https://github.com/dmoyadev/lnx/compare/v0.1.3...v0.1.4)
 
 > 📅 Released on: 25 January 2025

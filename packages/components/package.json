@@ -1,6 +1,6 @@
 {
 	"name": "lnxjs-components",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "Lynx Components Library",
 	"author": "Daniel Moya",
 	"type": "module",
