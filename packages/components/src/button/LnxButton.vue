@@ -3,40 +3,36 @@ import type { ComponentPublicInstance } from 'vue';
 import { computed, ref, useAttrs } from 'vue';
 import type {
 	TButtonVariant,
-	TButtonSize,
 	TButtonMode,
-	TButtonShape,
+	TButtonSize,
 } from './types';
 import {
 	ButtonVariants,
-	ButtonSizes,
 	ButtonModes,
-	ButtonShapes,
+	ButtonSizes,
 } from './types';
 
 const props = withDefaults(defineProps<{
-	variant?: TButtonVariant; /* The variant of the button */
-	mode?: TButtonMode; /* The mode of the button */
-	size?: TButtonSize; /* The size of the button */
-	shape?: TButtonShape; /* The shape of the button */
+	variant?: TButtonVariant; /* Palette of colors */
+	mode?: TButtonMode; /* Shape of the button */
+	size?: TButtonSize; /* Spacing and font sizing */
 	to?: string | object; /* Converts the button in a router-link with the given route */
 	href?: string; /* Converts the button in an anchor tag */
-	isLoading?: boolean; /* Indicates if the button is loading */
+	isLoading?: boolean; /* When loading, it is disabled and shows a different content */
 	isBlock?: boolean; /* Indicates if the button should take the full width of its container */
 }>(), {
 	variant: ButtonVariants.PRIMARY,
 	mode: ButtonModes.SOLID,
 	size: ButtonSizes.MEDIUM,
-	shape: ButtonShapes.NORMAL,
 	to: undefined,
 	href: undefined,
 });
 
 defineSlots<{
-	default(): unknown; /* The actual content of the button */
-	prepend(): unknown; /* The icon that should be prepended to the content */
-	append(): unknown; /* The icon that should be appended to the content */
-	loading(): unknown; /* The content that should be displayed when the button is loading */
+	default(): unknown; /* Actual content of the button */
+	prepend(): unknown; /* Icon that should be prepended to the content */
+	append(): unknown; /* Icon that should be appended to the content */
+	loading(): unknown; /* Displayed content when the button is loading */
 }>();
 
 const $attrs = useAttrs();
@@ -88,8 +84,8 @@ function createRippleEffect(event: MouseEvent) {
 			[`button-variant-${variant}`]: true,
 			[`button-mode-${mode}`]: true,
 			[`button-size-${size}`]: true,
-			[`button-shape-${shape}`]: true,
-			'button-disabled': isLoading || isDisabled,
+			'is-block': isBlock,
+			'is-disabled': isLoading || isDisabled,
 		}"
 		@click="createRippleEffect($event)"
 	>
@@ -101,40 +97,161 @@ function createRippleEffect(event: MouseEvent) {
 		</slot>
 
 		<template v-else>
-			<slot name="prepend">
-				<!-- TODO Add prepend icon -->
-			</slot>
+			<slot name="prepend" />
 
 			<slot />
 
-			<slot name="append">
-				<!-- TODO Add append icon -->
-			</slot>
+			<slot name="append" />
 		</template>
 	</component>
 </template>
 
 <style scoped lang="scss">
+@use 'sass:color';
+
 button,
 a,
 router-link {
-	position: relative;
-	overflow: hidden;
+	--lnx-button-content-gap: 8px;
+
+	position: relative; /* Required for the ripple effect */
+	overflow: hidden; /* Required for the ripple effect */
 	cursor: pointer;
-	background: var(--lnx-color-primary);
-}
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--lnx-button-content-gap);
+	text-align: center;
+	border: 1px solid;
+	border-radius: var(--lnx-radius-2);
 
-:global(.ripple) {
-	position: absolute;
-	border-radius: 50%;
-	transform: scale(0);
-	animation: ripple 600ms linear;
-	background-color: rgba(255, 255, 255, .3);
+	&:hover:not(.is-disabled):not(.button-mode-link) {
+		box-shadow: var(--lnx-elevation-1);
+	}
 
-	@keyframes ripple {
-		to {
-			transform: scale(4);
-			opacity: 0;
+	&.button-variant- {
+		&primary {
+			background: var(--lnx-color-primary);
+			color: var(--lnx-color-primary-accent);
+			border-color: var(--lnx-color-primary);
+		}
+
+		&grayscale {
+			background: var(--lnx-color-gray-0);
+			color: var(--lnx-color-gray-9);
+			border-color: var(--lnx-color-gray-9);
+		}
+
+		&danger {
+			background: var(--lnx-color-danger);
+			color: var(--lnx-color-danger-accent);
+			border-color: var(--lnx-color-danger);
+		}
+	}
+
+	&.button-mode- {
+		&outline {
+			border: 1px solid;
+			background: none;
+
+			&.button-variant- {
+				&primary {
+					color: var(--lnx-color-primary);
+				}
+
+				&grayscale {
+					color: var(--lnx-color-gray-9);
+				}
+
+				&danger {
+					color: var(--lnx-color-danger);
+				}
+			}
+		}
+
+		&clear {
+			border-color: transparent;
+			background: none;
+
+			&.button-variant- {
+				&primary {
+					color: var(--lnx-color-primary);
+				}
+
+				&grayscale {
+					color: var(--lnx-color-gray-9);
+				}
+
+				&danger {
+					color: var(--lnx-color-danger);
+				}
+			}
+		}
+
+		&link {
+			border-color: transparent;
+			background: none;
+
+			&:hover:not(.is-disabled) {
+				text-decoration: underline;
+			}
+
+			&.button-variant- {
+				&primary {
+					color: var(--lnx-color-primary);
+				}
+
+				&grayscale {
+					color: var(--lnx-color-gray-9);
+				}
+
+				&danger {
+					color: var(--lnx-color-danger);
+				}
+			}
+		}
+	}
+
+	&.button-size- {
+		&small {
+			--lnx-button-circle-size: 20px;
+			padding: var(--lnx-spacing-1) var(--lnx-spacing-2);
+			font-size: var(--lnx-font-size-small);
+		}
+
+		&medium {
+			--lnx-button-circle-size: 28px;
+			padding: var(--lnx-spacing-1) var(--lnx-spacing-3);
+		}
+
+		&large {
+			--lnx-button-circle-size: 36px;
+			padding: var(--lnx-spacing-2) var(--lnx-spacing-5);
+		}
+	}
+
+	&.is-block {
+		width: 100%;
+		flex: 1;
+		display: flex;
+	}
+
+	&.is-disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+
+	.ripple {
+		position: absolute;
+		border-radius: 50%;
+		transform: scale(0);
+		animation: ripple 600ms linear;
+
+		@keyframes ripple {
+			to {
+				transform: scale(4);
+				opacity: 0;
+			}
 		}
 	}
 }

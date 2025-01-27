@@ -1,4 +1,7 @@
 @use 'reset';
+@use 'tokens/elevations';
+@use 'tokens/radii';
+@use 'tokens/spacings';
 @use 'tokens/typography';
 @use '../bobcat';
 @use '../iberian';
