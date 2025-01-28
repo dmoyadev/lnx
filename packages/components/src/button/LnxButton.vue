@@ -5,17 +5,20 @@ import type {
 	TButtonVariant,
 	TButtonMode,
 	TButtonSize,
+	TButtonShape,
 } from './types';
 import {
 	ButtonVariants,
 	ButtonModes,
 	ButtonSizes,
+	ButtonShapes,
 } from './types';
 
 const props = withDefaults(defineProps<{
 	variant?: TButtonVariant; /* Palette of colors */
 	mode?: TButtonMode; /* Shape of the button */
 	size?: TButtonSize; /* Spacing and font sizing */
+	shape?: TButtonShape; /* Reimagines the button */
 	to?: string | object; /* Converts the button in a router-link with the given route */
 	href?: string; /* Converts the button in an anchor tag */
 	isLoading?: boolean; /* When loading, it is disabled and shows a different content */
@@ -24,6 +27,7 @@ const props = withDefaults(defineProps<{
 	variant: ButtonVariants.PRIMARY,
 	mode: ButtonModes.SOLID,
 	size: ButtonSizes.MEDIUM,
+	shape: ButtonShapes.NORMAL,
 	to: undefined,
 	href: undefined,
 });
@@ -84,6 +88,7 @@ function createRippleEffect(event: MouseEvent) {
 			[`button-variant-${variant}`]: true,
 			[`button-mode-${mode}`]: true,
 			[`button-size-${size}`]: true,
+			[`button-shape-${shape}`]: true,
 			'is-block': isBlock,
 			'is-disabled': isLoading || isDisabled,
 		}"
@@ -214,19 +219,32 @@ router-link {
 
 	&.button-size- {
 		&small {
-			--lnx-button-circle-size: 20px;
-			padding: var(--lnx-spacing-1) var(--lnx-spacing-2);
+			--lnx-button-size: 26px;
+			min-height: 32px;
+			padding: var(--lnx-spacing-0) var(--lnx-spacing-2);
 			font-size: var(--lnx-font-size-small);
 		}
 
 		&medium {
-			--lnx-button-circle-size: 28px;
+			--lnx-button-size: 40px;
+			min-height: 40px;
 			padding: var(--lnx-spacing-1) var(--lnx-spacing-3);
 		}
 
 		&large {
-			--lnx-button-circle-size: 36px;
+			--lnx-button-size: 42px;
+			min-height: 48px;
 			padding: var(--lnx-spacing-2) var(--lnx-spacing-5);
+		}
+	}
+
+	&.button-shape- {
+		&icon {
+			padding: var(--lnx-spacing-0);
+			width: var(--lnx-button-size);
+			max-width: var(--lnx-button-size);
+			height: var(--lnx-button-size);
+			max-height: var(--lnx-button-size);
 		}
 	}
 
@@ -240,18 +258,19 @@ router-link {
 		cursor: not-allowed;
 		opacity: 0.5;
 	}
+}
 
-	.ripple {
-		position: absolute;
-		border-radius: 50%;
-		transform: scale(0);
-		animation: ripple 600ms linear;
+:global(.ripple) {
+	position: absolute;
+	border-radius: 50%;
+	transform: scale(0);
+	animation: ripple 600ms linear;
+	background-color: rgba(255, 255, 255, .3);
 
-		@keyframes ripple {
-			to {
-				transform: scale(4);
-				opacity: 0;
-			}
+	@keyframes ripple {
+		to {
+			transform: scale(4);
+			opacity: 0;
 		}
 	}
 }

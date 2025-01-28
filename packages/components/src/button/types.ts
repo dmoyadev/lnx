@@ -19,3 +19,9 @@ export const ButtonSizes = {
 	LARGE: 'large',
 } as const;
 export type TButtonSize = typeof ButtonSizes[keyof typeof ButtonSizes];
+
+export const ButtonShapes = {
+	NORMAL: 'normal',
+	ICON: 'icon',
+} as const;
+export type TButtonShape = typeof ButtonShapes[keyof typeof ButtonShapes];
