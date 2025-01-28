@@ -25,14 +25,19 @@ export default defineConfig({
 	},
 
 	vite: {
-		plugins: [
-			groupIconVitePlugin(),
-		],
+		plugins: [groupIconVitePlugin()],
 		css: { preprocessorOptions: { scss: { api: 'modern' } } },
 	},
 
+	appearance: 'force-dark',
+
 	themeConfig: {
 		externalLinkIcon: true,
+
+		docFooter: {
+			next: false,
+			prev: false,
+		},
 
 		nav: [
 			{
@@ -52,6 +57,11 @@ export default defineConfig({
 						link: 'components/CHANGELOG.md',
 					},
 				],
+			},
+
+			{
+				component: 'ThemeSwitcher',
+				props: {},
 			},
 		],
 
