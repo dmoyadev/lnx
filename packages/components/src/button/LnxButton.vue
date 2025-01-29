@@ -15,12 +15,12 @@ import {
 } from './types';
 
 const props = withDefaults(defineProps<{
-	variant?: TButtonVariant; /* Palette of colors */
-	mode?: TButtonMode; /* Shape of the button */
-	size?: TButtonSize; /* Spacing and font sizing */
-	shape?: TButtonShape; /* Reimagines the button */
-	to?: string | object; /* Converts the button in a router-link with the given route */
-	href?: string; /* Converts the button in an anchor tag */
+	variant?: TButtonVariant; /* Applies different palette of colors */
+	mode?: TButtonMode; /* Display mode. Recommended for changing the importance */
+	size?: TButtonSize; /* Modifies spacing and font sizing */
+	shape?: TButtonShape; /* Reimagines how it\'s built */
+	href?: string; /* Converts the button in an anchor tag with the given URL */
+	to?: string | object; /* Converts the button in a router-link with the given route. If `href` is set, this is ignored. */
 	isLoading?: boolean; /* When loading, it is disabled and shows a different content */
 	isBlock?: boolean; /* Indicates if the button should take the full width of its container */
 }>(), {
@@ -28,19 +28,19 @@ const props = withDefaults(defineProps<{
 	mode: ButtonModes.SOLID,
 	size: ButtonSizes.MEDIUM,
 	shape: ButtonShapes.NORMAL,
-	to: undefined,
 	href: undefined,
+	to: undefined,
 });
 
 defineSlots<{
 	default(): unknown; /* Actual content of the button */
+	loading(): unknown; /* Displayed content when the button is loading */
 	prepend(): unknown; /* Icon that should be prepended to the content */
 	append(): unknown; /* Icon that should be appended to the content */
-	loading(): unknown; /* Displayed content when the button is loading */
 }>();
 
 const $attrs = useAttrs();
-const isDisabled = computed(() => 'disabled' in $attrs && ($attrs.disabled || $attrs.disabled === ''));
+const isDisabled = computed(() => props.isLoading || ('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
 
 /* Ripple effect */
 // This effect needs the button to have a position property set to relative or absolute so that the ripple element
@@ -53,11 +53,11 @@ function createRippleEffect(event: MouseEvent) {
 	}
 
 	const button = isRouterLink($button.value) ? $button.value.$el : $button.value;
-	if (!button || isDisabled.value) {
+	if (!document || !button || isDisabled.value) {
 		return;
 	}
 
-	const circle = document.createElement('span');
+	const circle = document?.createElement('span');
 	const diameter = Math.max(button.clientWidth, button.clientHeight);
 	const radius = diameter / 2;
 
@@ -82,15 +82,17 @@ function createRippleEffect(event: MouseEvent) {
 		:is="href ? 'a' : (to ? 'router-link' : 'button')"
 		ref="$button"
 		v-bind="$attrs"
-		:to="to"
-		:disabled="!!isLoading"
+		:href="href"
+		:to="!!href ? undefined : to"
+		:disabled="isDisabled"
+		:aria-disabled="isDisabled"
 		:class="{
 			[`button-variant-${variant}`]: true,
 			[`button-mode-${mode}`]: true,
 			[`button-size-${size}`]: true,
 			[`button-shape-${shape}`]: true,
 			'is-block': isBlock,
-			'is-disabled': isLoading || isDisabled,
+			'is-disabled': isDisabled,
 		}"
 		@click="createRippleEffect($event)"
 	>
@@ -130,7 +132,7 @@ router-link {
 	border: 1px solid;
 	border-radius: var(--lnx-radius-2);
 
-	&:hover:not(.is-disabled):not(.button-mode-link) {
+	&:hover:not(.is-disabled):not(.button-mode-clear, .button-mode-link) {
 		box-shadow: var(--lnx-elevation-1);
 	}
 
@@ -143,8 +145,8 @@ router-link {
 
 		&grayscale {
 			background: var(--lnx-color-gray-0);
-			color: var(--lnx-color-gray-9);
-			border-color: var(--lnx-color-gray-9);
+			color: var(--lnx-color-gray-8);
+			border-color: var(--lnx-color-gray-6);
 		}
 
 		&danger {
@@ -165,7 +167,7 @@ router-link {
 				}
 
 				&grayscale {
-					color: var(--lnx-color-gray-9);
+					color: var(--lnx-color-gray-8);
 				}
 
 				&danger {
@@ -178,13 +180,17 @@ router-link {
 			border-color: transparent;
 			background: none;
 
+			&:hover:not(.is-disabled) {
+				opacity: .8;
+			}
+
 			&.button-variant- {
 				&primary {
 					color: var(--lnx-color-primary);
 				}
 
 				&grayscale {
-					color: var(--lnx-color-gray-9);
+					color: var(--lnx-color-gray-8);
 				}
 
 				&danger {
@@ -207,7 +213,7 @@ router-link {
 				}
 
 				&grayscale {
-					color: var(--lnx-color-gray-9);
+					color: var(--lnx-color-gray-8);
 				}
 
 				&danger {
@@ -256,6 +262,7 @@ router-link {
 
 	&.is-disabled {
 		cursor: not-allowed;
+		pointer-events: none;
 		opacity: 0.5;
 	}
 }

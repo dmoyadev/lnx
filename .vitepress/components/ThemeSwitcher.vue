@@ -16,8 +16,9 @@ const Themes = {
 
 const selectedTheme = ref<typeof Themes[keyof typeof Themes]>(Themes.BOBCAT);
 watch(selectedTheme, (newTheme) => {
-	const html = document.querySelector('html');
-	html.setAttribute('data-theme', newTheme.name);
+	if(import.meta.env.SSR) { return; }
+	const html = document?.querySelector('html');
+	html?.setAttribute('data-theme', newTheme.name);
 }, { immediate: true });
 </script>
 

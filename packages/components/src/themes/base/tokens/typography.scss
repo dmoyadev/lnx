@@ -4,6 +4,7 @@
 	/* Font Families */
 	--lnx-font-family-heading: serif; // Needs to be overwritten
 	--lnx-font-family-body: sans-serif; // Needs to be overwritten
+	--lnx-font-family-mono: monospace; // Needs to be overwritten
 
 	/* Text Colors */
 	--lnx-text-color: var(--lnx-color-gray-10); // Needs to be overwritten
@@ -27,7 +28,5 @@
 	--lnx-line-height-title: 1.4; /* 40px for 28px font */
 	--lnx-line-height-bigger: 1.5; /* 33px for 22px font */
 	--lnx-line-height-big: 1.5; /* 27px for 18px font */
-	--lnx-line-height-body: 1.6; /* 24px for 16px font */
-	--lnx-line-height-small: 1.4; /* 20px for 14px font */
-	--lnx-line-height-legal: 1.3; /* 16px for 12px font */
+	--lnx-line-height-body: 1; /* 24px for 16px font */
 }

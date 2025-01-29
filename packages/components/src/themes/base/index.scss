@@ -9,7 +9,7 @@
 :root {
 	html {
 		font-size: 100%; /* Default to 16px; easy to scale with rem units */
-		line-height: 1.6; /* Good default for body text */
+		line-height: var(--lnx-line-height-body);
 	}
 
 	font-family: var(--lnx-font-family-body), sans-serif;
@@ -39,7 +39,6 @@
 
 	small {
 		font-size: var(--lnx-font-size-legal);
-		line-height: var(--lnx-line-height-legal);
 		font-weight: var(--lnx-font-weight-thin);
 	}
 }
