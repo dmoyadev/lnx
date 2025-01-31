@@ -3,6 +3,22 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.1.6](https://github.com/dmoyadev/lnx/compare/v0.1.5...v0.1.6)
+
+> 📅 Released on: 31 January 2025
+
+### ✨ New things
+
+- ✨ Add showing all variants for props in component showcase [`6c71a23`](https://github.com/dmoyadev/lnx/commit/6c71a23d562247784586a65e1b4f29ca4b7881f4) <small>Daniel Moya</small>
+- ✨ Add code generation to showcased component [`5e01b52`](https://github.com/dmoyadev/lnx/commit/5e01b52a60eec70df01c6d706ecea1ce01cfc3f7) <small>Daniel Moya</small>
+- ✨ Add reset button for showcased component [`5ae2755`](https://github.com/dmoyadev/lnx/commit/5ae2755bb1b60961c2dff08b8730a4b81c3cb9ae) <small>Daniel Moya</small>
+- ✨ Add component changer to docs [`c92cf47`](https://github.com/dmoyadev/lnx/commit/c92cf47ca04bdaf3cbb35c5f881b227b6547162f) <small>Daniel Moya</small>
+- ✨ Add theme switcher for docs [`8180af7`](https://github.com/dmoyadev/lnx/commit/8180af761b888f05a7ac88b6bcafcc2ec5598923) <small>Daniel Moya</small>
+- 🎨 Add button shape prop [`3744a10`](https://github.com/dmoyadev/lnx/commit/3744a1060e7b24982d15764d30ebc34b13f8f857) <small>Daniel Moya</small>
+- 🎨 Add button component styles [`b391f98`](https://github.com/dmoyadev/lnx/commit/b391f983d0b7b6b3170546ecd038d581fc2f1dc4) <small>Daniel Moya</small>
+### 🏗 Core
+
+- 📖 Adjust theming documentation [`65b4386`](https://github.com/dmoyadev/lnx/commit/65b4386908a8f299e9198395019e8bec1022722a) <small>Daniel Moya</small>
 ### [v0.1.5](https://github.com/dmoyadev/lnx/compare/v0.1.4...v0.1.5)
 
 > 📅 Released on: 25 January 2025
