@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { ComponentProp } from './types';
+import { ButtonModes, ButtonSizes, LnxButton } from '../../packages/components/src';
 
 defineProps<{
 	props: Record<string, ComponentProp>,
 	hideType?: boolean,
+	hideAllVariationsButton?: boolean,
 }>();
+
+const showAllVariationsOfProp = defineModel<string>('showAllVariationsOfProp', { default: '' });
 
 function updateFromInputValue(event: InputEvent, prop: ComponentProp) {
 	const value = (event.target as HTMLInputElement).value;
@@ -20,6 +24,10 @@ function updateFromInputValue(event: InputEvent, prop: ComponentProp) {
 	}
 
 	prop.value = value;
+}
+
+function canShowAllVariations(prop: ComponentProp): boolean {
+	return ['select', 'switch'].includes(prop.controlType);
 }
 </script>
 
@@ -61,40 +69,55 @@ function updateFromInputValue(event: InputEvent, prop: ComponentProp) {
 		</div>
 
 		<div class="prop-value">
-			<select
-				v-if="prop.controlType === 'select'"
-				:value="prop.value"
-				@change="prop.value = ($event.target as HTMLSelectElement).value"
-			>
-				<option
-					v-for="(value, index) in prop.options"
-					:key="index"
-					:value="value"
+			<div class="value-selection">
+				<select
+					v-if="prop.controlType === 'select'"
+					:value="prop.value"
+					:disabled="showAllVariationsOfProp === name"
+					@change="prop.value = ($event.target as HTMLSelectElement).value"
 				>
-					{{ value }}
-				</option>
-			</select>
-
-			<div
-				v-else-if="prop.controlType === 'switch'"
-				class="switch"
-			>
-				<label>
-					<input
-						type="checkbox"
-						:checked="!!prop.value"
-						@change="prop.value = ($event.target as HTMLInputElement).checked"
+					<option
+						v-for="(value, index) in prop.options"
+						:key="index"
+						:value="value"
 					>
-					<span class="slider" />
-				</label>
+						{{ value }}
+					</option>
+				</select>
+
+				<div
+					v-else-if="prop.controlType === 'switch'"
+					class="switch"
+				>
+					<label>
+						<input
+							type="checkbox"
+							:checked="!!prop.value"
+							:disabled="showAllVariationsOfProp === name"
+							@change="prop.value = ($event.target as HTMLInputElement).checked"
+						>
+						<span class="slider" />
+					</label>
+				</div>
+
+				<input
+					v-else
+					:type="prop.controlType"
+					:value="prop.value"
+					:disabled="showAllVariationsOfProp === name"
+					@input="updateFromInputValue($event as InputEvent, prop)"
+				>
 			</div>
 
-			<input
-				v-else
-				:type="prop.controlType"
-				:value="prop.value"
-				@input="updateFromInputValue($event, prop)"
+			<LnxButton
+				v-if="!hideAllVariationsButton && canShowAllVariations(prop)"
+				:mode="ButtonModes.CLEAR"
+				:size="ButtonSizes.SMALL"
+				class="btn-variations"
+				@click="showAllVariationsOfProp = showAllVariationsOfProp === name ? '' : name"
 			>
+				{{ showAllVariationsOfProp === name ? 'Hide' : 'Show' }} all variations
+			</LnxButton>
 		</div>
 	</div>
 </template>
@@ -160,80 +183,90 @@ function updateFromInputValue(event: InputEvent, prop: ComponentProp) {
 
 	.prop-value {
 		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		align-items: flex-end;
 
-		select,
-		input {
-			width: 200px;
-			max-width: 250px;
-			padding: 4px 24px 4px 8px;
-			border: 1px solid var(--vp-code-bg);
-			border-radius: 4px;
-			font-size: var(--lnx-font-size-small);
+		.value-selection {
+			select,
+			input {
+				width: 200px;
+				max-width: 250px;
+				padding: 4px 24px 4px 8px;
+				border: 1px solid var(--vp-code-bg);
+				border-radius: 4px;
+				font-size: var(--lnx-font-size-small);
 
-			&:focus {
-				outline: 4px auto -webkit-focus-ring-color;
+				&:focus {
+					outline: 4px auto -webkit-focus-ring-color;
+				}
 			}
-		}
 
-		select {
-			-webkit-appearance: none;
-			-moz-appearance: none;
-			appearance: none;
-			background: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") no-repeat;
-			background-position-x: 100%;
-			background-position-y: 5px;
-		}
+			select {
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				appearance: none;
+				background: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") no-repeat;
+				background-position-x: 100%;
+				background-position-y: 5px;
+			}
 
-		.switch {
-			label {
-				position: relative;
-				display: inline-block;
-				width: 48px;
-				height: 24px;
+			.switch {
+				label {
+					position: relative;
+					display: inline-block;
+					width: 48px;
+					height: 24px;
 
-				input {
-					opacity: 0;
-					width: 0;
-					height: 0;
+					input {
+						opacity: 0;
+						width: 0;
+						height: 0;
 
-					&:checked + .slider {
-						background: var(--lnx-color-primary);
+						&:checked + .slider {
+							background: var(--lnx-color-primary);
 
-						&:before {
-							transform: translateX(calc(100% + 4px)) translateY(-50%);
+							&:before {
+								transform: translateX(calc(100% + 4px)) translateY(-50%);
+							}
+						}
+
+						&:focus + .slider {
+							outline: 4px auto -webkit-focus-ring-color;
 						}
 					}
 
-					&:focus + .slider {
-						outline: 4px auto -webkit-focus-ring-color;
-					}
-				}
-
-				.slider {
-					position: absolute;
-					cursor: pointer;
-					top: 0;
-					left: 0;
-					right: 0;
-					bottom: 0;
-					background: var(--lnx-color-gray-8);
-					border-radius: 100px;
-					transition: .2s;
-
-					&:before {
+					.slider {
 						position: absolute;
-						content: "";
-						height: 18px;
-						width: 18px;
-						left: 4px;
-						top: 50%;
-						transform: translateY(-50%);
-						background: var(--lnx-color-gray-0);
-						box-shadow: var(--lnx-elevation-3);
-						border-radius: 50%;
+						cursor: pointer;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						background: var(--lnx-color-gray-8);
+						border-radius: 100px;
 						transition: .2s;
+
+						&:before {
+							position: absolute;
+							content: "";
+							height: 18px;
+							width: 18px;
+							left: 4px;
+							top: 50%;
+							transform: translateY(-50%);
+							background: var(--lnx-color-gray-0);
+							box-shadow: var(--lnx-elevation-3);
+							border-radius: 50%;
+							transition: .2s;
+						}
 					}
 				}
+			}
+
+			:disabled, :has(:disabled) {
+				opacity: .5;
 			}
 		}
 	}

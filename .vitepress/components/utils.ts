@@ -84,11 +84,12 @@ function getSlotsLines(slots: Record<string, ComponentSlot>): string {
 		if(slot.value) {
 			const tagName = getColoredText('template', 'tag');
 			const slotName = getColoredText(name, 'prop');
-			let slotScope = '="{ ';
+			let slotScope = '';
 			if(!!slot.scopes?.length) {
+				slotScope = '="{ ';
 				slotScope += slot.scopes.map(({ name }) => getColoredText(name, 'value')).join(', ');
+				slotScope += ' }"';
 			}
-			slotScope += ' }"';
 			const slotValue = `${NEWLINE}${TAB}${TAB}${slot.value}${NEWLINE}${TAB}`;
 			slotLines.push(`&lt;${tagName} #${slotName}${slotScope}&gt;${slotValue}&lt;/${tagName}&gt;`);
 		}

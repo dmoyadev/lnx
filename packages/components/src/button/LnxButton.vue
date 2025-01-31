@@ -241,7 +241,7 @@ router-link {
 		}
 
 		&large {
-			--lnx-button-size: 42px;
+			--lnx-button-size: 52px;
 			min-height: var(--lnx-button-size);
 			padding: var(--lnx-spacing-2) var(--lnx-spacing-5);
 		}

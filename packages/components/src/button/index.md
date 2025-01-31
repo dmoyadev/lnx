@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
 import { ComponentProp, ComponentSlot, ComponentEvent } from '../../../../.vitepress/components/types';
 import { LnxButton } from '.'; 
@@ -71,6 +71,35 @@ const componentProps = ref<Record<string, ComponentProp>>({
         defaultValue: 'false',
         value: false,
     },
+});
+
+const showAllVariationsOfProp = defineModel<string>('showAllVariationsOfProp', { default: '' });
+const possibleVariations = ref<any[]>([true]);
+watch(showAllVariationsOfProp, (newVal) => {
+    const affectedProp = componentProps.value[newVal];
+
+    if (affectedProp?.controlType === 'select') {
+        if(Array.isArray(affectedProp.options)) {
+            possibleVariations.value = affectedProp.options;
+            return;
+        }
+        possibleVariations.value = Object.values(affectedProp.options);
+        return;
+    }
+
+    if(affectedProp?.controlType === 'switch') {
+        possibleVariations.value = [true, false];
+        return;
+    }
+
+    possibleVariations.value = [true];
+});
+
+const props = computed(() => {
+    return Object.entries(componentProps.value).reduce((acc, [key, value]) => {
+        acc[key] = value.value;
+        return acc;
+    }, {});
 });
 
 const componentOptions = ref<Record<string, ComponentProp>>({
@@ -152,36 +181,35 @@ function reset() {
 A button lets the user perform an action with a tap or a click, like starting a new flow or confirming something. It can be also used as an anchor tag to navigate to a different page by setting `to` or `href` props.
 
 <DemoContainer
+    v-slot="actions"
     v-model:props="componentProps"
     v-model:options="componentOptions"
     v-model:slots="componentSlots"
     v-model:events="componentEvents"
-    v-slot="actions"
+    v-model:show-all-variations-of-prop="showAllVariationsOfProp"
     :demo-code="demoCode"
     @reset="reset()"
 >
-    <LnxButton
-        :variant="componentProps.variant.value"
-        :mode="componentProps.mode.value"
-        :size="componentProps.size.value"
-        :shape="componentProps.shape.value"
-        :href="componentProps.href.value"
-        :to="componentProps.to.value"
-        :isLoading="componentProps.isLoading.value"
-        :isBlock="componentProps.isBlock.value"
-        :disabled="componentOptions['Make it disabled'].value || undefined"
-        :target="componentOptions['Add a \`target\` attribute'].value"
-        @click="actions?.emitted('click', $event)"
+    <template
+        v-for="(variation, index) in possibleVariations"
+        :key="index"
     >
-        <template v-if="componentSlots.loading.value" #loading>
-            <span v-html="componentSlots.loading.value" />
-        </template>
-        <template v-if="componentSlots.prepend.value" #prepend>
-            <span v-html="componentSlots.prepend.value" />
-        </template>
-        {{ componentSlots.default.value }}
-        <template v-if="componentSlots.append.value" #append>
-            <span v-html="componentSlots.append.value" />   
-        </template>
-    </LnxButton>
+        <LnxButton
+            v-bind="{ ...props, ...{ [showAllVariationsOfProp]: variation } }"
+            :disabled="componentOptions['Make it disabled'].value || undefined"
+            :target="componentOptions['Add a \`target\` attribute'].value"
+            @click="actions?.emitted('click', $event)"
+        >
+            <template v-if="componentSlots.loading.value" #loading>
+                <span v-html="componentSlots.loading.value" />
+            </template>
+            <template v-if="componentSlots.prepend.value" #prepend>
+                <span v-html="componentSlots.prepend.value" />
+            </template>
+            {{ componentSlots.default.value }}
+            <template v-if="componentSlots.append.value" #append>
+                <span v-html="componentSlots.append.value" />   
+            </template>
+        </LnxButton>
+    </template>
 </DemoContainer>

@@ -3,6 +3,10 @@
 	"version": "0.1.5",
 	"description": "Lynx Components Library",
 	"author": "Daniel Moya",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dmoyadev/lnx"
+	},
 	"type": "module",
 	"main": "./dist/lnxjs-components.js",
 	"types": "./dist/types/index.d.ts",

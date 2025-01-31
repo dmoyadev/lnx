@@ -12,6 +12,7 @@ const props = defineModel<Record<string, ComponentProp>>('props');
 const options = defineModel<Record<string, ComponentProp>>('options');
 const slots = defineModel<Record<string, ComponentSlot>>('slots');
 const events = defineModel<Record<string, ComponentEvent>>('events');
+const showAllVariationsOfProp = defineModel<string>('showAllVariationsOfProp', { default: '' });
 
 const isDark = ref(true);
 const showCode = ref(false);
@@ -42,6 +43,14 @@ function addEmittedEvent(name: string, data: unknown) {
 			/>
 		</header>
 
+		<span
+			v-if="!!showAllVariationsOfProp"
+			class="txt-variations"
+		>
+			*Showing all variations of <code>{{ showAllVariationsOfProp }}</code> prop,
+			<span @click="showAllVariationsOfProp = ''">click here to reset</span>
+		</span>
+
 		<div
 			class="vp-raw demo-container"
 			v-bind="$attrs"
@@ -56,6 +65,7 @@ function addEmittedEvent(name: string, data: unknown) {
 		/>
 
 		<ComponentChanger
+			v-model:show-all-variations-of-prop="showAllVariationsOfProp"
 			:props
 			:options
 			:slots
@@ -83,6 +93,20 @@ section {
 		}
 	}
 
+	.txt-variations {
+		font-size: 12px;
+		margin: 0 0 -8px;
+
+		span {
+			color: var(--lnx-color-primary);
+
+			&:hover {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+		}
+	}
+
 	.demo-container {
 		transition: all .2s;
 		background: var(--vp-code-block-bg);
@@ -91,6 +115,7 @@ section {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		gap: 8px;
 		overflow-x: visible;
 		overflow-y: visible;
 		position: relative;
