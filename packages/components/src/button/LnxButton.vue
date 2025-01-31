@@ -45,6 +45,7 @@ const isDisabled = computed(() => props.isLoading || ('disabled' in $attrs && ($
 /* Ripple effect */
 // This effect needs the button to have a position property set to relative or absolute so that the ripple element
 // can be positioned absolutely, as well as hiding the overflow of the button.
+const RIPPLE_DURATION = 600;
 const $button = ref<HTMLButtonElement | HTMLAnchorElement | ComponentPublicInstance>();
 const isRouterLink = (element: typeof $button.value): element is ComponentPublicInstance => Boolean(props.to) && (element as { $el: Element }).$el?.tagName === 'A';
 function createRippleEffect(event: MouseEvent) {
@@ -74,6 +75,8 @@ function createRippleEffect(event: MouseEvent) {
 	}
 
 	button.appendChild(circle);
+
+	setTimeout(() => circle.remove(), RIPPLE_DURATION);
 }
 </script>
 
@@ -226,20 +229,20 @@ router-link {
 	&.button-size- {
 		&small {
 			--lnx-button-size: 26px;
-			min-height: 32px;
+			min-height: var(--lnx-button-size);
 			padding: var(--lnx-spacing-0) var(--lnx-spacing-2);
 			font-size: var(--lnx-font-size-small);
 		}
 
 		&medium {
 			--lnx-button-size: 40px;
-			min-height: 40px;
+			min-height: var(--lnx-button-size);
 			padding: var(--lnx-spacing-1) var(--lnx-spacing-3);
 		}
 
 		&large {
 			--lnx-button-size: 42px;
-			min-height: 48px;
+			min-height: var(--lnx-button-size);
 			padding: var(--lnx-spacing-2) var(--lnx-spacing-5);
 		}
 	}
@@ -271,7 +274,7 @@ router-link {
 	position: absolute;
 	border-radius: 50%;
 	transform: scale(0);
-	animation: ripple 600ms linear;
+	animation: ripple v-bind('`${RIPPLE_DURATION}ms`') linear;
 	background-color: rgba(255, 255, 255, .3);
 
 	@keyframes ripple {

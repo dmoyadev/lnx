@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'; 
 import { ComponentProp } from '../../../../../.vitepress/components/types.ts';
+import { resetComponent } from '../../../../.vitepress/components/utils';
+import { ComponentProp, ComponentSlot, ComponentEvent } from '../../../../.vitepress/components/types';
 import { LnxButton } from '.'; 
 import {
     ButtonVariants,
@@ -93,17 +95,18 @@ const componentSlots = ref<Record<string, ComponentSlot>>({
     default: {
         description: 'Actual content of the button',
         value: 'Click me!',
+        initialValue: 'Click me!',
     },
     loading: {
         description: 'Displayed content when the button is loading',
         value: '',
     },
     prepend: {
-        description: 'Icon that should be prepended <em>before</em> to the content',
+        description: 'Icon that should be prepended before to the content',
         value: '',
     },
     append: {
-        description: 'Icon that should be appended <em>after</em> to the content',
+        description: 'Icon that should be appended after to the content',
         value: '',
     },
 });
@@ -115,6 +118,14 @@ const componentEvents = ref<Record<string, ComponentEvent>>({
         isNative: true,
     }
 });
+function reset() {
+    resetComponent({
+        props: componentProps.value,
+        options: componentOptions.value,
+        slots: componentSlots.value,
+        evalDefaultValue: (defaultvalue) => eval(defaultvalue),
+    });
+}
 </script>
 
 # Button
@@ -127,6 +138,7 @@ A button lets the user perform an action with a tap or a click, like starting a 
     v-model:slots="componentSlots"
     v-model:events="componentEvents"
     v-slot="actions"
+    @reset="reset()"
 >
     <LnxButton
         :variant="componentProps.variant.value"
@@ -138,7 +150,7 @@ A button lets the user perform an action with a tap or a click, like starting a 
         :isLoading="componentProps.isLoading.value"
         :isBlock="componentProps.isBlock.value"
         :disabled="componentOptions['Make it disabled'].value || undefined"
-        :target="componentOptions['Add a `target` attribute'].value"
+        :target="componentOptions['Add a \`target\` attribute'].value"
         @click="actions?.emitted('click', $event)"
     >
         <template v-if="componentSlots.loading.value" #loading>
