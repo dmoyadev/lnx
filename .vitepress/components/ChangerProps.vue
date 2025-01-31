@@ -5,6 +5,22 @@ defineProps<{
 	props: Record<string, ComponentProp>,
 	hideType?: boolean,
 }>();
+
+function updateFromInputValue(event: InputEvent, prop: ComponentProp) {
+	const value = (event.target as HTMLInputElement).value;
+
+	if(prop.controlType === 'number') {
+		if (value === '') {
+			prop.value = undefined;
+			return;
+		}
+
+		prop.value = Number(value);
+		return;
+	}
+
+	prop.value = value;
+}
 </script>
 
 <template>
@@ -59,15 +75,8 @@ defineProps<{
 				</option>
 			</select>
 
-			<input
-				v-if="prop.controlType === 'input'"
-				type="text"
-				:value="prop.value"
-				@input="prop.value = ($event.target as HTMLInputElement).value"
-			>
-
 			<div
-				v-if="prop.controlType === 'switch'"
+				v-else-if="prop.controlType === 'switch'"
 				class="switch"
 			>
 				<label>
@@ -79,6 +88,13 @@ defineProps<{
 					<span class="slider" />
 				</label>
 			</div>
+
+			<input
+				v-else
+				:type="prop.controlType"
+				:value="prop.value"
+				@input="updateFromInputValue($event, prop)"
+			>
 		</div>
 	</div>
 </template>

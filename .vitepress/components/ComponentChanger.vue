@@ -53,7 +53,7 @@ const Tabs: Record<string, Tab> = {
 const tab = ref<typeof Tabs[keyof typeof Tabs]>(Tabs.props);
 
 const showEmittedNotification = ref(false);
-const debouncer = ref<number>();
+const debouncer = ref<NodeJS.Timeout>();
 watch(emitted, () => {
 	showEmittedNotification.value = true;
 	if(tab.value.name === 'Events') {

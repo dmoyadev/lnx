@@ -2,7 +2,11 @@
 import { ref } from 'vue';
 import DemoContainerActions from './DemoContainerActions.vue';
 import ComponentChanger from './ComponentChanger.vue';
+import DemoCode from './DemoCode.vue';
 import { ComponentEvent, ComponentProp, ComponentSlot, EmittedEvent } from './types';
+
+defineProps<{ demoCode: string }>();
+defineEmits<{ reset: [] }>();
 
 const props = defineModel<Record<string, ComponentProp>>('props');
 const options = defineModel<Record<string, ComponentProp>>('options');
@@ -10,6 +14,7 @@ const slots = defineModel<Record<string, ComponentSlot>>('slots');
 const events = defineModel<Record<string, ComponentEvent>>('events');
 
 const isDark = ref(true);
+const showCode = ref(false);
 const emitted = ref<EmittedEvent[]>([]);
 
 function addEmittedEvent(name: string, data: unknown) {
@@ -23,73 +28,76 @@ function addEmittedEvent(name: string, data: unknown) {
 </script>
 
 <template>
-	<div
-		class="vp-raw demo-container"
-		v-bind="$attrs"
-		:class="{ 'light-mode': !isDark }"
-	>
-		<h3 id="showcase">
-			SHOWCASE
-		</h3>
-		<DemoContainerActions
-			v-model:is-dark="isDark"
-			class="actions"
-		/>
-		<slot :emitted="addEmittedEvent" />
-	</div>
+	<section>
+		<header>
+			<h3 id="showcase">
+				SHOWCASE
+			</h3>
 
-	<ComponentChanger
-		:props
-		:options
-		:slots
-		:events
-		:emitted
-	/>
+			<DemoContainerActions
+				v-model:is-dark="isDark"
+				v-model:show-code="showCode"
+				class="actions"
+				@reset="$emit('reset')"
+			/>
+		</header>
+
+		<div
+			class="vp-raw demo-container"
+			v-bind="$attrs"
+			:class="{ 'light-mode': !isDark }"
+		>
+			<slot :emitted="addEmittedEvent" />
+		</div>
+
+		<DemoCode
+			v-if="showCode"
+			:code="demoCode"
+		/>
+
+		<ComponentChanger
+			:props
+			:options
+			:slots
+			:events
+			:emitted
+		/>
+	</section>
 </template>
 
 <style lang="scss" scoped>
-.demo-container {
-	transition: all .2s;
-	background: var(--vp-code-block-bg);
-	border-radius: 8px;
-	padding: 8px;
+section {
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow-x: visible;
-	overflow-y: visible;
-	position: relative;
+	flex-direction: column;
 	margin-top: 24px;
+	gap: 8px;
 
-	&.light-mode {
-		background: var(--lnx-color-gray-1);
-		color: var(--lnx-color-gray-9);
-	}
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
 
-	#showcase {
-		position: absolute;
-		font-family: sans-serif;
-		color: var(--vp-c-text-2);
-		font-size: 12px;
-		top: -8px;
-		left: 8px;
-		margin: 0;
-	}
-
-	.actions {
-		position: absolute;
-		z-index: 1000;
-		top: -20px;
-		right: -20px;
-	}
-
-	details {
-		summary {
-			font-size: var(--lnx-font-size-legal);
+		h3 {
+			color: var(--vp-c-text-2);
+			margin: 0;
 		}
+	}
 
-		pre {
+	.demo-container {
+		transition: all .2s;
+		background: var(--vp-code-block-bg);
+		border-radius: 8px;
+		padding: 8px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow-x: visible;
+		overflow-y: visible;
+		position: relative;
 
+		&.light-mode {
+			background: var(--lnx-color-gray-1);
+			color: var(--lnx-color-gray-9);
 		}
 	}
 }

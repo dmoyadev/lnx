@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'; 
-import { ComponentProp } from '../../../../../.vitepress/components/types.ts';
-import { resetComponent } from '../../../../.vitepress/components/utils';
+import { computed, ref } from 'vue';
+import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
 import { ComponentProp, ComponentSlot, ComponentEvent } from '../../../../.vitepress/components/types';
 import { LnxButton } from '.'; 
 import {
@@ -118,6 +117,26 @@ const componentEvents = ref<Record<string, ComponentEvent>>({
         isNative: true,
     }
 });
+
+const configurableOptions = computed<Record<string, ComponentProps>>(() => ({
+    disabled: {
+        defaultValue: false,
+        value: componentOptions.value['Make it disabled'].value,
+    },
+    target: {
+        defaultValue: 'undefined',
+        value: componentOptions.value['Add a `target` attribute'].value,
+    },
+}));
+const demoCode = computed(() => getDemoCode({
+    componentName: 'LnxButton',
+    props: { ...componentProps.value, ...configurableOptions.value },
+    checkDefault: (defaultValue, value) => eval(defaultValue) !== value,
+    options: componentOptions.value,
+    slots: componentSlots.value,
+    listeners: componentEvents.value,
+}));
+
 function reset() {
     resetComponent({
         props: componentProps.value,
@@ -138,6 +157,7 @@ A button lets the user perform an action with a tap or a click, like starting a 
     v-model:slots="componentSlots"
     v-model:events="componentEvents"
     v-slot="actions"
+    :demo-code="demoCode"
     @reset="reset()"
 >
     <LnxButton

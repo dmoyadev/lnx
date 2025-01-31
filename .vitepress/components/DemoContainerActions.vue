@@ -10,13 +10,23 @@ import {
 defineEmits<{ reset: [] }>();
 
 const isDark = defineModel<boolean>('isDark', { default: true });
+const showCode = defineModel<boolean>('showCode', { default: false });
 </script>
 
 <template>
 	<aside>
 		<LnxButton
-			:variant="ButtonVariants.GRAYSCALE"
-			:mode="ButtonModes.CLEAR"
+			:variant="ButtonVariants.PRIMARY"
+			:size="ButtonSizes.SMALL"
+			:mode="ButtonModes.OUTLINE"
+			@click="showCode = !showCode"
+		>
+			<template #prepend>
+				<span>{{ showCode ? '📘' : '📖' }}</span>
+			</template>
+			{{ showCode ? 'Hide code' : 'Show code' }}
+		</LnxButton>
+
 		<LnxButton
 			:variant="ButtonVariants.PRIMARY"
 			:size="ButtonSizes.SMALL"

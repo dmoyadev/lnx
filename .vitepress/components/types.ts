@@ -15,7 +15,7 @@ interface SwitchComponentProp extends ComponentPropBase {
 }
 
 interface InputComponentProp extends ComponentPropBase {
-	controlType: 'input';
+	controlType: 'text' | 'number';
 }
 
 interface ArrayComponentProp extends ComponentPropBase {
@@ -27,6 +27,8 @@ export type ComponentProp = SelectComponentProp | SwitchComponentProp | InputCom
 export interface ComponentSlot {
 	description: string;
 	value?: string;
+	initialValue?: string;
+	defaultValue?: string;
 	scopes?: {
 		name: string;
 		type: string;
