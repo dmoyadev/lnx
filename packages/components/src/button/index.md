@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
+import { useProps } from '../../../../.vitepress/components/useProps';
 import { ComponentProp, ComponentSlot, ComponentEvent } from '../../../../.vitepress/components/types';
 import { LnxButton } from '.'; 
 import {
@@ -74,33 +75,10 @@ const componentProps = ref<Record<string, ComponentProp>>({
 });
 
 const showAllVariationsOfProp = defineModel<string>('showAllVariationsOfProp', { default: '' });
-const possibleVariations = ref<any[]>([true]);
-watch(showAllVariationsOfProp, (newVal) => {
-    const affectedProp = componentProps.value[newVal];
-
-    if (affectedProp?.controlType === 'select') {
-        if(Array.isArray(affectedProp.options)) {
-            possibleVariations.value = affectedProp.options;
-            return;
-        }
-        possibleVariations.value = Object.values(affectedProp.options);
-        return;
-    }
-
-    if(affectedProp?.controlType === 'switch') {
-        possibleVariations.value = [true, false];
-        return;
-    }
-
-    possibleVariations.value = [true];
-});
-
-const props = computed(() => {
-    return Object.entries(componentProps.value).reduce((acc, [key, value]) => {
-        acc[key] = value.value;
-        return acc;
-    }, {});
-});
+const {
+    possibleVariations,
+    props,
+} = useProps(componentProps, showAllVariationsOfProp);
 
 const componentOptions = ref<Record<string, ComponentProp>>({
     'Make it disabled': {
