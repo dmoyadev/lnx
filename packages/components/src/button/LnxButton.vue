@@ -35,8 +35,8 @@ const props = withDefaults(defineProps<{
 defineSlots<{
 	default(): unknown; /* Actual content of the button */
 	loading(): unknown; /* Displayed content when the button is loading */
-	prepend(): unknown; /* Icon that should be prepended to the content */
-	append(): unknown; /* Icon that should be appended to the content */
+	prefix(): unknown; /* Icon that should be prefixed to the content */
+	suffix(): unknown; /* Icon that should be suffixed to the content */
 }>();
 
 const $attrs = useAttrs();
@@ -107,11 +107,11 @@ function createRippleEffect(event: MouseEvent) {
 		</slot>
 
 		<template v-else>
-			<slot name="prepend" />
+			<slot name="prefix" />
 
 			<slot />
 
-			<slot name="append" />
+			<slot name="suffix" />
 		</template>
 	</component>
 </template>

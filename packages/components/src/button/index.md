@@ -102,12 +102,12 @@ const componentSlots = ref<Record<string, ComponentSlot>>({
         description: 'Displayed content when the button is loading',
         value: '',
     },
-    prepend: {
-        description: 'Icon that should be prepended before to the content',
+    prefix: {
+        description: 'Icon that should be prefixed before to the content',
         value: '',
     },
-    append: {
-        description: 'Icon that should be appended after to the content',
+    suffix: {
+        description: 'Icon that should be suffixed after to the content',
         value: '',
     },
 });
@@ -153,7 +153,7 @@ function reset() {
 
 A button lets the user perform an action with a tap or a click, like starting a new flow or confirming something. It can be also used as an anchor tag to navigate to a different page by setting `to` or `href` props.
 
-<DemoContainer
+<DemoContainer 
     v-slot="{ addEmit, variation, showcasedProp}"
     v-model:props="componentProps"
     v-model:options="componentOptions"
@@ -163,20 +163,17 @@ A button lets the user perform an action with a tap or a click, like starting a 
     @reset="reset()"
 >
     <LnxButton
-       v-bind="{ ...props, ...{ [showcasedProp]: variation } }"
-       :disabled="componentOptions['Make it disabled'].value || undefined"
-       :target="componentOptions['Add a \`target\` attribute'].value"
-       @click="addEmit('click', $event)"
+        v-bind="{ ...props, ...{ [showcasedProp]: variation } }"
+        :disabled="componentOptions['Make it disabled'].value || undefined"
+        :target="componentOptions['Add a \`target\` attribute'].value"
+        @click="addEmit('click', $event)"
     >
-       <template v-if="componentSlots.loading.value" #loading>
-           <span v-html="componentSlots.loading.value" />
-       </template>
-       <template v-if="componentSlots.prepend.value" #prepend>
-           <span v-html="componentSlots.prepend.value" />
-       </template>
-       {{ componentSlots.default.value }}
-       <template v-if="componentSlots.append.value" #append>
-           <span v-html="componentSlots.append.value" />   
-       </template>
-   </LnxButton>
+        <template
+            v-for="[name, data] in Object.entries(componentSlots).filter(([, data]) => !!data.value)"
+            :key="name"
+            #[name]
+        >
+            <span v-html="data.value" />
+        </template>
+    </LnxButton>
 </DemoContainer>

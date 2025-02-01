@@ -21,7 +21,7 @@ const showCode = defineModel<boolean>('showCode', { default: false });
 			:mode="ButtonModes.OUTLINE"
 			@click="showCode = !showCode"
 		>
-			<template #prepend>
+			<template #prefix>
 				<span>{{ showCode ? '📘' : '📖' }}</span>
 			</template>
 			{{ showCode ? 'Hide code' : 'Show code' }}
