@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import DemoContainerActions from './DemoContainerActions.vue';
 import ComponentChanger from './ComponentChanger.vue';
 import DemoCode from './DemoCode.vue';
@@ -12,7 +12,7 @@ const props = defineModel<Record<string, ComponentProp>>('props');
 const options = defineModel<Record<string, ComponentProp>>('options');
 const slots = defineModel<Record<string, ComponentSlot>>('slots');
 const events = defineModel<Record<string, ComponentEvent>>('events');
-const showAllVariationsOfProp = defineModel<string>('showAllVariationsOfProp', { default: '' });
+const showcasedProp = defineModel<string>('showcasedProp', { default: '' });
 
 const isDark = ref(true);
 const showCode = ref(false);
@@ -26,6 +26,27 @@ function addEmittedEvent(name: string, data: unknown) {
 		data: JSON.stringify(data).replaceAll('\\"', '"').trimStart(),
 	});
 }
+
+const possibleVariations = ref<unknown[]>([true]);
+watch(showcasedProp, (newVal) => {
+	const affectedProp = props.value[newVal];
+
+	if (affectedProp?.controlType === 'select') {
+		if(Array.isArray(affectedProp.options)) {
+			possibleVariations.value = affectedProp.options;
+			return;
+		}
+		possibleVariations.value = Object.values(affectedProp.options);
+		return;
+	}
+
+	if(affectedProp?.controlType === 'switch') {
+		possibleVariations.value = [true, false];
+		return;
+	}
+
+	possibleVariations.value = [true];
+});
 </script>
 
 <template>
@@ -44,11 +65,11 @@ function addEmittedEvent(name: string, data: unknown) {
 		</header>
 
 		<span
-			v-if="!!showAllVariationsOfProp"
+			v-if="!!showcasedProp"
 			class="txt-variations"
 		>
-			*Showing all variations of <code>{{ showAllVariationsOfProp }}</code> prop,
-			<span @click="showAllVariationsOfProp = ''">click here to reset</span>
+			*Showing all variations of <code>{{ showcasedProp }}</code> prop,
+			<span @click="showcasedProp = ''">click here to reset</span>
 		</span>
 
 		<div
@@ -56,16 +77,30 @@ function addEmittedEvent(name: string, data: unknown) {
 			v-bind="$attrs"
 			:class="{ 'light-mode': !isDark }"
 		>
-			<slot :emitted="addEmittedEvent" />
+			<div
+				v-for="(variation, index) in possibleVariations"
+				:key="index"
+				class="variation-container"
+			>
+				<template v-if="possibleVariations.length > 1">
+					<span class="title">{{ variation }}</span>
+				</template>
+				<slot
+					:add-emit="addEmittedEvent"
+					:showcased-prop="showcasedProp"
+					:variation="variation"
+				/>
+			</div>
 		</div>
 
 		<DemoCode
 			v-if="showCode"
 			:code="demoCode"
+			:showcased-prop="showcasedProp"
 		/>
 
 		<ComponentChanger
-			v-model:show-all-variations-of-prop="showAllVariationsOfProp"
+			v-model:showcased-prop="showcasedProp"
 			:props
 			:options
 			:slots
@@ -111,17 +146,40 @@ section {
 		transition: all .2s;
 		background: var(--vp-code-block-bg);
 		border-radius: 8px;
-		padding: 8px;
 		display: flex;
-		align-items: center;
 		justify-content: center;
-		gap: 8px;
 		overflow-x: visible;
 		overflow-y: visible;
 		position: relative;
 
+		.variation-container {
+			flex: 1;
+			padding: 16px 8px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+
+			&:not(:last-child) {
+				border-right: 1px solid var(--vp-code-tab-divider);
+			}
+
+			&:has(.title) {
+				padding-top: 4px;
+			}
+
+			.title {
+				align-self: flex-start;
+				font-size: 12px;
+				font-weight: bold;
+				font-family: var(--lnx-font-family-mono), monospace;
+				color: var(--vp-c-text-2);
+				margin-bottom: 8px;
+			}
+		}
+
 		&.light-mode {
-			background: var(--lnx-color-gray-1);
+			background: var(--lnx-color-gray-0);
 			color: var(--lnx-color-gray-9);
 		}
 	}

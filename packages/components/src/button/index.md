@@ -73,12 +73,7 @@ const componentProps = ref<Record<string, ComponentProp>>({
         value: false,
     },
 });
-
-const showAllVariationsOfProp = defineModel<string>('showAllVariationsOfProp', { default: '' });
-const {
-    possibleVariations,
-    props,
-} = useProps(componentProps, showAllVariationsOfProp);
+const { props } = useProps(componentProps);
 
 const componentOptions = ref<Record<string, ComponentProp>>({
     'Make it disabled': {
@@ -159,35 +154,29 @@ function reset() {
 A button lets the user perform an action with a tap or a click, like starting a new flow or confirming something. It can be also used as an anchor tag to navigate to a different page by setting `to` or `href` props.
 
 <DemoContainer
-    v-slot="actions"
+    v-slot="{ addEmit, variation, showcasedProp}"
     v-model:props="componentProps"
     v-model:options="componentOptions"
     v-model:slots="componentSlots"
     v-model:events="componentEvents"
-    v-model:show-all-variations-of-prop="showAllVariationsOfProp"
     :demo-code="demoCode"
     @reset="reset()"
 >
-    <template
-        v-for="(variation, index) in possibleVariations"
-        :key="index"
+    <LnxButton
+       v-bind="{ ...props, ...{ [showcasedProp]: variation } }"
+       :disabled="componentOptions['Make it disabled'].value || undefined"
+       :target="componentOptions['Add a \`target\` attribute'].value"
+       @click="addEmit('click', $event)"
     >
-        <LnxButton
-            v-bind="{ ...props, ...{ [showAllVariationsOfProp]: variation } }"
-            :disabled="componentOptions['Make it disabled'].value || undefined"
-            :target="componentOptions['Add a \`target\` attribute'].value"
-            @click="actions?.emitted('click', $event)"
-        >
-            <template v-if="componentSlots.loading.value" #loading>
-                <span v-html="componentSlots.loading.value" />
-            </template>
-            <template v-if="componentSlots.prepend.value" #prepend>
-                <span v-html="componentSlots.prepend.value" />
-            </template>
-            {{ componentSlots.default.value }}
-            <template v-if="componentSlots.append.value" #append>
-                <span v-html="componentSlots.append.value" />   
-            </template>
-        </LnxButton>
-    </template>
+       <template v-if="componentSlots.loading.value" #loading>
+           <span v-html="componentSlots.loading.value" />
+       </template>
+       <template v-if="componentSlots.prepend.value" #prepend>
+           <span v-html="componentSlots.prepend.value" />
+       </template>
+       {{ componentSlots.default.value }}
+       <template v-if="componentSlots.append.value" #append>
+           <span v-html="componentSlots.append.value" />   
+       </template>
+   </LnxButton>
 </DemoContainer>

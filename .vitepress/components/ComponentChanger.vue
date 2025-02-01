@@ -10,7 +10,7 @@ const options = defineModel<Record<string, ComponentProp>>('options');
 const slots = defineModel<Record<string, ComponentSlot>>('slots');
 const events = defineModel<Record<string, ComponentEvent>>('events');
 const emitted = defineModel<EmittedEvent[]>('emitted');
-const showAllVariationsOfProp = defineModel<string>('showAllVariationsOfProp', { default: '' });
+const showcasedProp = defineModel<string>('showcasedProp', { default: '' });
 
 interface Tab {
 	name: string;
@@ -103,7 +103,7 @@ watch(tab, (newTab) => {
 				<KeepAlive>
 					<Component
 						:is="tab.tabComponent"
-						v-model:show-all-variations-of-prop="showAllVariationsOfProp"
+						v-model:showcased-prop="showcasedProp"
 						v-bind="tab.items"
 					/>
 				</KeepAlive>

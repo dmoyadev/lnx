@@ -8,7 +8,7 @@ defineProps<{
 	hideAllVariationsButton?: boolean,
 }>();
 
-const showAllVariationsOfProp = defineModel<string>('showAllVariationsOfProp', { default: '' });
+const showcasedProp = defineModel<string>('showcasedProp', { default: '' });
 
 function updateFromInputValue(event: InputEvent, prop: ComponentProp) {
 	const value = (event.target as HTMLInputElement).value;
@@ -73,7 +73,7 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 				<select
 					v-if="prop.controlType === 'select'"
 					:value="prop.value"
-					:disabled="showAllVariationsOfProp === name"
+					:disabled="showcasedProp === name"
 					@change="prop.value = ($event.target as HTMLSelectElement).value"
 				>
 					<option
@@ -93,7 +93,7 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 						<input
 							type="checkbox"
 							:checked="!!prop.value"
-							:disabled="showAllVariationsOfProp === name"
+							:disabled="showcasedProp === name"
 							@change="prop.value = ($event.target as HTMLInputElement).checked"
 						>
 						<span class="slider" />
@@ -104,7 +104,7 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 					v-else
 					:type="prop.controlType"
 					:value="prop.value"
-					:disabled="showAllVariationsOfProp === name"
+					:disabled="showcasedProp === name"
 					@input="updateFromInputValue($event as InputEvent, prop)"
 				>
 			</div>
@@ -114,9 +114,9 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 				:mode="ButtonModes.CLEAR"
 				:size="ButtonSizes.SMALL"
 				class="btn-variations"
-				@click="showAllVariationsOfProp = showAllVariationsOfProp === name ? '' : name"
+				@click="showcasedProp = showcasedProp === name ? '' : name"
 			>
-				{{ showAllVariationsOfProp === name ? 'Hide' : 'Show' }} all variations
+				{{ showcasedProp === name ? 'Hide' : 'Show' }} all variations
 			</LnxButton>
 		</div>
 	</div>

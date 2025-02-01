@@ -2,7 +2,10 @@
 import { ButtonModes, ButtonShapes, ButtonVariants, LnxButton } from '../../packages/components/src';
 import { ref } from 'vue';
 
-const props = defineProps<{ code: string }>();
+const props = defineProps<{
+	code: string;
+	showcasedProp?: string;
+}>();
 
 const copied = ref(false);
 function copyCode() {
