@@ -38,7 +38,7 @@ function copyCode() {
 
 <style scoped lang="scss">
 .demo-code {
-	min-height: 56px;
+	min-height: 40px;
 	transition: all .5s;
 	border-radius: 8px;
 	background-color: var(--vp-code-block-bg);

@@ -39,7 +39,7 @@ function getPropsLines(
 	props: Record<string, ComponentProp>,
 	checkDefaultValue: (defaultValue: unknown, value: unknown) => boolean,
 	showPropsColon = true,
-): string {
+): string[] | undefined {
 	const propLines: string[] = [];
 	for(const name of Object.keys(props)) {
 		const prop = props[name];
@@ -55,12 +55,10 @@ function getPropsLines(
 		propLines.push(createPropLine(prop, colon, propName, propValue));
 	}
 
-	return propLines.length
-		? `${TAB}${propLines.join(`${NEWLINE}${TAB}`)}`
-		: '';
+	return propLines.length ? propLines : undefined;
 }
 
-function getListenersLines(events: Record<string, ComponentEvent>): string {
+function getListenersLines(events: Record<string, ComponentEvent>): string[] | undefined {
 	const listenersLines: string[] = [];
 	for(const name of Object.keys(events)) {
 		const listenerName = getColoredText(name, 'prop');
@@ -69,26 +67,24 @@ function getListenersLines(events: Record<string, ComponentEvent>): string {
 		listenersLines.push(`@${listenerName}="${listenerValue}" ${listenerComment}`);
 	}
 
-	return listenersLines.length
-		? `${TAB}${listenersLines.join(`${NEWLINE}${TAB}`)}`
-		: '';
+	return listenersLines.length ? listenersLines : undefined;
 }
 
-function getSlotsLines(slots: Record<string, ComponentSlot>): string {
+function getSlotsLines(slots: Record<string, ComponentSlot>): string[] | undefined {
 	const slotLines: string[] = [];
 	for (const name of Object.keys(slots)) {
 		const slot = slots[name];
 
-		if(name === 'default') {
+		if (name === 'default' && !!slot.value) {
 			slotLines.push(`${slot.value}`);
 			continue;
 		}
 
-		if(slot.value) {
+		if (slot.value) {
 			const tagName = getColoredText('template', 'tag');
 			const slotName = getColoredText(name, 'prop');
 			let slotScope = '';
-			if(!!slot.scopes?.length) {
+			if (!!slot.scopes?.length) {
 				slotScope = '="{ ';
 				slotScope += slot.scopes.map(({ name }) => getColoredText(name, 'value')).join(', ');
 				slotScope += ' }"';
@@ -98,9 +94,7 @@ function getSlotsLines(slots: Record<string, ComponentSlot>): string {
 		}
 	}
 
-	return slotLines.length
-		? `${NEWLINE}${TAB}${slotLines.join(`${NEWLINE}${TAB}`)}`
-		: '';
+	return slotLines.length ? slotLines : undefined;
 }
 
 interface DemoCodeParams {
@@ -115,38 +109,47 @@ export function getDemoCode(params: DemoCodeParams) {
 
 	const propsLines = getPropsLines(params.props || {}, params.checkDefault);
 	if(!!propsLines) {
-		code += `${NEWLINE}${propsLines}${NEWLINE}`;
+		if(propsLines.length > 1) {
+			code += `${NEWLINE}${TAB}${propsLines.join(`${NEWLINE}${TAB}`)}${NEWLINE}`;
+		} else {
+			code += ` ${propsLines}`;
+		}
 	}
 
-	let slotScope = '';
-	if(!!params.slots.default?.scopes?.length) {
+	let slotScopeLine: string[] | undefined = undefined;
+	if(!!params.slots?.default?.scopes?.length) {
 		const vSlot: ComponentProp = {
 			type: 'object',
 			controlType: 'text',
 			value: params.slots.default.scopes.map((scope) => scope.name),
 		};
-		slotScope = getPropsLines({ 'v-slot': vSlot }, () => true, false);
+		slotScopeLine = getPropsLines({ 'v-slot': vSlot }, () => true, false);
 		if(!propsLines) {
 			code += `${NEWLINE}`;
 		}
-		code += `${slotScope}${NEWLINE}`;
+		code += `${TAB}${slotScopeLine.join(`${NEWLINE}${TAB}`)}${NEWLINE}`;
 	}
 
 	const listenerLines = getListenersLines(params.listeners || {});
 	if(!!listenerLines) {
-		if(!propsLines && !slotScope) {
+		if(!propsLines && !slotScopeLine) {
 			code += NEWLINE;
 		}
-		code += `${listenerLines}${NEWLINE}`;
+		code += `${TAB}${listenerLines.join(`${NEWLINE}${TAB}`)}${NEWLINE}`;
 	}
-
-	code += '&gt;';
 
 	const slotLines = getSlotsLines(params.slots || {});
 	if(!!slotLines) {
-		code += `${slotLines}`;
+		code += '&gt;';
+		code += `${NEWLINE}${TAB}${slotLines.join(`${NEWLINE}${TAB}`)}`;
+		code += `${NEWLINE}&lt;/${getColoredText(params.componentName, 'tag')}&gt;`;
+	} else {
+		if((!propsLines || propsLines.length === 1) && !listenerLines) {
+			code += ' ';
+		}
+		code += '/&gt;';
 	}
-	code += `${NEWLINE}&lt;/${getColoredText(params.componentName, 'tag')}&gt;`;
+
 	return code;
 }
 
