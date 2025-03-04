@@ -22,14 +22,7 @@ function copyCode() {
 </script>
 
 <template>
-	<h3 id="demo-code">
-		CODE
-	</h3>
-
-	<div
-		v-bind="$attrs"
-		class="demo-code"
-	>
+	<div class="demo-code">
 		<LnxButton
 			:variant="ButtonVariants.GRAYSCALE"
 			:shape="ButtonShapes.ICON"
@@ -44,15 +37,9 @@ function copyCode() {
 </template>
 
 <style scoped lang="scss">
-h3 {
-	color: var(--vp-c-text-2);
-	margin: 8px 0 -16px;
-}
-
 .demo-code {
 	min-height: 56px;
 	transition: all .5s;
-	margin-top: 16px;
 	border-radius: 8px;
 	background-color: var(--vp-code-block-bg);
 	padding: 8px 16px;

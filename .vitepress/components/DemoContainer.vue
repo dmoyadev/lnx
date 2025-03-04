@@ -51,11 +51,14 @@ watch(showcasedProp, (newVal) => {
 
 <template>
 	<section>
-		<header>
-			<h3 id="showcase">
-				SHOWCASE
-			</h3>
+		<h2
+			id="showcase"
+			class="section-title"
+		>
+			Showcase
+		</h2>
 
+		<header>
 			<DemoContainerActions
 				v-model:is-dark="isDark"
 				v-model:show-code="showCode"
@@ -119,13 +122,8 @@ section {
 
 	header {
 		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-
-		h3 {
-			color: var(--vp-c-text-2);
-			margin: 0;
-		}
+		justify-content: flex-end;
+		margin-top: -54px;
 	}
 
 	.txt-variations {

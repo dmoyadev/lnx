@@ -20,6 +20,21 @@ function getColoredText(text: string, type: 'tag' | 'prop' | 'value' | 'comment'
 	}
 }
 
+function createPropLine(prop, colon, propName, propValue) {
+	try {
+		if(prop.value === true) {
+			return propName;
+		}
+
+		return `${colon}${propName}=${propValue}`;
+	} catch(e) {
+		console.log(e);
+		if(prop.defaultValue !== prop.value) {
+			return `${colon}${propName}=${propValue}`;
+		}
+	}
+}
+
 function getPropsLines(
 	props: Record<string, ComponentProp>,
 	checkDefaultValue: (defaultValue: unknown, value: unknown) => boolean,
@@ -33,23 +48,11 @@ function getPropsLines(
 		const propStringifiedValue = (colon || !showPropsColon) ? JSON.stringify(prop.value) : prop.value;
 		const propValue = getColoredText(`"${propStringifiedValue}"`, 'value');
 
-		try {
-			if (!checkDefaultValue(prop.defaultValue, prop.value)) {
-				continue;
-			}
-
-			if(prop.value === true) {
-				propLines.push(propName);
-				continue;
-			}
-
-			propLines.push(`${colon}${propName}=${propValue}`);
-		} catch(e) {
-			console.log(e);
-			if(prop.defaultValue !== prop.value) {
-				propLines.push(`${colon}${propName}=${propValue}`);
-			}
+		if (!checkDefaultValue(prop.defaultValue, prop.value)) {
+			continue;
 		}
+
+		propLines.push(createPropLine(prop, colon, propName, propValue));
 	}
 
 	return propLines.length
