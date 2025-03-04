@@ -78,6 +78,7 @@ const { props } = useProps(componentProps);
 const componentOptions = ref<Record<string, ComponentProp>>({
     'Make it disabled': {
         description: 'Native HTML attribute to disable the button',
+        configurableOptionName: 'disabled',
         controlType: 'switch',
         type: 'boolean',
         defaultValue: false,
@@ -85,6 +86,7 @@ const componentOptions = ref<Record<string, ComponentProp>>({
     },
     'Add a `target` attribute': {
         description: 'Only works if `href` prop is set. Native HTML attribute to define where the link should open',
+        configurableOptionName: 'target',
         controlType: 'input',
         type: 'string',
         defaultValue: 'undefined',
@@ -164,7 +166,7 @@ A button lets the user perform an action with a tap or a click, like starting a 
 >
     <LnxButton
         v-bind="{ ...props, ...{ [showcasedProp]: variation } }"
-        :disabled="componentOptions['Make it disabled'].value || undefined"
+        :disabled="showcasedProp === 'Makeitdisabled' ? variation : componentOptions['Make it disabled'].value || undefined"
         :target="componentOptions['Add a \`target\` attribute'].value"
         @click="addEmit('click', $event)"
     >

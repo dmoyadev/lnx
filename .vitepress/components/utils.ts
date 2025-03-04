@@ -154,9 +154,9 @@ export function getDemoCode(params: DemoCodeParams) {
 }
 
 interface ResetComponentParams {
-	props: Record<string, ComponentProp>;
-	options: Record<string, ComponentProp>;
-	slots: Record<string, ComponentSlot>;
+	props?: Record<string, ComponentProp>;
+	options?: Record<string, ComponentProp>;
+	slots?: Record<string, ComponentSlot>;
 	evalDefaultValue: (defaultValue: unknown) => unknown;
 }
 export function resetComponent({ props, options, slots, evalDefaultValue }: ResetComponentParams){
@@ -176,7 +176,7 @@ export function resetComponent({ props, options, slots, evalDefaultValue }: Rese
 		}
 	}
 
-	for(const slot of Object.values(slots)) {
+	for(const slot of Object.values(slots || {})) {
 		slot.value = slot.initialValue || '';
 	}
 }

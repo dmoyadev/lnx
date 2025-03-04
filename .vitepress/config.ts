@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
 import pkg from '../package.json';
 
-async function getDocFiles(docsPath: string, excludedFolders?: string[] = []): Promise<{ text: string, link: string }[]> {
+async function getDocFiles(docsPath: string, excludedFolders: string[] = []): Promise<{ text: string, link: string }[]> {
 	const fs = await import('fs');
 	const path = await import('path');
 

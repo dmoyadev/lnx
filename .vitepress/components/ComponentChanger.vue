@@ -31,7 +31,6 @@ const Tabs: Record<string, Tab> = {
 		items: {
 			props: options.value,
 			hideType: true,
-			hideAllVariationsButton: true,
 		},
 		tabComponent: markRaw(ChangerProps),
 	},

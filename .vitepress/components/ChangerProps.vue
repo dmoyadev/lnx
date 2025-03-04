@@ -5,7 +5,6 @@ import { ButtonModes, ButtonSizes, LnxButton } from '../../packages/components/s
 defineProps<{
 	props: Record<string, ComponentProp>,
 	hideType?: boolean,
-	hideAllVariationsButton?: boolean,
 }>();
 
 const showcasedProp = defineModel<string>('showcasedProp', { default: '' });
@@ -27,7 +26,7 @@ function updateFromInputValue(event: InputEvent, prop: ComponentProp) {
 }
 
 function canShowAllVariations(prop: ComponentProp): boolean {
-	return ['select', 'switch'].includes(prop.controlType);
+	return ['select', 'options', 'switch'].includes(prop.controlType);
 }
 </script>
 
@@ -52,7 +51,10 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 
 			</span>
 
-			<span>{{ prop.description }}</span>
+			<span
+				class="description"
+				v-html="prop.description"
+			/>
 
 			<span
 				v-if="!hideType"
@@ -70,8 +72,10 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 
 		<div class="prop-value">
 			<div class="value-selection">
+				<!-- Select -->
 				<select
 					v-if="prop.controlType === 'select'"
+					class="type-select"
 					:value="prop.value"
 					:disabled="showcasedProp === name"
 					@change="prop.value = ($event.target as HTMLSelectElement).value"
@@ -85,9 +89,10 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 					</option>
 				</select>
 
+				<!-- Switch -->
 				<div
 					v-else-if="prop.controlType === 'switch'"
-					class="switch"
+					class="type-switch"
 				>
 					<label>
 						<input
@@ -100,17 +105,47 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 					</label>
 				</div>
 
+				<!-- Options -->
+				<div
+					v-else-if="prop.controlType === 'options'"
+					class="type-options"
+				>
+					<label
+						v-for="(option, index) in prop.options"
+						:key="index"
+					>
+						<input
+							v-model="prop.value"
+							type="radio"
+							:name="name"
+							:value="option"
+							:checked="prop.value === option"
+							:disabled="showcasedProp === name"
+						>
+						{{ option }}
+					</label>
+				</div>
+
+				<!-- Input & Number -->
 				<input
 					v-else
+					class="type-input"
 					:type="prop.controlType"
 					:value="prop.value"
 					:disabled="showcasedProp === name"
 					@input="updateFromInputValue($event as InputEvent, prop)"
 				>
+
+				<span
+					v-if="prop.helper"
+					class="helper"
+				>
+					{{ prop.helper }}
+				</span>
 			</div>
 
 			<LnxButton
-				v-if="!hideAllVariationsButton && canShowAllVariations(prop)"
+				v-if="!prop.hideAllVariationsButton && canShowAllVariations(prop)"
 				:mode="ButtonModes.CLEAR"
 				:size="ButtonSizes.SMALL"
 				class="btn-variations"
@@ -164,6 +199,15 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 			}
 		}
 
+		.description {
+			:deep(code) {
+				display: inline;
+				padding: 4px;
+				color: var(--vp-code-color);
+				line-height: 1;
+			}
+		}
+
 		.requirement {
 			font-size: var(--lnx-font-size-legal);
 			font-weight: normal;
@@ -189,8 +233,12 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 		align-items: flex-end;
 
 		.value-selection {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+
 			select,
-			input {
+			input:not([type='radio']) {
 				width: 200px;
 				max-width: 250px;
 				padding: 4px 24px 4px 8px;
@@ -203,7 +251,7 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 				}
 			}
 
-			select {
+			.type-select {
 				-webkit-appearance: none;
 				-moz-appearance: none;
 				appearance: none;
@@ -212,7 +260,7 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 				background-position-y: 5px;
 			}
 
-			.switch {
+			.type-switch {
 				label {
 					position: relative;
 					display: inline-block;
@@ -263,6 +311,44 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 						}
 					}
 				}
+			}
+
+			.type-options {
+				display: flex;
+				gap: 8px;
+
+				label {
+					border-radius: 4px;
+					border: 1px solid var(--vp-code-bg);
+					padding: 0 4px;
+					font-size: var(--lnx-font-size-small);
+					position: relative;
+					background: var(--vp-code-bg);
+					cursor: pointer;
+					min-width: 24px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					&:has(:checked) {
+						background: var(--lnx-color-primary);
+						color: var(--lnx-color-primary-accent);
+					}
+
+					input {
+						position: absolute;
+						inset: 0;
+					}
+				}
+			}
+
+			.helper {
+				color: var(--vp-c-text-2);
+				font-size: var(--lnx-font-size-legal);
+				width: 200px;
+				max-width: 250px;
+				align-self: flex-end;
+				text-align: right;
 			}
 
 			:disabled, :has(:disabled) {

@@ -3,6 +3,17 @@
 	--vp-home-hero-name-background: -webkit-linear-gradient(120deg, #2b85a9, #7fc1dc);
 }
 
-.vp-doc p {
-	line-height: 20px;
+.vp-doc p,
+.vp-doc span {
+	line-height: 1.4em;
+}
+
+input[type=number] {
+	-moz-appearance: revert;
+
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button {
+		-webkit-appearance: revert;
+		margin-right: -16px;
+	}
 }

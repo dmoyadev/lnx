@@ -29,9 +29,9 @@ function addEmittedEvent(name: string, data: unknown) {
 
 const possibleVariations = ref<unknown[]>([true]);
 watch(showcasedProp, (newVal) => {
-	const affectedProp = props.value[newVal];
+	const affectedProp = props.value[newVal] || options.value[newVal];
 
-	if (affectedProp?.controlType === 'select') {
+	if (affectedProp?.controlType === 'select' || affectedProp?.controlType === 'options') {
 		if(Array.isArray(affectedProp.options)) {
 			possibleVariations.value = affectedProp.options;
 			return;
@@ -71,7 +71,7 @@ watch(showcasedProp, (newVal) => {
 			v-if="!!showcasedProp"
 			class="txt-variations"
 		>
-			*Showing all variations of <code>{{ showcasedProp }}</code> prop,
+			*Showing all variations of <code>{{ showcasedProp }}</code> prop/option,
 			<span @click="showcasedProp = ''">click here to reset</span>
 		</span>
 
@@ -90,7 +90,7 @@ watch(showcasedProp, (newVal) => {
 				</template>
 				<slot
 					:add-emit="addEmittedEvent"
-					:showcased-prop="showcasedProp"
+					:showcased-prop="showcasedProp.replaceAll(' ', '')"
 					:variation="variation"
 				/>
 			</div>

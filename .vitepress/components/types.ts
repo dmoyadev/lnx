@@ -3,6 +3,9 @@ interface ComponentPropBase {
 	type: string;
 	value: unknown;
 	defaultValue?: unknown;
+	helper?: string;
+	hideAllVariationsButton?: boolean;
+	configurableOptionName?: string
 }
 
 interface SelectComponentProp extends ComponentPropBase {
