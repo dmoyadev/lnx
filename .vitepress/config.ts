@@ -66,6 +66,8 @@ export default defineConfig({
 		css: { preprocessorOptions: { scss: { api: 'modern' } } },
 	},
 
+	vue: { template: { compilerOptions: { isCustomElement: tag => tag === 'iconify-icon' } } },
+
 	appearance: 'force-dark',
 
 	themeConfig: {

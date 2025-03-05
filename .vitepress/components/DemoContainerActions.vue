@@ -6,6 +6,7 @@ import {
 	ButtonVariants,
 	LnxButton,
 } from '../../packages/components/src';
+import { LnxIcon } from '../../packages/components/src/icon';
 
 defineEmits<{ reset: [] }>();
 
@@ -22,7 +23,7 @@ const showCode = defineModel<boolean>('showCode', { default: false });
 			@click="showCode = !showCode"
 		>
 			<template #prefix>
-				<span>{{ showCode ? '📘' : '📖' }}</span>
+				<LnxIcon :icon="showCode ? 'mynaui:code-square' : 'mynaui:code-square-solid'" />
 			</template>
 			{{ showCode ? 'Hide code' : 'Show code' }}
 		</LnxButton>
@@ -34,7 +35,7 @@ const showCode = defineModel<boolean>('showCode', { default: false });
 			:mode="ButtonModes.OUTLINE"
 			@click="isDark = !isDark"
 		>
-			{{ isDark ? '🌚' : '🌝' }}
+			<LnxIcon :icon="isDark ? 'tdesign:mode-dark' : 'iconamoon:mode-light-bold'" />
 		</LnxButton>
 
 		<LnxButton
@@ -44,7 +45,7 @@ const showCode = defineModel<boolean>('showCode', { default: false });
 			:mode="ButtonModes.OUTLINE"
 			@click="$emit('reset')"
 		>
-			🔄
+			<LnxIcon icon="ix:hard-reset" />
 		</LnxButton>
 	</aside>
 </template>

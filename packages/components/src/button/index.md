@@ -179,3 +179,8 @@ A button lets the user perform an action with a tap or a click, like starting a 
         </template>
     </LnxButton>
 </DemoContainer>
+
+## Types
+```ts
+
+```

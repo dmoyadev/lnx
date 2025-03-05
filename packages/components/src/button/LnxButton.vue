@@ -13,6 +13,7 @@ import {
 	ButtonSizes,
 	ButtonShapes,
 } from './types';
+import { LnxIcon } from '../icon';
 
 const props = withDefaults(defineProps<{
 	variant?: TButtonVariant; /* Applies different palette of colors */
@@ -96,23 +97,24 @@ function createRippleEffect(event: MouseEvent) {
 			[`button-shape-${shape}`]: true,
 			'is-block': isBlock,
 			'is-disabled': isDisabled,
+			'is-loading': isLoading,
 		}"
 		@click="createRippleEffect($event)"
 	>
-		<slot
+		<span
 			v-if="isLoading"
-			name="loading"
+			class="loading-content"
 		>
-			<!-- TODO Add loading icon -->
-		</slot>
+			<slot name="loading">
+				<LnxIcon icon="mdi:loading" />
+			</slot>
+		</span>
 
-		<template v-else>
-			<slot name="prefix" />
+		<slot name="prefix" />
 
-			<slot />
+		<slot />
 
-			<slot name="suffix" />
-		</template>
+		<slot name="suffix" />
 	</component>
 </template>
 
@@ -267,6 +269,35 @@ router-link {
 		cursor: not-allowed;
 		pointer-events: none;
 		opacity: 0.5;
+	}
+
+	&.is-loading {
+		position: relative;
+
+		.loading-content {
+			position: absolute;
+			inset: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			animation-name: spin;
+			animation-duration: 1000ms;
+			animation-iteration-count: infinite;
+			animation-timing-function: ease-in-out;
+
+			@keyframes spin {
+				from {
+					transform:rotate(0deg);
+				}
+				to {
+					transform:rotate(350deg);
+				}
+			}
+		}
+
+		> *:not(.loading-content) {
+			opacity: 0;
+		}
 	}
 }
 

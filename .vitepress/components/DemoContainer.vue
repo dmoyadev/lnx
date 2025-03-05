@@ -51,48 +51,50 @@ watch(showcasedProp, (newVal) => {
 
 <template>
 	<section>
-		<h2
-			id="showcase"
-			class="section-title"
-		>
-			Showcase
-		</h2>
-
-		<header>
-			<DemoContainerActions
-				v-model:is-dark="isDark"
-				v-model:show-code="showCode"
-				class="actions"
-				@reset="$emit('reset')"
-			/>
-		</header>
-
-		<span
-			v-if="!!showcasedProp"
-			class="txt-variations"
-		>
-			*Showing all variations of <code>{{ showcasedProp }}</code> prop/option,
-			<span @click="showcasedProp = ''">click here to reset</span>
-		</span>
-
-		<div
-			class="vp-raw demo-container"
-			v-bind="$attrs"
-			:class="{ 'light-mode': !isDark }"
-		>
-			<div
-				v-for="(variation, index) in possibleVariations"
-				:key="index"
-				class="variation-container"
+		<div class="demo-container-wrapper">
+			<h2
+				id="showcase"
+				class="section-title"
 			>
-				<template v-if="possibleVariations.length > 1">
-					<span class="title">{{ variation }}</span>
-				</template>
-				<slot
-					:add-emit="addEmittedEvent"
-					:showcased-prop="showcasedProp.replaceAll(' ', '')"
-					:variation="variation"
+				Showcase
+			</h2>
+
+			<header>
+				<DemoContainerActions
+					v-model:is-dark="isDark"
+					v-model:show-code="showCode"
+					class="actions"
+					@reset="$emit('reset')"
 				/>
+			</header>
+
+			<span
+				v-if="!!showcasedProp"
+				class="txt-variations"
+			>
+				*Showing all variations of <code>{{ showcasedProp }}</code> prop/option,
+				<span @click="showcasedProp = ''">click here to reset</span>
+			</span>
+
+			<div
+				class="vp-raw demo-container"
+				v-bind="$attrs"
+				:class="{ 'light-mode': !isDark }"
+			>
+				<div
+					v-for="(variation, index) in possibleVariations"
+					:key="index"
+					class="variation-container"
+				>
+					<template v-if="possibleVariations.length > 1">
+						<span class="title">{{ variation }}</span>
+					</template>
+					<slot
+						:add-emit="addEmittedEvent"
+						:showcased-prop="showcasedProp.replaceAll(' ', '')"
+						:variation="variation"
+					/>
+				</div>
 			</div>
 		</div>
 
@@ -117,68 +119,75 @@ watch(showcasedProp, (newVal) => {
 section {
 	display: flex;
 	flex-direction: column;
-	margin-top: 24px;
 	gap: 8px;
 
-	header {
+	.demo-container-wrapper {
 		display: flex;
-		justify-content: flex-end;
-		margin-top: -54px;
-	}
+		flex-direction: column;
+		position: sticky;
+		gap: 8px;
+		top: 80px;
+		z-index: 100000;
 
-	.txt-variations {
-		font-size: 12px;
-		margin: 0 0 -8px;
-
-		span {
-			color: var(--lnx-color-primary);
-
-			&:hover {
-				text-decoration: underline;
-				cursor: pointer;
-			}
-		}
-	}
-
-	.demo-container {
-		transition: all .2s;
-		background: var(--vp-code-block-bg);
-		border-radius: 8px;
-		display: flex;
-		justify-content: center;
-		overflow-x: visible;
-		overflow-y: visible;
-		position: relative;
-
-		.variation-container {
-			flex: 1;
-			padding: 16px 8px;
+		header {
 			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: flex-start;
+			justify-content: flex-end;
+			margin-top: -54px;
+		}
 
-			&:not(:last-child) {
-				border-right: 1px solid var(--vp-code-tab-divider);
-			}
+		.txt-variations {
+			font-size: 12px;
+			margin: 0 0 -8px;
 
-			&:has(.title) {
-				padding-top: 4px;
-			}
+			span {
+				color: var(--lnx-color-primary);
 
-			.title {
-				align-self: flex-start;
-				font-size: 12px;
-				font-weight: bold;
-				font-family: var(--lnx-font-family-mono), monospace;
-				color: var(--vp-c-text-2);
-				margin-bottom: 8px;
+				&:hover {
+					text-decoration: underline;
+					cursor: pointer;
+				}
 			}
 		}
 
-		&.light-mode {
-			background: var(--lnx-color-gray-0);
-			color: var(--lnx-color-gray-9);
+		.demo-container {
+			transition: all .2s;
+			background: var(--vp-code-block-bg);
+			border-radius: 8px;
+			display: flex;
+			justify-content: center;
+			overflow-x: visible;
+			overflow-y: visible;
+
+			.variation-container {
+				flex: 1;
+				padding: 16px 8px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: flex-start;
+
+				&:not(:last-child) {
+					border-right: 1px solid var(--vp-code-tab-divider);
+				}
+
+				&:has(.title) {
+					padding-top: 4px;
+				}
+
+				.title {
+					align-self: flex-start;
+					font-size: 12px;
+					font-weight: bold;
+					font-family: var(--lnx-font-family-mono), monospace;
+					color: var(--vp-c-text-2);
+					margin-bottom: 8px;
+				}
+			}
+
+			&.light-mode {
+				background: var(--lnx-color-gray-0);
+				color: var(--lnx-color-gray-9);
+			}
 		}
 	}
 }
