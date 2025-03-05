@@ -120,7 +120,7 @@ export function getDemoCode(params: DemoCodeParams) {
 	if(!!params.slots?.default?.scopes?.length) {
 		const vSlot: ComponentProp = {
 			type: 'object',
-			controlType: 'text',
+			controlType: 'input',
 			value: params.slots.default.scopes.map((scope) => scope.name),
 		};
 		slotScopeLine = getPropsLines({ 'v-slot': vSlot }, () => true, false);

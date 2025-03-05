@@ -38,16 +38,25 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 		class="prop"
 	>
 		<div class="prop-data">
-			<span
-				class="name"
-				:class="{ 'monospaced': !hideType }"
-			>
+			<span class="name">
 				{{ name }}
 				<code
 					v-if="prop.type && !hideType"
 					class="type"
 				>
-					<a :href="`#${prop.type.toLowerCase()}`">{{ prop.type }}</a>
+					<a
+						v-if="typeof prop.type === 'string'"
+						:href="`#${prop.type.toLowerCase()}`"
+					>
+						{{ prop.type }}
+					</a>
+					<a
+						v-else
+						:href="prop.type.link"
+						target="_blank"
+					>
+						{{ prop.type.name }}
+					</a>
 				</code>
 
 			</span>
@@ -129,7 +138,7 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 
 				<!-- Input & Number -->
 				<input
-					v-else
+					v-else-if="['input', 'number'].includes(prop.controlType)"
 					class="type-input"
 					:type="prop.controlType"
 					:value="prop.value"
@@ -193,10 +202,7 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 			align-items: center;
 			gap: 4px;
 			font-weight: bold;
-
-			&.monospaced {
-				font-family: var(--lnx-font-family-mono), monospace;
-			}
+			font-family: var(--lnx-font-family-mono), monospace;
 
 			.type {
 				font-size: var(--lnx-font-size-legal);
