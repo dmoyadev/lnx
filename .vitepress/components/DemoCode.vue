@@ -44,6 +44,7 @@ function copyCode() {
 	background-color: var(--vp-code-block-bg);
 	padding: 8px 16px;
 	position: relative;
+	overflow-x: auto;
 
 	.btn-copy {
 		display: none;
