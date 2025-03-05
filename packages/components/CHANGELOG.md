@@ -3,6 +3,18 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.1.7](https://github.com/dmoyadev/lnx/compare/v0.1.6...v0.1.7)
+
+> 📅 Released on: 5 March 2025
+
+### ✨ New things
+
+- ✨ Add LnxIcon component [`975bf21`](https://github.com/dmoyadev/lnx/commit/975bf215bec27c15263c36da3e63dac0e95f990c) <small>Daniel Moya</small>
+- ✨ Automate documentation sidebar generation [`599c4aa`](https://github.com/dmoyadev/lnx/commit/599c4aa38f4cb5d766f0350edaa8497934414349) <small>Daniel Moya</small>
+- ✨ Add showcasing select and switch props [`6e66820`](https://github.com/dmoyadev/lnx/commit/6e66820b17e35fc5035a84406d07b4b746b740d6) <small>Daniel Moya</small>
+### 🐛 Fixes
+
+- 🐛 Fix some small problems with componente configurator in docs [`7b7a48b`](https://github.com/dmoyadev/lnx/commit/7b7a48bfba32e7591f9c25ec948e4d6238a304fd) <small>Daniel Moya</small>
 ### [v0.1.6](https://github.com/dmoyadev/lnx/compare/v0.1.5...v0.1.6)
 
 > 📅 Released on: 31 January 2025
