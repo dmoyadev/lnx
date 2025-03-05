@@ -107,9 +107,12 @@ interface DemoCodeParams {
 export function getDemoCode(params: DemoCodeParams) {
 	let code = `&lt;${getColoredText(params.componentName, 'tag')}`;
 
+	const hasScopedDefaultSlot = !!params.slots?.default?.scopes?.length;
+	const listenerLines = getListenersLines(params.listeners || {});
+
 	const propsLines = getPropsLines(params.props || {}, params.checkDefault);
 	if(!!propsLines) {
-		if(propsLines.length > 1) {
+		if(propsLines.length > 1 || hasScopedDefaultSlot || listenerLines.length > 1) {
 			code += `${NEWLINE}${TAB}${propsLines.join(`${NEWLINE}${TAB}`)}${NEWLINE}`;
 		} else {
 			code += ` ${propsLines}`;
@@ -117,20 +120,20 @@ export function getDemoCode(params: DemoCodeParams) {
 	}
 
 	let slotScopeLine: string[] | undefined = undefined;
-	if(!!params.slots?.default?.scopes?.length) {
+	if(hasScopedDefaultSlot) {
 		const vSlot: ComponentProp = {
 			type: 'object',
 			controlType: 'input',
-			value: params.slots.default.scopes.map((scope) => scope.name),
+			value: params.slots!.default.scopes!.map((scope) => scope.name),
 		};
 		slotScopeLine = getPropsLines({ 'v-slot': vSlot }, () => true, false);
 		if(!propsLines) {
 			code += `${NEWLINE}`;
 		}
-		code += `${TAB}${slotScopeLine.join(`${NEWLINE}${TAB}`)}${NEWLINE}`;
+		code += `${TAB}${slotScopeLine!.join(`${NEWLINE}${TAB}`)}${NEWLINE}`;
 	}
 
-	const listenerLines = getListenersLines(params.listeners || {});
+
 	if(!!listenerLines) {
 		if(!propsLines && !slotScopeLine) {
 			code += NEWLINE;
