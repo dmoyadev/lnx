@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref, useAttrs, watch } from 'vue';
-import { LnxIcon, LnxButton, ButtonModes, ButtonShapes, ButtonSizes } from '..';
+import { LnxIcon } from '../icon';
+import { LnxButton, ButtonModes, ButtonShapes, ButtonSizes } from '../button';
 
 const props = defineProps<{
 	isClearable?: boolean; /* Indicates if a button should render to quickly clear the input */
