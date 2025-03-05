@@ -3,6 +3,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.1.8](https://github.com/dmoyadev/lnx/compare/v0.1.7...v0.1.8)
+
+> 📅 Released on: 5 March 2025
+
+### ✨ New things
+
+- ✨ Add LnxIcon component [`4387afe`](https://github.com/dmoyadev/lnx/commit/4387afebca21e6698e83a5c0c76f860948356dc0) <small>Daniel Moya</small>
 ### [v0.1.7](https://github.com/dmoyadev/lnx/compare/v0.1.6...v0.1.7)
 
 > 📅 Released on: 5 March 2025
