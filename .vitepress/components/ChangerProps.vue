@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ComponentProp } from './types';
 import { ButtonModes, ButtonSizes, LnxButton } from '../../packages/components/src';
+import { LnxIcon } from '../../packages/components/src/icon';
 
 defineProps<{
 	props: Record<string, ComponentProp>,
@@ -140,6 +141,11 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 					v-if="prop.helper"
 					class="helper"
 				>
+					<LnxIcon
+						icon="mdi:information"
+						:size="14"
+						style="margin-bottom: -3px"
+					/>
 					{{ prop.helper }}
 				</span>
 			</div>

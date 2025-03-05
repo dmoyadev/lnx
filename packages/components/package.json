@@ -18,5 +18,8 @@
 		"build": "rm -rf dist && vite build && pnpm build:tsc",
 		"version:sync": "node ../../scripts/sync-versions.js ../.. .",
 		"version": "pnpm version:sync && auto-changelog -p && git add CHANGELOG.md"
+	},
+	"devDependencies": {
+		"iconify-icon": "^2.3.0"
 	}
 }

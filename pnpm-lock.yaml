@@ -51,7 +51,11 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0(typescript@5.7.3)
 
-  packages/components: {}
+  packages/components:
+    devDependencies:
+      iconify-icon:
+        specifier: ^2.3.0
+        version: 2.3.0
 
   sandbox:
     dependencies:
@@ -1542,6 +1546,9 @@ packages:
   human-signals@8.0.0:
     resolution: {integrity: sha512-/1/GPCpDUCCYwlERiYjxoczfP0zfvZMU/OWgQPMya9AbAE24vseigFdhAMObpc8Q4lc/kjutPfUddDYyAmejnA==}
     engines: {node: '>=18.18.0'}
+
+  iconify-icon@2.3.0:
+    resolution: {integrity: sha512-C0beI9oTDxQz6voI5CKl7MiJf0Lw4UU8K4G4t6pcUDClLmCvuMOpcvd8MAztQ2SfoH0iv7WHdxBFjekKPFKH2Q==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -3795,6 +3802,10 @@ snapshots:
   html-void-elements@3.0.0: {}
 
   human-signals@8.0.0: {}
+
+  iconify-icon@2.3.0:
+    dependencies:
+      '@iconify/types': 2.0.0
 
   ignore@5.3.2: {}
 
