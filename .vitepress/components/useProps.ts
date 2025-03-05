@@ -8,7 +8,7 @@ export function useProps(componentProps: MaybeRefOrGetter<Record<string, Compone
 		return Object.entries(componentPropsValue.value).reduce((acc, [key, value]) => {
 			acc[key] = value.value;
 			return acc;
-		}, {});
+		}, {} as Record<string, unknown>);
 	});
 
 	return { props };
