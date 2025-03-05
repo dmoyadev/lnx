@@ -1,6 +1,6 @@
 interface ComponentPropBase {
 	description?: string;
-	type: string;
+	type: string | { name: string; link: string };
 	value: unknown;
 	defaultValue?: unknown;
 	helper?: string;
@@ -18,14 +18,14 @@ interface SwitchComponentProp extends ComponentPropBase {
 }
 
 interface InputComponentProp extends ComponentPropBase {
-	controlType: 'text' | 'number';
+	controlType: 'input' | 'number';
 }
 
-interface ArrayComponentProp extends ComponentPropBase {
-	controlType: 'array';
+interface StaticComponentProp extends ComponentPropBase {
+	controlType: 'none';
 }
 
-export type ComponentProp = SelectComponentProp | SwitchComponentProp | InputComponentProp | ArrayComponentProp;
+export type ComponentProp = SelectComponentProp | SwitchComponentProp | InputComponentProp | StaticComponentProp;
 
 export interface ComponentSlot {
 	description: string;

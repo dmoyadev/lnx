@@ -119,15 +119,20 @@ watch(showcasedProp, (newVal) => {
 section {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
 
 	.demo-container-wrapper {
 		display: flex;
 		flex-direction: column;
 		position: sticky;
 		gap: 8px;
-		top: 80px;
+		top: 112px;
+		padding: 16px 0;
 		z-index: 100000;
+		background: var(--vp-c-bg);
+
+		h2 {
+			margin-top: 0;
+		}
 
 		header {
 			display: flex;
@@ -154,9 +159,8 @@ section {
 			background: var(--vp-code-block-bg);
 			border-radius: 8px;
 			display: flex;
-			justify-content: center;
-			overflow-x: visible;
-			overflow-y: visible;
+			overflow-y: auto;
+			overflow-x: auto;
 
 			.variation-container {
 				flex: 1;

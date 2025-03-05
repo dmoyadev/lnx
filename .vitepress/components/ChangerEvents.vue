@@ -5,6 +5,7 @@ defineProps<{
 	events: Record<string, ComponentEvent>;
 	emitted: EmittedEvent[];
 }>();
+defineModel<string>('showcasedProp', { default: '' });
 </script>
 
 <template>

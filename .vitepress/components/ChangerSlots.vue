@@ -2,6 +2,7 @@
 import { ComponentSlot } from './types';
 
 defineProps<{ slots: Record<string, ComponentSlot> }>();
+defineModel<string>('showcasedProp', { default: '' });
 </script>
 
 <template>
