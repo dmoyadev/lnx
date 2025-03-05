@@ -20,7 +20,7 @@ function getColoredText(text: string, type: 'tag' | 'prop' | 'value' | 'comment'
 	}
 }
 
-function createPropLine(prop, colon, propName, propValue) {
+function createPropLine(prop: ComponentProp, colon: string, propName: string, propValue: string): string | undefined {
 	try {
 		if(prop.value === true) {
 			return propName;
@@ -52,7 +52,10 @@ function getPropsLines(
 			continue;
 		}
 
-		propLines.push(createPropLine(prop, colon, propName, propValue));
+		const propLine = createPropLine(prop, colon, propName, propValue);
+		if (propLine) {
+			propLines.push(propLine);
+		}
 	}
 
 	return propLines.length ? propLines : undefined;
@@ -112,7 +115,7 @@ export function getDemoCode(params: DemoCodeParams) {
 
 	const propsLines = getPropsLines(params.props || {}, params.checkDefault);
 	if(!!propsLines) {
-		if(propsLines.length > 1 || hasScopedDefaultSlot || listenerLines.length > 1) {
+		if(propsLines.length > 1 || hasScopedDefaultSlot || (listenerLines?.length || 0) > 1) {
 			code += `${NEWLINE}${TAB}${propsLines.join(`${NEWLINE}${TAB}`)}${NEWLINE}`;
 		} else {
 			code += ` ${propsLines}`;
@@ -165,7 +168,7 @@ interface ResetComponentParams {
 export function resetComponent({ props, options, slots, evalDefaultValue }: ResetComponentParams){
 	for(const prop of Object.values({
 		...props,
-		...options, 
+		...options,
 	})) {
 		try {
 			if (prop.defaultValue) {
