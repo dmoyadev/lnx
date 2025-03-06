@@ -3,13 +3,15 @@ import { markRaw, ref, watch } from 'vue';
 import ChangerProps from './ChangerProps.vue';
 import ChangerSlots from './ChangerSlots.vue';
 import ChangerEvents from './ChangerEvents.vue';
-import { ComponentEvent, ComponentProp, ComponentSlot, EmittedEvent } from './types';
+import ChangerCSSVars from './ChangerCSSVars.vue';
+import { ComponentCSSVars, ComponentEvent, ComponentProp, ComponentSlot, EmittedEvent } from './types';
 
 const props = defineModel<Record<string, ComponentProp>>('props');
 const options = defineModel<Record<string, ComponentProp>>('options');
 const slots = defineModel<Record<string, ComponentSlot>>('slots');
 const events = defineModel<Record<string, ComponentEvent>>('events');
 const emitted = defineModel<EmittedEvent[]>('emitted');
+const cssVars = defineModel<Record<string, ComponentCSSVars>>('cssVars');
 const showcasedProp = defineModel<string>('showcasedProp', { default: '' });
 
 interface Tab {
@@ -49,20 +51,26 @@ const Tabs: Record<string, Tab> = {
 		},
 		tabComponent: markRaw(ChangerEvents),
 	},
+	cssVars: {
+		name: 'CSS variables',
+		show: !!Object.values(cssVars.value || {}).length,
+		items: { cssVars: cssVars.value },
+		tabComponent: markRaw(ChangerCSSVars),
+	},
 } as const;
 
-const tab = ref<typeof Tabs[keyof typeof Tabs]>(Tabs.props);
+const selectedTab = ref<typeof Tabs[keyof typeof Tabs]>(Tabs.props);
 
 const showEmittedNotification = ref(false);
 const debouncer = ref<NodeJS.Timeout>();
 watch(emitted, () => {
 	showEmittedNotification.value = true;
-	if(tab.value.name === 'Events') {
+	if(selectedTab.value.name === 'Events') {
 		clearTimeout(debouncer.value);
 		debouncer.value = setTimeout(() => showEmittedNotification.value = false, 1500);
 	}
 }, { deep: true });
-watch(tab, (newTab) => {
+watch(selectedTab, (newTab) => {
 	if(newTab.name === 'Events') {
 		showEmittedNotification.value = false;
 	}
@@ -73,13 +81,16 @@ watch(tab, (newTab) => {
 	<div class="vp-code-group vp-adaptive-theme">
 		<div class="tabs">
 			<template
-				v-for="t in Tabs"
-				:key="t.name"
+				v-for="(tab, tabCode) in Tabs"
+				:key="tab.name"
 			>
-				<label v-if="t.show">
+				<label
+					v-if="tab.show"
+					:class="{ 'right': tabCode === 'cssVars' }"
+				>
 					<Transition name="bubble-up">
 						<span
-							v-if="t.name === 'Events' && showEmittedNotification"
+							v-if="tabCode === 'events' && showEmittedNotification"
 							class="notification"
 						>
 							!
@@ -87,12 +98,12 @@ watch(tab, (newTab) => {
 					</Transition>
 
 					<input
-						v-model="tab"
+						v-model="selectedTab"
 						type="radio"
 						name="tab"
-						:value="t"
+						:value="tab"
 					>
-					{{ t.name }}
+					{{ tab.name }}
 				</label>
 			</template>
 		</div>
@@ -101,9 +112,9 @@ watch(tab, (newTab) => {
 			<div class="language-all vp-adaptive-theme active">
 				<KeepAlive>
 					<Component
-						:is="tab.tabComponent"
+						:is="selectedTab.tabComponent"
 						v-model:showcased-prop="showcasedProp"
-						v-bind="tab.items"
+						v-bind="selectedTab.items"
 					/>
 				</KeepAlive>
 			</div>
@@ -127,6 +138,10 @@ watch(tab, (newTab) => {
 
 label {
 	position: relative;
+
+	&.right {
+		margin-left: auto;
+	}
 }
 
 .notification {

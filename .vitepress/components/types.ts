@@ -49,3 +49,9 @@ export interface EmittedEvent {
 	timestamp: Date;
 	data: unknown;
 }
+
+export interface ComponentCSSVars {
+	description?: string;
+	value: string;
+	helper?: string;
+}

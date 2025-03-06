@@ -1,5 +1,10 @@
 import { computed, ref } from 'vue';
-import { ComponentEvent, ComponentProp, ComponentSlot } from '../../../../.vitepress/components/types';
+import {
+	ComponentCSSVars,
+	ComponentEvent,
+	ComponentProp,
+	ComponentSlot,
+} from '../../../../.vitepress/components/types';
 import { useProps } from '../../../../.vitepress/components/useProps';
 import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
 import { ButtonModes, ButtonShapes, ButtonSizes, ButtonVariants } from './types';
@@ -67,7 +72,6 @@ export function useComponent() {
 			value: false,
 		},
 	});
-	const { props } = useProps(componentProps);
 
 	const componentOptions = ref<Record<string, ComponentProp>>({
 		'Make it disabled': {
@@ -119,6 +123,26 @@ export function useComponent() {
 		},
 	});
 
+	const componentCSSVars = ref<Record<string, ComponentCSSVars>>({
+		'--lnx-button-content-gap': {
+			description: 'Separation between elements inside the button',
+			value: '', 
+		},
+		'--lnx-button-border': { value: '' },
+		'--lnx-button-border-color': { value: '' },
+		'--lnx-button-border-radius': { value: '' },
+		'--lnx-button-box-shadow': { value: '' },
+		'--lnx-button-background': { value: '' },
+		'--lnx-button-color': {
+			description: 'Text color',
+			value: '', 
+		},
+		'--lnx-button-padding': { value: '' },
+		'--lnx-button-size': { value: '' },
+	});
+
+	const { props } = useProps(componentProps, componentCSSVars);
+
 	const configurableOptions = computed<Record<string, ComponentProp>>(() => {
 		return Object.values(componentOptions.value).reduce((acc, option) => {
 			if(!option.configurableOptionName) {
@@ -158,6 +182,7 @@ export function useComponent() {
 		componentOptions,
 		componentEvents,
 		componentSlots,
+		componentCSSVars,
 		configurableOptions,
 		demoCode,
 		reset,
