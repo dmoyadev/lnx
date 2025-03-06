@@ -211,7 +211,7 @@ div {
 
 			&:has(.icon) {
 				input {
-					padding-right: 28px;
+					padding-right: 36px;
 				}
 			}
 

@@ -58,7 +58,6 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 						{{ prop.type.name }}
 					</a>
 				</code>
-
 			</span>
 
 			<span

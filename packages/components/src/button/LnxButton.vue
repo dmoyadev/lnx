@@ -125,6 +125,14 @@ button,
 a,
 router-link {
 	--lnx-button-content-gap: 8px;
+	--lnx-button-border: 1px solid;
+	--lnx-button-border-color: var(--lnx-color-gray-3);
+	--lnx-button-border-radius: var(--lnx-radius-2);
+	--lnx-button–box-shadow: var(--lnx-elevation-2);
+	--lnx-button-background: var(--lnx-color-gray-0);
+	--lnx-button-color: var(--lnx-color-gray-8);
+	--lnx-button-padding: var(--lnx-spacing-1) var(--lnx-spacing-3);
+	--lnx-button-size: 40px;
 
 	position: relative; /* Required for the ripple effect */
 	overflow: hidden; /* Required for the ripple effect */
@@ -134,56 +142,92 @@ router-link {
 	justify-content: center;
 	gap: var(--lnx-button-content-gap);
 	text-align: center;
-	border: 1px solid;
-	border-radius: var(--lnx-radius-2);
+	border: var(--lnx-button-border);
+	border-radius: var(--lnx-button-border-radius);
+
+	background: var(--lnx-button-background);
+	color: var(--lnx-button-color);
+	border-color: var(--lnx-button-border-color);
+
+	min-height: var(--lnx-button-size);
+	padding: var(--lnx-button-padding);
 
 	&:hover:not(.is-disabled):not(.button-mode-clear, .button-mode-link) {
-		box-shadow: var(--lnx-elevation-1);
+		box-shadow: var(--lnx-button–box-shadow);
 	}
 
 	&.button-variant- {
 		&primary {
-			background: var(--lnx-color-primary);
-			color: var(--lnx-color-primary-accent);
-			border-color: var(--lnx-color-primary);
+			--lnx-button-background: var(--lnx-color-primary);
+			--lnx-button-color: var(--lnx-color-primary-accent);
+			--lnx-button-border-color: var(--lnx-color-primary);
 		}
 
 		&grayscale {
-			background: var(--lnx-color-gray-0);
-			color: var(--lnx-color-gray-8);
-			border-color: var(--lnx-color-gray-6);
+			--lnx-button-background: var(--lnx-color-gray-0);
+			--lnx-button-color: var(--lnx-color-gray-6);
+			--lnx-button-border-color: var(--lnx-color-gray-3);
 		}
 
 		&danger {
-			background: var(--lnx-color-danger);
-			color: var(--lnx-color-danger-accent);
-			border-color: var(--lnx-color-danger);
+			--lnx-button-background: var(--lnx-color-danger);
+			--lnx-button-color: var(--lnx-color-danger-accent);
+			--lnx-button-border-color: var(--lnx-color-danger);
+		}
+
+		&warning {
+			--lnx-button-background: var(--lnx-color-warning);
+			--lnx-button-color: var(--lnx-color-warning-accent);
+			--lnx-button-border-color: var(--lnx-color-warning);
+		}
+
+		&success {
+			--lnx-button-background: var(--lnx-color-success);
+			--lnx-button-color: var(--lnx-color-success-accent);
+			--lnx-button-border-color: var(--lnx-color-success);
+		}
+
+		&info {
+			--lnx-button-background: var(--lnx-color-info);
+			--lnx-button-color: var(--lnx-color-info-accent);
+			--lnx-button-border-color: var(--lnx-color-info);
 		}
 	}
 
 	&.button-mode- {
 		&outline {
-			border: 1px solid;
-			background: none;
+			--lnx-button-background: none;
 
 			&.button-variant- {
 				&primary {
-					color: var(--lnx-color-primary);
+					--lnx-button-color: var(--lnx-color-primary);
 				}
 
 				&grayscale {
-					color: var(--lnx-color-gray-8);
+					--lnx-button-color: var(--lnx-color-gray-8);
 				}
 
 				&danger {
-					color: var(--lnx-color-danger);
+					--lnx-button-color: var(--lnx-color-danger);
+				}
+
+				&warning {
+					--lnx-button-color: var(--lnx-color-warning);
+				}
+
+				&success {
+					--lnx-button-color: var(--lnx-color-success);
+				}
+
+				&info {
+					--lnx-button-color: var(--lnx-color-info);
 				}
 			}
 		}
 
 		&clear {
-			border-color: transparent;
-			background: none;
+			--lnx-button-border-color: transparent;
+			--lnx-button-background: none;
 
 			&:hover:not(.is-disabled) {
 				opacity: .8;
@@ -191,22 +235,34 @@ router-link {
 
 			&.button-variant- {
 				&primary {
-					color: var(--lnx-color-primary);
+					--lnx-button-color: var(--lnx-color-primary);
 				}
 
 				&grayscale {
-					color: var(--lnx-color-gray-8);
+					--lnx-button-color: var(--lnx-color-gray-8);
 				}
 
 				&danger {
-					color: var(--lnx-color-danger);
+					--lnx-button-color: var(--lnx-color-danger);
+				}
+
+				&warning {
+					--lnx-button-color: var(--lnx-color-warning);
+				}
+
+				&success {
+					--lnx-button-color: var(--lnx-color-success);
+				}
+
+				&info {
+					--lnx-button-color: var(--lnx-color-info);
 				}
 			}
 		}
 
 		&link {
-			border-color: transparent;
-			background: none;
+			--lnx-button-border-color: transparent;
+			--lnx-button-background: none;
 
 			&:hover:not(.is-disabled) {
 				text-decoration: underline;
@@ -214,15 +270,27 @@ router-link {
 
 			&.button-variant- {
 				&primary {
-					color: var(--lnx-color-primary);
+					--lnx-button-color: var(--lnx-color-primary);
 				}
 
 				&grayscale {
-					color: var(--lnx-color-gray-8);
+					--lnx-button-color: var(--lnx-color-gray-8);
 				}
 
 				&danger {
-					color: var(--lnx-color-danger);
+					--lnx-button-color: var(--lnx-color-danger);
+				}
+
+				&warning {
+					--lnx-button-color: var(--lnx-color-warning);
+				}
+
+				&success {
+					--lnx-button-color: var(--lnx-color-success);
+				}
+
+				&info {
+					--lnx-button-color: var(--lnx-color-info);
 				}
 			}
 		}
@@ -231,31 +299,33 @@ router-link {
 	&.button-size- {
 		&small {
 			--lnx-button-size: 26px;
-			min-height: var(--lnx-button-size);
-			padding: var(--lnx-spacing-0) var(--lnx-spacing-2);
+			--lnx-button-padding: var(--lnx-spacing-0) var(--lnx-spacing-2);
 			font-size: var(--lnx-font-size-small);
 		}
 
 		&medium {
 			--lnx-button-size: 40px;
-			min-height: var(--lnx-button-size);
-			padding: var(--lnx-spacing-1) var(--lnx-spacing-3);
+			--lnx-button-padding: var(--lnx-spacing-1) var(--lnx-spacing-3);
 		}
 
 		&large {
 			--lnx-button-size: 52px;
-			min-height: var(--lnx-button-size);
-			padding: var(--lnx-spacing-2) var(--lnx-spacing-5);
+			--lnx-button-padding: var(--lnx-spacing-2) var(--lnx-spacing-5);
 		}
 	}
 
 	&.button-shape- {
-		&icon {
-			padding: var(--lnx-spacing-0);
+		&icon,
+		&circle {
+			--lnx-button-padding: var(--lnx-spacing-0);
 			width: var(--lnx-button-size);
 			max-width: var(--lnx-button-size);
 			height: var(--lnx-button-size);
 			max-height: var(--lnx-button-size);
+		}
+
+		&circle {
+			border-radius: 50%;
 		}
 	}
 

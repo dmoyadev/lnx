@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import DemoContainerActions from './DemoContainerActions.vue';
 import ComponentChanger from './ComponentChanger.vue';
 import DemoCode from './DemoCode.vue';
-import { ComponentEvent, ComponentProp, ComponentSlot, EmittedEvent } from './types';
+import { ComponentCSSVars, ComponentEvent, ComponentProp, ComponentSlot, EmittedEvent } from './types';
 
 defineProps<{ demoCode: string }>();
 defineEmits<{ reset: [] }>();
@@ -12,6 +12,7 @@ const props = defineModel<Record<string, ComponentProp>>('props');
 const options = defineModel<Record<string, ComponentProp>>('options');
 const slots = defineModel<Record<string, ComponentSlot>>('slots');
 const events = defineModel<Record<string, ComponentEvent>>('events');
+const cssVars = defineModel<Record<string, ComponentCSSVars>>('cssVars');
 const showcasedProp = defineModel<string>('showcasedProp', { default: '' });
 
 const isDark = ref(true);
@@ -111,6 +112,7 @@ watch(showcasedProp, (newVal) => {
 			:slots
 			:events
 			:emitted
+			:css-vars="cssVars"
 		/>
 	</section>
 </template>
@@ -125,10 +127,20 @@ section {
 		flex-direction: column;
 		position: sticky;
 		gap: 8px;
-		top: 112px;
 		padding: 16px 0;
 		z-index: 100000;
 		background: var(--vp-c-bg);
+		top: 65px;
+
+		@media (max-width: 960px) {
+			top: 48px;
+		}
+
+		@media (max-width: 640px) {
+			width: 100vw;
+			padding: 0 16px;
+			transform: translateX(-25px);
+		}
 
 		h2 {
 			margin-top: 0;

@@ -2,6 +2,9 @@ export const ButtonVariants = {
 	PRIMARY: 'primary',
 	GRAYSCALE: 'grayscale',
 	DANGER: 'danger',
+	SUCCESS: 'success',
+	INFO: 'info',
+	WARNING: 'warning',
 } as const;
 export type TButtonVariant = typeof ButtonVariants[keyof typeof ButtonVariants];
 
@@ -23,5 +26,6 @@ export type TButtonSize = typeof ButtonSizes[keyof typeof ButtonSizes];
 export const ButtonShapes = {
 	NORMAL: 'normal',
 	ICON: 'icon',
+	CIRCLE: 'circle',
 } as const;
 export type TButtonShape = typeof ButtonShapes[keyof typeof ButtonShapes];

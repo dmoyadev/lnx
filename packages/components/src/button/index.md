@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { LnxButton } from '.';
 import { useComponent } from './docs.js';
-import {
-    ButtonVariants,
-	ButtonModes,
-	ButtonSizes,
-	ButtonShapes,
-} from './types.js'; 
 
 const {
     componentProps,
@@ -14,6 +8,7 @@ const {
     componentOptions,
     componentSlots,
     componentEvents,
+    componentCSSVars,
     configurableOptions,
     demoCode,
     reset,
@@ -30,6 +25,7 @@ A button lets the user perform an action with a tap or a click, like starting a 
     v-model:options="componentOptions"
     v-model:slots="componentSlots"
     v-model:events="componentEvents"
+    v-model:css-vars="componentCSSVars"
     :demo-code="demoCode"
     @reset="reset()"
 >
