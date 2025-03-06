@@ -3,6 +3,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.1.11](https://github.com/dmoyadev/lnx/compare/v0.1.10...v0.1.11)
+
+> 📅 Released on: 6 March 2025
+
+### ✨ New things
+
+- ✨ Add CSS variables to allow modification of components [`04249eb`](https://github.com/dmoyadev/lnx/commit/04249eb982f628dc83c3134ae4d34f013bad2411) <small>Daniel Moya</small>
 ### [v0.1.10](https://github.com/dmoyadev/lnx/compare/v0.1.9...v0.1.10)
 
 > 📅 Released on: 5 March 2025
