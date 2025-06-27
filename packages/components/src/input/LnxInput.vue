@@ -10,6 +10,13 @@ const props = defineProps<{
 	customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
 }>();
 
+defineSlots<{
+	default(): unknown; /* The label of the input */
+	helper(): unknown; /* The helper message of the input */
+	error(): unknown; /* The error message of the input */
+	icon(): unknown; /* The icon shown on the right side of the input */
+}>();
+
 const modelValue = defineModel<string | number>();
 
 const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -241,8 +248,12 @@ div {
 				width: 100%;
 				border: 1px solid var(--lnx-color-gray-8);
 				border-radius: 4px;
-				padding: 12px;
+				padding: 12px 8px;
 				font-size: var(--lnx-font-size-body);
+
+				&::placeholder {
+					color: var(--lnx-color-gray-3);
+				}
 
 				&::-webkit-inner-spin-button,
 				&::-webkit-outer-spin-button {
