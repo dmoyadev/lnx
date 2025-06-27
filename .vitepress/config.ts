@@ -80,8 +80,8 @@ export default defineConfig({
 
 		nav: [
 			{
-				text: 'Docs',
-				link: 'docs/know-hows',
+				text: 'Get started',
+				link: 'docs/get-started',
 			},
 
 			{
@@ -117,6 +117,10 @@ export default defineConfig({
 				collapsed: false,
 				base: 'docs/',
 				items: [
+					{
+						text: 'Get started',
+						link: 'get-started',
+					},
 					{
 						text: 'Know-Hows',
 						link: 'know-hows',

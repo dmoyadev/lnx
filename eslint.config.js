@@ -1,7 +1,7 @@
 import pluginVue from 'eslint-plugin-vue';
-import vueTsEslintConfig from '@vue/eslint-config-typescript';
+import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
 
-export default [
+export default defineConfigWithVueTs([
 	{
 		ignores: [
 			'**.d.ts',
@@ -11,12 +11,8 @@ export default [
 	},
 
 	...pluginVue.configs['flat/recommended'],
-	...vueTsEslintConfig({
-		extends: [
-			'recommended',
-			'stylistic',
-		],
-	}),
+	vueTsConfigs.recommended,
+	vueTsConfigs.stylistic,
 
 	{
 		rules: {
@@ -45,4 +41,4 @@ export default [
 			'object-property-newline': 'warn',
 		},
 	},
-];
+]);

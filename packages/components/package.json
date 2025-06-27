@@ -19,7 +19,7 @@
 		"version:sync": "node ../../scripts/sync-versions.js ../.. .",
 		"version": "pnpm version:sync && auto-changelog -p && git add CHANGELOG.md"
 	},
-	"devDependencies": {
+	"dependencies": {
 		"iconify-icon": "^2.3.0"
 	}
 }

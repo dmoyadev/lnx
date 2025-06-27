@@ -8,6 +8,9 @@ hero:
   tagline: My great project tagline
   actions:
     - theme: brand
+      text: Get Started
+      link: /know-hows
+    - theme: alt
       text: Know-Hows
       link: /know-hows
 
