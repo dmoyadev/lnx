@@ -1,6 +1,6 @@
 {
   "name": "lnxjs",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Lynx Library",
   "author": "Daniel Moya",
   "workspaces": [
