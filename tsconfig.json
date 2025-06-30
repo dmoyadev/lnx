@@ -18,6 +18,9 @@
     "docs/**/*.vue",
     "docs/**/*.md",
   ],
+  "exclude": [
+    "scripts/create-component/templates"
+  ],
   "vueCompilerOptions": {
     "vitePressExtensions": [".md"],
   }

@@ -7,6 +7,8 @@ export default defineConfigWithVueTs([
 			'**.d.ts',
 			'**/dist/**/*',
 			'**/node_modules/**/*',
+			'.vitepress/cache/**/*',
+			'scripts/create-component/templates/*',
 		],
 	},
 
