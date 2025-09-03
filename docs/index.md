@@ -8,9 +8,23 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /know-hows
+      link: /get-started
     - theme: alt
       text: Know-Hows
       link: /know-hows
+
+features:
+  - icon: 🔘
+    title: Button
+    link: '/components/button'
+  - icon: 📝
+    title: Input
+    link: '/components/input'
+  - icon: ✨
+    title: Icon
+    link: '/components/icon'
+  - icon: 🔢
+    title: InputOTP
+    link: '/components/input-otp'
 ---
 
