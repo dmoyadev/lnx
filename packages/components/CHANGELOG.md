@@ -3,6 +3,20 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.2.0](https://github.com/dmoyadev/lnx/compare/v0.1.12...v0.2.0)
+
+> 📅 Released on: 3 September 2025
+
+### ✨ New things
+
+- ✨ Add LnxInputOTP component [`7bc14f0`](https://github.com/dmoyadev/lnx/commit/7bc14f09479b8305ca842656ba020df2570788ba) <small>Daniel Moya</small>
+- ✨ Add a script to generate new components [`c5ceea8`](https://github.com/dmoyadev/lnx/commit/c5ceea8e8109911ce802e05de114f72629d0b03c) <small>Daniel Moya</small>
+### 🐛 Fixes
+
+- 🐛 Fix template files for componente creation script [`e0d8a59`](https://github.com/dmoyadev/lnx/commit/e0d8a594f7668b239696f64189bbc852be46c455) <small>Daniel Moya</small>
+### 🏗 Core
+
+- 🏗️️ Bump dependencies [`c2831e2`](https://github.com/dmoyadev/lnx/commit/c2831e29f51b04af134b19d5e89d7a9a126cbfde) <small>Daniel Moya</small>
 ### [v0.1.12](https://github.com/dmoyadev/lnx/compare/v0.1.11...v0.1.12)
 
 > 📅 Released on: 27 June 2025
