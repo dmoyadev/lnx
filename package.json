@@ -1,6 +1,6 @@
 {
   "name": "lnxjs",
-  "version": "0.1.12",
+  "version": "0.2.0",
   "description": "Lynx Library",
   "author": "Daniel Moya",
   "workspaces": [
@@ -27,20 +27,20 @@
     "docs:build": "vitepress build"
   },
   "devDependencies": {
-	  "@types/node": "24.3.0",
-	  "@vitejs/plugin-vue": "6.0.1",
-	  "@vue/eslint-config-typescript": "14.6.0",
+    "@types/node": "24.3.0",
+    "@vitejs/plugin-vue": "6.0.1",
+    "@vue/eslint-config-typescript": "14.6.0",
     "auto-changelog": "^2.5.0",
-	  "eslint": "9.34.0",
-	  "eslint-plugin-vue": "10.4.0",
+    "eslint": "9.34.0",
+    "eslint-plugin-vue": "10.4.0",
     "postcss": "^8.5.6",
-	  "sass": "1.92.0",
-	  "typescript": "5.9.2",
-	  "vite": "7.1.4",
-	  "vitepress": "1.6.4",
-	  "vitepress-plugin-group-icons": "1.6.3",
-	  "vue": "3.5.21",
-	  "vue-tsc": "3.0.6"
+    "sass": "1.92.0",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vitepress": "1.6.4",
+    "vitepress-plugin-group-icons": "1.6.3",
+    "vue": "3.5.21",
+    "vue-tsc": "3.0.6"
   },
   "engines": {
     "node": ">=22.7.0",
