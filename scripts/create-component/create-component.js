@@ -58,7 +58,7 @@ async function createComponentFolder(componentName) {
 
 async function main() {
 	console.log('🛠️  Components generator\n');
-	const componentName = await ask('📦 Component name: ');
+	const componentName = await ask('📦 Component name (e.g. Input, Button, Icon...): ');
 
 	if (typeof componentName === 'string' && !/^[A-Za-z0-9]+$/.test(componentName)) {
 		console.log('❗ Use only letters and numbers, no spaces or symbols.');
@@ -69,7 +69,7 @@ async function main() {
 	try {
 		const dirCreated = await createComponentFolder(componentName);
 		console.log(`✅  Component created in: ${dirCreated}`);
-		console.log('ℹ️  You can now start working on it.');
+		console.log('ℹ️ You can now start working on it.');
 	} catch (err) {
 		console.error(err.message);
 	}

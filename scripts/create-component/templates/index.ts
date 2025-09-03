@@ -3,7 +3,7 @@ import Lnx<<ComponentName>> from './Lnx<<ComponentName>>.vue';
 
 export default {
 	install(app: App) {
-		app.component(Lnx.name!, Lnx);
+		app.component(Lnx<<ComponentName>>.name!, Lnx<<ComponentName>>);
 	},
 } as Plugin;
 
