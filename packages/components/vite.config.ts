@@ -6,8 +6,6 @@ export default defineConfig({
 		vue({ template: { compilerOptions: { isCustomElement: tag => tag === 'iconify-icon' } } }),
 	],
 
-	css: { preprocessorOptions: { scss: { api: 'modern' } } },
-
 	build: {
 		cssCodeSplit: true,
 
