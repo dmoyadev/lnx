@@ -61,6 +61,8 @@ export default defineConfig({
 		'packages/components/:slug*': 'components/:slug*',
 	},
 
+	srcExclude: ['**/scripts/**'],
+
 	markdown: {
 		lineNumbers: true,
 		config(md) {
