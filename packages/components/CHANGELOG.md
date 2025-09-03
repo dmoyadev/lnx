@@ -3,6 +3,10 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.2.1](https://github.com/dmoyadev/lnx/compare/v0.2.0...v0.2.1)
+
+> 📅 Released on: 3 September 2025
+
 ### [v0.2.0](https://github.com/dmoyadev/lnx/compare/v0.1.12...v0.2.0)
 
 > 📅 Released on: 3 September 2025
