@@ -20,7 +20,7 @@ function handleSubmit() {
 
 # Icon
 
-A simple icon component that uses the Iconify library to render icons.
+An input component that allows users to enter and edit text.
 
 <DemoContainer
     v-slot="{ addEmit, variation, showcasedProp}"
@@ -52,8 +52,3 @@ A simple icon component that uses the Iconify library to render icons.
         </LnxInput>
     </form>
 </DemoContainer>
-
-## Types
-```ts
-
-```

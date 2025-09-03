@@ -7,9 +7,11 @@ import {
 	ButtonSizes,
 	LnxInput,
 } from 'lnxjs-components/src';
+import { LnxInputOTP } from 'lnxjs-components/src/input-otp';
 
-const show = ref('');
+const show = ref('input-otp');
 const inputModel = ref('');
+const inputOTPModel = ref<string>('');
 
 const booleanVariants = [true, false];
 
@@ -38,6 +40,13 @@ function toggleDarkMode() {
 		@click="show === 'input' ? show = '' : show = 'input'"
 	>
 		LnxInput
+	</LnxButton>
+
+	<LnxButton
+		class="btn-toggle"
+		@click="show === 'input-otp' ? show = '' : show = 'input-otp'"
+	>
+		LnxInputOTP
 	</LnxButton>
 
 	<template v-if="show === 'button'">
@@ -116,6 +125,32 @@ function toggleDarkMode() {
 						</LnxInput>
 					</div>
 				</div>
+			</div>
+		</form>
+	</template>
+
+	<template v-if="show === 'input-otp'">
+		<form>
+			<div
+				v-for="hasError in booleanVariants"
+				:key="String(hasError)"
+				class="variant-container"
+			>
+				<span class="variant">{{ !hasError ? 'Has Error' : 'No error' }}</span>
+				<LnxInputOTP
+					v-model="inputOTPModel"
+					:has-error="!hasError"
+				>
+					Introduce the code
+
+					<template #helper>
+						This is a helper
+					</template>
+
+					<template #error>
+						This is an error
+					</template>
+				</LnxInputOTP>
 			</div>
 		</form>
 	</template>

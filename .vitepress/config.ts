@@ -25,10 +25,17 @@ async function getDocFiles(docsPath: string, excludedFolders: string[] = []): Pr
 					.replace(/\/index$/, '')
 					.replace(/\/$/, '');
 				const fileText = fileLink.split('/').pop() ?? '';
-				const capitalizedFileText = fileText.charAt(0).toUpperCase() + fileText.slice(1);
+
+				/* PascalCase the text */
+				const pascalCaseFileText = fileText
+					.split('-')
+					.map(part => part.charAt(0).toUpperCase() + part.slice(1))
+					.join('');
+				/* If the text contains uppercase letters, use it as is, otherwise use the pascalCase version */
+				const finalFileText = /[A-Z]/.test(fileText) ? fileText : pascalCaseFileText;
 
 				docs.push({
-					text: capitalizedFileText,
+					text: finalFileText,
 					link: fileLink,
 				});
 			}
