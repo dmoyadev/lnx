@@ -51,8 +51,8 @@ export function useComponent() {
 		},
 		icon: {
 			description: 'Shown next to the title of the modal',
-			value: '<LnxIcon name="mdi:warning" size="24" style="color: var(--lnx-color-danger)" />',
-			initialValue: '<LnxIcon name="mdi:warning" size="24" style="color: var(--lnx-color-danger)" />',
+			value: '<LnxIcon icon="mdi:warning" size="24" style="color: var(--lnx-color-danger)" />',
+			initialValue: '<LnxIcon icon="mdi:warning" size="24" style="color: var(--lnx-color-danger)" />',
 			readonly: true,
 		},
 		content: {

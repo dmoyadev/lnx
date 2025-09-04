@@ -3,6 +3,17 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.3.0](https://github.com/dmoyadev/lnx/compare/v0.2.1...v0.3.0)
+
+> 📅 Released on: 4 September 2025
+
+### ✨ New things
+
+- ✨ Add LnxModal component [`4cebb89`](https://github.com/dmoyadev/lnx/commit/4cebb89bd8f418d1bdc2da2454ab95b73f15fb4a) <small>Daniel Moya</small>
+- 🎨 Allow dynamic text and backgrounds color changes on dark mode [`c049401`](https://github.com/dmoyadev/lnx/commit/c049401bbf480ec282a5ad4fd1725017fbbda07c) <small>Daniel Moya</small>
+### 🏗 Core
+
+- 📖 Fix demo container code when default slot has scope and there exist also named slots [`603815a`](https://github.com/dmoyadev/lnx/commit/603815a24ec4f2ea17a5c43c3386e38fc6e47fe2) <small>Daniel Moya</small>
 ### [v0.2.1](https://github.com/dmoyadev/lnx/compare/v0.2.0...v0.2.1)
 
 > 📅 Released on: 3 September 2025
