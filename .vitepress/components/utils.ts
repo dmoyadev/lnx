@@ -43,10 +43,13 @@ function getPropsLines(
 	const propLines: string[] = [];
 	for(const name of Object.keys(props)) {
 		const prop = props[name];
-		const colon = (showPropsColon && typeof prop.value !== 'string') ? ':' : '';
+		const propValueIsString = typeof prop.value === 'string';
+		const colon = (showPropsColon && propValueIsString) ? ':' : '';
 		const propName = getColoredText(toDashCase(name), 'prop');
-		const propStringifiedValue = (colon || !showPropsColon) ? JSON.stringify(prop.value) : prop.value;
-		const propValue = getColoredText(`"${propStringifiedValue}"`, 'value');
+		const propStringifiedValue = (colon || !showPropsColon || propValueIsString) ? JSON.stringify(prop.value) : prop.value;
+		const propValue = propValueIsString
+			? getColoredText(`${propStringifiedValue}`, 'value')
+			: getColoredText(`"${propStringifiedValue}"`, 'value');
 
 		if (!checkDefaultValue(prop.defaultValue, prop.value)) {
 			continue;
@@ -75,10 +78,11 @@ function getListenersLines(events: Record<string, ComponentEvent>): string[] | u
 
 function getSlotsLines(slots: Record<string, ComponentSlot>): string[] | undefined {
 	const slotLines: string[] = [];
+	const slotValues = Object.values(slots).map((slot) => slot.value).filter((value) => !!value);
 	for (const name of Object.keys(slots)) {
 		const slot = slots[name];
 
-		if (name === 'default' && !!slot.value) {
+		if (name === 'default' && !!slot.value && slotValues.length === 1) {
 			slotLines.push(`${slot.value}`);
 			continue;
 		}
@@ -93,11 +97,18 @@ function getSlotsLines(slots: Record<string, ComponentSlot>): string[] | undefin
 				slotScope += ' }"';
 			}
 			const slotValue = `${NEWLINE}${TAB}${TAB}${slot.value}${NEWLINE}${TAB}`;
-			slotLines.push(`&lt;${tagName} #${slotName}${slotScope}&gt;${slotValue}&lt;/${tagName}&gt;`);
+			slotLines.push(`&lt;${tagName} #${slotName}${slotScope}&gt;${slotValue}&lt;/${tagName}&gt;${NEWLINE}`);
 		}
 	}
 
-	return slotLines.length ? slotLines : undefined;
+	if(slotLines.length) {
+		const lastSlotLine = slotLines[slotLines.length - 1];
+		if(lastSlotLine[lastSlotLine.length - 1] !== '>') {
+			// Delete the last newline
+			slotLines[slotLines.length - 1] = lastSlotLine.slice(0, lastSlotLine.length - NEWLINE.length);
+		}
+		return slotLines;
+	}
 }
 
 interface DemoCodeParams {
@@ -122,12 +133,13 @@ export function getDemoCode(params: DemoCodeParams) {
 		}
 	}
 
+	const slotLines = getSlotsLines(params.slots || {});
 	let slotScopeLine: string[] | undefined = undefined;
-	if(hasScopedDefaultSlot) {
+	if(hasScopedDefaultSlot && slotLines?.length === 1) {
 		const vSlot: ComponentProp = {
 			type: 'object',
 			controlType: 'input',
-			value: params.slots!.default.scopes!.map((scope) => scope.name),
+			value: `{ ${params.slots!.default.scopes!.map((scope) => scope.name).join(', ')} }`,
 		};
 		slotScopeLine = getPropsLines({ 'v-slot': vSlot }, () => true, false);
 		if(!propsLines) {
@@ -144,7 +156,6 @@ export function getDemoCode(params: DemoCodeParams) {
 		code += `${TAB}${listenerLines.join(`${NEWLINE}${TAB}`)}${NEWLINE}`;
 	}
 
-	const slotLines = getSlotsLines(params.slots || {});
 	if(!!slotLines) {
 		code += '&gt;';
 		code += `${NEWLINE}${TAB}${slotLines.join(`${NEWLINE}${TAB}`)}`;

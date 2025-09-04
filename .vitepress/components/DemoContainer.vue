@@ -16,7 +16,7 @@ const cssVars = defineModel<Record<string, ComponentCSSVars>>('cssVars');
 const showcasedProp = defineModel<string>('showcasedProp', { default: '' });
 
 const isDark = ref(true);
-const showCode = ref(false);
+const showCode = ref(true);
 const emitted = ref<EmittedEvent[]>([]);
 
 function addEmittedEvent(name: string, data: unknown) {
