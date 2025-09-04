@@ -82,8 +82,9 @@ function getSlotsLines(slots: Record<string, ComponentSlot>): string[] | undefin
 	for (const name of Object.keys(slots)) {
 		const slot = slots[name];
 
-		if (name === 'default' && !!slot.value && slotValues.length === 1) {
-			slotLines.push(`${slot.value}`);
+		if (name === 'default' && !!slot.value && (slotValues.length === 1 || !slot.scopes?.length)) {
+			// If there's only a default slot with no scopes, just return its value
+			slotLines.push(`${slot.value}${NEWLINE}`);
 			continue;
 		}
 
