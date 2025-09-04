@@ -238,7 +238,7 @@ div {
 			input {
 				height: 32px;
 				width: 100%;
-				border: 1px solid var(--lnx-color-gray-8);
+				border: 1px solid var(--lnx-color-gray-5);
 				border-radius: 4px;
 				padding: 12px 8px;
 				font-size: var(--lnx-font-size-body);

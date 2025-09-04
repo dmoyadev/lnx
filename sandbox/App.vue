@@ -157,16 +157,9 @@ function toggleDarkMode() {
 </template>
 
 <style scoped>
-:global(:root) {
-	--variant-background: #fff;
-	--variant-border: #1b1b1f20;
-}
-
 :global(html.dark) {
-	--variant-background: #1b1b1f;
-	--variant-border: #fff2;
-	background-color: #1b1b1f;
-	color: #fff;
+	background-color: var(--lnx-color-bg);
+	color: var(--lnx-color-text);
 }
 
 :global(body) {
@@ -178,9 +171,9 @@ function toggleDarkMode() {
 }
 
 .variant-container {
-	margin: 8px 0;
-	padding: 8px 4px 4px;
-	border: 1px solid var(--variant-border);
+	margin: 12px 0;
+	padding: 12px 4px 4px;
+	border: 1px solid var(--lnx-color-text);
 	display: flex;
 	align-items: flex-start;
 	flex-wrap: wrap;
@@ -189,7 +182,7 @@ function toggleDarkMode() {
 
 	.variant {
 		padding: 2px 4px;
-		background: var(--variant-background);
+		background: var(--lnx-color-bg);
 		position: absolute;
 		left: 4px;
 		top: -10px;

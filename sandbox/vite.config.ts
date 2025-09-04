@@ -4,7 +4,7 @@ import vueDevTools from 'vite-plugin-vue-devtools';
 
 export default defineConfig({
 	plugins: [
-		vue(),
+		vue({ template: { compilerOptions: { isCustomElement: tag => tag === 'iconify-icon' } } }),
 		vueDevTools(),
 	],
 });
