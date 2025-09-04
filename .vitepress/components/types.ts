@@ -29,6 +29,7 @@ export type ComponentProp = SelectComponentProp | SwitchComponentProp | InputCom
 
 export interface ComponentSlot {
 	description: string;
+	readonly?: boolean;
 	value?: string;
 	initialValue?: string;
 	defaultValue?: string;

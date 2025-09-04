@@ -70,10 +70,7 @@ export default defineConfig({
 		},
 	},
 
-	vite: {
-		plugins: [groupIconVitePlugin()],
-		css: { preprocessorOptions: { scss: { api: 'modern' } } },
-	},
+	vite: { plugins: [groupIconVitePlugin()] },
 
 	vue: { template: { compilerOptions: { isCustomElement: tag => tag === 'iconify-icon' } } },
 
