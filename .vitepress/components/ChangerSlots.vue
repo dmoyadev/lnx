@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ComponentSlot } from './types';
+import { LnxIcon } from '../../packages/components/src';
 
 defineProps<{ slots: Record<string, ComponentSlot> }>();
 defineModel<string>('showcasedProp', { default: '' });
@@ -39,9 +40,22 @@ defineModel<string>('showcasedProp', { default: '' });
 			class="slot-value"
 		>
 			<textarea
+				:readonly="slot.readonly"
 				:value="slot.value"
 				@input="slot.value = ($event.target as HTMLTextAreaElement).value"
 			/>
+
+			<span
+				v-if="slot.readonly"
+				class="helper"
+			>
+				<LnxIcon
+					icon="mdi:information"
+					:size="14"
+					style="margin-bottom: -3px"
+				/>
+				Can't be directly edited here.
+			</span>
 		</div>
 	</div>
 </template>
@@ -100,6 +114,9 @@ defineModel<string>('showcasedProp', { default: '' });
 
 	.slot-value {
 		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
 
 		textarea {
 			padding: 4px 8px;
@@ -108,9 +125,22 @@ defineModel<string>('showcasedProp', { default: '' });
 			min-width: 250px;
 			min-height: 70px;
 
+			&:read-only {
+				opacity: .5;
+			}
+
 			&:focus {
 				outline: 4px auto -webkit-focus-ring-color;
 			}
+		}
+
+		.helper {
+			color: var(--vp-c-text-2);
+			font-size: var(--lnx-font-size-legal);
+			width: 200px;
+			max-width: 250px;
+			align-self: flex-end;
+			text-align: right;
 		}
 	}
 }

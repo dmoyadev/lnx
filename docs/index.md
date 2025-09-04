@@ -26,5 +26,8 @@ features:
   - icon: 🔢
     title: InputOTP
     link: '/components/input-otp'
+  - icon: 💬
+    title: Modal
+    link: '/components/modal'
 ---
 

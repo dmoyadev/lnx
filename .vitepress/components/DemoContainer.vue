@@ -19,12 +19,12 @@ const isDark = ref(true);
 const showCode = ref(true);
 const emitted = ref<EmittedEvent[]>([]);
 
-function addEmittedEvent(name: string, data: unknown) {
+function addEmittedEvent(name: string, data?: unknown) {
 	// The timestamp property should include the current hours and minutes
 	emitted.value.push({
 		name,
 		timestamp: new Date(),
-		data: JSON.stringify(data).replaceAll('\\"', '"').trimStart(),
+		data: JSON.stringify(data)?.replaceAll('\\"', '"').trimStart(),
 	});
 }
 
