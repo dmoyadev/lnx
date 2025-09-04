@@ -124,13 +124,13 @@ function createRippleEffect(event: MouseEvent) {
 button,
 a,
 router-link {
-	--lnx-button-content-gap: 8px;
+	--lnx-button-content-gap: 8px; /* Separation between elements inside the button */
 	--lnx-button-border: 1px solid;
 	--lnx-button-border-color: var(--lnx-color-gray-3);
 	--lnx-button-border-radius: var(--lnx-radius-2);
 	--lnx-button–box-shadow: var(--lnx-elevation-2);
-	--lnx-button-background: var(--lnx-color-gray-0);
-	--lnx-button-color: var(--lnx-color-gray-8);
+	--lnx-button-background: var(--lnx-color-bg);
+	--lnx-button-color: var(--lnx-color-text); /* Text color */
 	--lnx-button-padding: var(--lnx-spacing-1) var(--lnx-spacing-3);
 	--lnx-button-size: 40px;
 
@@ -164,8 +164,6 @@ router-link {
 		}
 
 		&grayscale {
-			--lnx-button-background: var(--lnx-color-gray-0);
-			--lnx-button-color: var(--lnx-color-gray-6);
 			--lnx-button-border-color: var(--lnx-color-gray-3);
 		}
 
@@ -203,10 +201,6 @@ router-link {
 					--lnx-button-color: var(--lnx-color-primary);
 				}
 
-				&grayscale {
-					--lnx-button-color: var(--lnx-color-gray-8);
-				}
-
 				&danger {
 					--lnx-button-color: var(--lnx-color-danger);
 				}
@@ -238,10 +232,6 @@ router-link {
 					--lnx-button-color: var(--lnx-color-primary);
 				}
 
-				&grayscale {
-					--lnx-button-color: var(--lnx-color-gray-8);
-				}
-
 				&danger {
 					--lnx-button-color: var(--lnx-color-danger);
 				}
@@ -271,10 +261,6 @@ router-link {
 			&.button-variant- {
 				&primary {
 					--lnx-button-color: var(--lnx-color-primary);
-				}
-
-				&grayscale {
-					--lnx-button-color: var(--lnx-color-gray-8);
 				}
 
 				&danger {
