@@ -31,7 +31,7 @@ export function useComponent() {
 			value: false,
 		},
 		length: {
-			description: 'Number of digits of the input',
+			description: 'Number of characters of the input',
 			controlType: 'number',
 			type: 'number',
 			defaultValue: 6,

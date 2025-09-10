@@ -5,7 +5,7 @@ const modelValue = defineModel<string>();
 
 const props = withDefaults(defineProps<{
 	hasError?: boolean; /* Indicates if it should show the error slot */
-	length?: number; /* Number of digits of the input */
+	length?: number; /* Number of characters of the input */
 	isLoading?: boolean; /* When loading, it is disabled and shows a different content */
 }>(), { length: 6 });
 
@@ -30,12 +30,10 @@ function _setDigit(index: number, value: string) {
 function handleInput(event: Event, index: number) {
 	const value = (event as InputEvent).data;
 
-	if (!!value && /^[0-9]$/.test(value)) {
-		_setDigit(index - 1, value);
+	_setDigit(index - 1, value || '');
 
-		if (index < props.length) {
-			$inputs.value![index].focus();
-		}
+	if (index < props.length) {
+		$inputs.value![index].focus();
 	}
 }
 
@@ -61,14 +59,14 @@ function handlePaste(event: ClipboardEvent) {
 	const pastedData = event.clipboardData?.getData('text/plain');
 	if(!pastedData) { return; }
 
-	const digits = pastedData.replace(/\D/g, '').slice(0, props.length).split('');
-	digits.forEach((digit, index) => {
-		_setDigit(index, digit);
+	const characters = pastedData.slice(0, props.length).split('');
+	characters.forEach((character, index) => {
+		_setDigit(index, character);
 	});
 
 	// Focus the next empty input
-	if (digits.length <= props.length) {
-		$inputs.value![digits.length].focus();
+	if (characters.length <= props.length) {
+		$inputs.value![characters.length].focus();
 	}
 }
 
@@ -79,9 +77,9 @@ function handleArrow(newFocusedIndex: number) {
 onMounted(() => {
 	// Initialize the inputs with the modelValue if it exists
 	if (!modelValue.value) { return; }
-	const digits = modelValue.value.toString().slice(0, props.length).split('');
-	digits.forEach((digit, index) => {
-		_setDigit(index, digit);
+	const characters = modelValue.value.toString().slice(0, props.length).split('');
+	characters.forEach((character, index) => {
+		_setDigit(index, character);
 	});
 });
 </script>
@@ -99,13 +97,13 @@ onMounted(() => {
 		<label
 			v-if="!!$slots.default"
 			class="label"
-			:for="`otp-digit-1-${_componentUID}`"
+			:for="`otp-character-1-${_componentUID}`"
 		>
 			<!-- @slot Label of the input -->
 			<slot />
 		</label>
 
-		<div class="digits">
+		<div class="characters">
 			<!-- Hidden input for accessibility and autofill -->
 			<input
 				:id="`otp-${_componentUID}`"
@@ -118,19 +116,17 @@ onMounted(() => {
 
 			<input
 				v-for="index in props.length"
-				:id="`otp-digit-${index}-${_componentUID}`"
+				:id="`otp-character-${index}-${_componentUID}`"
 				:key="index"
 				ref="$inputs"
 				:value="modelValue?.toString()[index - 1] || ''"
-				type="number"
-				inputmode="numeric"
 				:autofocus="index === 1"
 				step="1"
 				min="0"
 				max="9"
 				required
 				:disabled="isDisabled"
-				:aria-label="`OTP digit ${index}`"
+				:aria-label="`OTP character ${index}`"
 				@input="handleInput($event, index)"
 				@keydown.delete="handleDelete(index)"
 				@keydown.left.prevent="handleArrow(index - 1)"
@@ -191,7 +187,7 @@ onMounted(() => {
 		font-size: var(--lnx-font-size-small);
 	}
 
-	.digits {
+	.characters {
 		display: flex;
 		gap: var(--lnx-spacing-2);
 
