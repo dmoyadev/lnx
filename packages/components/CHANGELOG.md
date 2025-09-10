@@ -3,6 +3,58 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.3.1](https://github.com/dmoyadev/lnx/compare/v0.3.2...v0.3.1)
+
+> 📅 Released on: 10 September 2025
+
+### ✨ New things
+
+- 🎨 [`[LnxInputOTP]`](https://lnx.dmoya.dev/components/LnxInputOTP) Fix center of helper and error text [`e55b167`](https://github.com/dmoyadev/lnx/commit/e55b167c86edb3eaff4000f6e4918307da5793ac) <small>Daniel Moya</small>
+- ✨ Add LnxModal component [`4cebb89`](https://github.com/dmoyadev/lnx/commit/4cebb89bd8f418d1bdc2da2454ab95b73f15fb4a) <small>Daniel Moya</small>
+- 🎨 Allow dynamic text and backgrounds color changes on dark mode [`c049401`](https://github.com/dmoyadev/lnx/commit/c049401bbf480ec282a5ad4fd1725017fbbda07c) <small>Daniel Moya</small>
+- ✨ Add LnxInputOTP component [`7bc14f0`](https://github.com/dmoyadev/lnx/commit/7bc14f09479b8305ca842656ba020df2570788ba) <small>Daniel Moya</small>
+- ✨ Add a script to generate new components [`c5ceea8`](https://github.com/dmoyadev/lnx/commit/c5ceea8e8109911ce802e05de114f72629d0b03c) <small>Daniel Moya</small>
+- ✨ Add CSS variables to allow modification of components [`04249eb`](https://github.com/dmoyadev/lnx/commit/04249eb982f628dc83c3134ae4d34f013bad2411) <small>Daniel Moya</small>
+- ✨ Add LnxInput component [`53945b9`](https://github.com/dmoyadev/lnx/commit/53945b97afb15f46da9b7b490e36599b34c2896a) <small>Daniel Moya</small>
+- ✨ Add LnxIcon component [`4387afe`](https://github.com/dmoyadev/lnx/commit/4387afebca21e6698e83a5c0c76f860948356dc0) <small>Daniel Moya</small>
+- ✨ Add LnxIcon component [`975bf21`](https://github.com/dmoyadev/lnx/commit/975bf215bec27c15263c36da3e63dac0e95f990c) <small>Daniel Moya</small>
+### 🐛 Fixes
+
+- 🐛 Fix template files for componente creation script [`e0d8a59`](https://github.com/dmoyadev/lnx/commit/e0d8a594f7668b239696f64189bbc852be46c455) <small>Daniel Moya</small>
+### 🏗 Core
+
+- 📖 Fix demo container code when default slot has scope and there exist also named slots [`603815a`](https://github.com/dmoyadev/lnx/commit/603815a24ec4f2ea17a5c43c3386e38fc6e47fe2) <small>Daniel Moya</small>
+- 🏗️️ Bump dependencies [`c2831e2`](https://github.com/dmoyadev/lnx/commit/c2831e29f51b04af134b19d5e89d7a9a126cbfde) <small>Daniel Moya</small>
+### [v0.3.2](https://github.com/dmoyadev/lnx/compare/v0.3.1...v0.3.2)
+
+> 📅 Released on: 10 September 2025
+
+### ✨ New things
+
+- 🎨 [`[LnxInputOTP]`](https://lnx.dmoya.dev/components/LnxInputOTP) Fix center of helper and error text [`f669ed8`](https://github.com/dmoyadev/lnx/commit/f669ed8dcc76635a4b6fffede2a31f1fc8b8acac) <small>Daniel Moya</small>
+- ✨ [`[LnxInputOTP]`](https://lnx.dmoya.dev/components/LnxInputOTP) Allow all type of characters [`6749d3a`](https://github.com/dmoyadev/lnx/commit/6749d3a2c057a0ae6eba9f08d3bd8df5ca953a0f) <small>Daniel Moya</small>
+- ✨ [`[LnxModal]`](https://lnx.dmoya.dev/components/LnxModal) Add component [`c28eab7`](https://github.com/dmoyadev/lnx/commit/c28eab7c287e71d7752b690baad524f37997111e) <small>Daniel Moya</small>
+- 🎨 Allow dynamic text and backgrounds color changes on dark mode [`ad22e05`](https://github.com/dmoyadev/lnx/commit/ad22e05c4bfdab8a0344460f7157c7e80617ec60) <small>Daniel Moya</small>
+- ✨ [`[LnxInputOTP]`](https://lnx.dmoya.dev/components/LnxInputOTP) Add component [`8ddbf08`](https://github.com/dmoyadev/lnx/commit/8ddbf08c92e8b7044fccaa08179023a8f4ca9e6c) <small>Daniel Moya</small>
+- ✨ Add a script to generate new components [`d492450`](https://github.com/dmoyadev/lnx/commit/d492450fb5090c334ceba7c3655db851a745c39e) <small>Daniel Moya</small>
+- ✨ Add CSS variables to allow modification of components [`96fda48`](https://github.com/dmoyadev/lnx/commit/96fda48c8ce840cd2b7f898b082d822ff97d39c1) <small>Daniel Moya</small>
+- ✨ [`[LnxInput]`](https://lnx.dmoya.dev/components/LnxInput) Add component [`cac6f7c`](https://github.com/dmoyadev/lnx/commit/cac6f7cbe06f840338d3f5bca364f8c9d5895e42) <small>Daniel Moya</small>
+- ✨ [`[LnxIcon]`](https://lnx.dmoya.dev/components/LnxIcon) Add component [`ccaf40c`](https://github.com/dmoyadev/lnx/commit/ccaf40c4569c37c8d4678f49df576d2ab7bf4124) <small>Daniel Moya</small>
+- ✨ [`[LnxIcon]`](https://lnx.dmoya.dev/components/LnxIcon) Add component [`08faf7b`](https://github.com/dmoyadev/lnx/commit/08faf7b35c7ae232cd29eb1af71f23c6849a083a) <small>Daniel Moya</small>
+### 🐛 Fixes
+
+- 🐛 Fix template files for componente creation script [`9c8395d`](https://github.com/dmoyadev/lnx/commit/9c8395dfe9f69b2f4f8221612d49cb6a0194c678) <small>Daniel Moya</small>
+### 🏗 Core
+
+- 📖 Fix demo container code when default slot has scope and there exist also named slots [`a9d3b57`](https://github.com/dmoyadev/lnx/commit/a9d3b571a20d53055fe90364c32de75c0fb3df64) <small>Daniel Moya</small>
+- 🏗️️ Bump dependencies [`02cc014`](https://github.com/dmoyadev/lnx/commit/02cc014d58a3c4cd1b8842b85004e4e0cadc3906) <small>Daniel Moya</small>
+### [v0.3.1](https://github.com/dmoyadev/lnx/compare/v0.3.0...v0.3.1)
+
+> 📅 Released on: 10 September 2025
+
+### ✨ New things
+
+- ✨ Allow all type of characters in LnxInputOTP [`bcf265b`](https://github.com/dmoyadev/lnx/commit/bcf265b3f7d15572543bc37e31d0a8e1a5e4ace5) <small>Daniel Moya</small>
 ### [v0.3.0](https://github.com/dmoyadev/lnx/compare/v0.2.1...v0.3.0)
 
 > 📅 Released on: 4 September 2025
