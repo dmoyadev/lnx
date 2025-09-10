@@ -3,6 +3,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.3.1](https://github.com/dmoyadev/lnx/compare/v0.3.0...v0.3.1)
+
+> 📅 Released on: 10 September 2025
+
+### ✨ New things
+
+- ✨ Allow all type of characters in LnxInputOTP [`bcf265b`](https://github.com/dmoyadev/lnx/commit/bcf265b3f7d15572543bc37e31d0a8e1a5e4ace5) <small>Daniel Moya</small>
 ### [v0.3.0](https://github.com/dmoyadev/lnx/compare/v0.2.1...v0.3.0)
 
 > 📅 Released on: 4 September 2025
