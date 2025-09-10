@@ -223,6 +223,7 @@ onMounted(() => {
 		display: flex;
 		align-items: center;
 		gap: 4px;
+		text-align: center;
 	}
 
 	.helper {
@@ -232,6 +233,7 @@ onMounted(() => {
 		display: flex;
 		align-items: center;
 		gap: 4px;
+		text-align: center;
 	}
 }
 </style>

@@ -87,7 +87,7 @@ export default defineConfig({
 		nav: [
 			{
 				text: 'Get started',
-				link: 'docs/get-started',
+				link: 'get-started',
 			},
 
 			{

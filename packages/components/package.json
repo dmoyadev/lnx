@@ -21,5 +21,10 @@
 	},
 	"dependencies": {
 		"iconify-icon": "^2.3.0"
+	},
+	"auto-changelog": {
+		"replaceText": {
+			"(\\[(.*?)\\])": "[`[$2]`](https://lnx.dmoya.dev/components/$2)"
+		}
 	}
 }
