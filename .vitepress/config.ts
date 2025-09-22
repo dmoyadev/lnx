@@ -76,6 +76,8 @@ export default defineConfig({
 
 	appearance: 'force-dark',
 
+	ignoreDeadLinks: true,
+
 	themeConfig: {
 		externalLinkIcon: true,
 

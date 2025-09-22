@@ -18,7 +18,7 @@ const end = ref();
 
 # DatePickerWindow
 
-[comment]: # (Description of the component)
+The date picker window can be used as a standalone component to select dates or date ranges. It is typically used as the [LnxDatePicker](/components/date-picker), but can also be used on its own.
 
 <DemoContainer
     v-slot="{ addEmit, variation, showcasedProp}"
@@ -56,5 +56,5 @@ const end = ref();
 <<< ./types.ts#Month
 <<< ./types.ts#Year
 
-### CalendarViewTypes
+### CalendarViewType
 <<< ./types.ts#CalendarViewTypes

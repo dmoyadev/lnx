@@ -17,3 +17,7 @@ input[type=number] {
 		margin-right: -16px;
 	}
 }
+
+.v-popper__popper {
+	z-index: 100001;
+}

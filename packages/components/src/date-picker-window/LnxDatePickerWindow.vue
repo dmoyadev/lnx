@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, ref, useTemplateRef } from 'vue';
+import { computed, provide, useTemplateRef } from 'vue';
 import {
 	CalendarViewType,
 	CALENDAR_VIEW_TYPES,

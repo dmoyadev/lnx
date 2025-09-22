@@ -35,5 +35,5 @@ function getYearsRow(year: Year[], index: number) {
 </template>
 
 <style scoped lang="scss">
-@import "./date-picker-view";
+@use "./date-picker-view";
 </style>

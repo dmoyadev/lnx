@@ -5,7 +5,7 @@ import { LnxButton, BUTTON_MODES, BUTTON_SHAPES, BUTTON_SIZES } from '../button'
 
 const props = defineProps<{
 	isClearable?: boolean; /* Indicates if a button should render to quickly clear the input */
-	isLoading?: boolean; /* When loading, it is disabled and shows a different content */
+	isLoading?: boolean; /* When loading, it is disabled and shows different content */
 	hasError?: boolean; /* Indicates if it should show the error slot */
 	customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
 }>();

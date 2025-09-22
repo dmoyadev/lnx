@@ -56,7 +56,7 @@ watch(() => props.weekDaysNames, () => {
 </template>
 
 <style scoped lang="scss">
-@import "./date-picker-view";
+@use "./date-picker-view";
 
 .is-not-current-view {
 	color: var(--lnx-color-gray-5);
