@@ -3,6 +3,17 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.5.0](https://github.com/dmoyadev/lnx/compare/v0.3.3...v0.5.0)
+
+> 📅 Released on: 22 September 2025
+
+### ✨ New things
+
+- ✨ [`[LnxDatePicker]`](https://lnx.dmoya.dev/components/LnxDatePicker) Add component [`13a4d7c`](https://github.com/dmoyadev/lnx/commit/13a4d7c2d4f87688cbd74ca676c735185e4c121d) <small>Daniel Moya</small>
+- ✨ [`[LnxDatePickerWindow]`](https://lnx.dmoya.dev/components/LnxDatePickerWindow) Add component [`b3bbb0f`](https://github.com/dmoyadev/lnx/commit/b3bbb0fbfe24c6b760278466830a293aff1668a3) <small>Daniel Moya</small>
+### 🏗 Core
+
+- 🏗️ [`[LnxButton]`](https://lnx.dmoya.dev/components/LnxButton) Change types to match standard [`bd308d0`](https://github.com/dmoyadev/lnx/commit/bd308d06b7fe8b460f860c2b6e5f2e380006eb2e) <small>Daniel Moya</small>
 ### [v0.3.3](https://github.com/dmoyadev/lnx/compare/v0.3.2...v0.3.3)
 
 > 📅 Released on: 10 September 2025
