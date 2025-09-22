@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ComponentProp } from './types';
-import { ButtonModes, ButtonSizes, LnxButton } from '../../packages/components/src';
+import { BUTTON_MODES, BUTTON_SIZES, LnxButton } from '../../packages/components/src';
 import { LnxIcon } from '../../packages/components/src/icon';
 
 defineProps<{
@@ -24,6 +24,11 @@ function updateFromInputValue(event: InputEvent, prop: ComponentProp) {
 	}
 
 	prop.value = value;
+}
+
+function updateFromArrayInputValue(event: InputEvent, prop: ComponentProp) {
+	const value = (event.target as HTMLInputElement).value;
+	prop.value = value.split(',').map(v => v.trim());
 }
 
 function canShowAllVariations(prop: ComponentProp): boolean {
@@ -145,6 +150,29 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 					@input="updateFromInputValue($event as InputEvent, prop)"
 				>
 
+				<!-- Array input -->
+				<template v-else-if="prop.controlType === 'input-array'">
+					<input
+						class="type-input"
+						:type="prop.controlType"
+						:value="prop.value"
+						:disabled="showcasedProp === name"
+						@input="updateFromArrayInputValue($event as InputEvent, prop)"
+					>
+
+					<span
+						v-if="!prop.helper && prop.controlType === 'input-array'"
+						class="helper"
+					>
+						<LnxIcon
+							icon="mdi:information"
+							:size="14"
+							style="margin-bottom: -3px"
+						/>
+						Add values to the array by separating them with commas.
+					</span>
+				</template>
+
 				<span
 					v-if="prop.helper"
 					class="helper"
@@ -160,8 +188,8 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 
 			<LnxButton
 				v-if="!prop.hideAllVariationsButton && canShowAllVariations(prop)"
-				:mode="ButtonModes.CLEAR"
-				:size="ButtonSizes.SMALL"
+				:mode="BUTTON_MODES.CLEAR"
+				:size="BUTTON_SIZES.SMALL"
 				class="btn-variations"
 				@click="showcasedProp = showcasedProp === name ? '' : name"
 			>
@@ -227,11 +255,13 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 			display: flex;
 			align-items: center;
 			gap: 4px;
+			text-wrap: nowrap;
 
 			code {
 				font-size: var(--lnx-font-size-legal);
 				font-weight: normal;
 				padding: 4px;
+				text-wrap: wrap;
 			}
 		}
 	}

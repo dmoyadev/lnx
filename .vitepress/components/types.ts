@@ -2,7 +2,7 @@ interface ComponentPropBase {
 	description?: string;
 	type: string | { name: string; link: string };
 	value: unknown;
-	defaultValue?: unknown;
+	defaultValue?: string;
 	helper?: string;
 	hideAllVariationsButton?: boolean;
 	configurableOptionName?: string

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "es2023",
     "lib": ["esnext", "dom"],
     "jsx": "preserve",
     "module": "ESNext",

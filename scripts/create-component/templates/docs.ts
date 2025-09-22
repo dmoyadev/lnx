@@ -14,7 +14,7 @@ export function useComponent() {
 		// variant: {
 		// 	description: 'Applies different palette of colors',
 		// 	controlType: 'select',
-		// 	type: 'TButtonVariant',
+		// 	type: 'ButtonVariant',
 		// 	options: Object.values(ButtonVariants),
 		// 	defaultValue: 'ButtonVariants.PRIMARY',
 		// 	value: ButtonVariants.PRIMARY,

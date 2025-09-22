@@ -2,33 +2,33 @@
 import type { ComponentPublicInstance } from 'vue';
 import { computed, ref, useAttrs } from 'vue';
 import type {
-	TButtonVariant,
-	TButtonMode,
-	TButtonSize,
-	TButtonShape,
+	ButtonVariant,
+	ButtonMode,
+	ButtonSize,
+	ButtonShape,
 } from './types';
 import {
-	ButtonVariants,
-	ButtonModes,
-	ButtonSizes,
-	ButtonShapes,
+	BUTTON_VARIANTS,
+	BUTTON_MODES,
+	BUTTON_SIZES,
+	BUTTON_SHAPES,
 } from './types';
 import { LnxIcon } from '../icon';
 
 const props = withDefaults(defineProps<{
-	variant?: TButtonVariant; /* Applies different palette of colors */
-	mode?: TButtonMode; /* Display mode. Recommended for changing the importance */
-	size?: TButtonSize; /* Modifies spacing and font sizing */
-	shape?: TButtonShape; /* Reimagines how it\'s built */
+	variant?: ButtonVariant; /* Applies different palette of colors */
+	mode?: ButtonMode; /* Display mode. Recommended for changing the importance */
+	size?: ButtonSize; /* Modifies spacing and font sizing */
+	shape?: ButtonShape; /* Reimagines how it\'s built */
 	href?: string; /* Converts the button in an anchor tag with the given URL */
 	to?: string | object; /* Converts the button in a router-link with the given route. If `href` is set, this is ignored. */
 	isLoading?: boolean; /* When loading, it is disabled and shows a different content */
 	isBlock?: boolean; /* Indicates if the button should take the full width of its container */
 }>(), {
-	variant: ButtonVariants.PRIMARY,
-	mode: ButtonModes.SOLID,
-	size: ButtonSizes.MEDIUM,
-	shape: ButtonShapes.NORMAL,
+	variant: BUTTON_VARIANTS.PRIMARY,
+	mode: BUTTON_MODES.SOLID,
+	size: BUTTON_SIZES.MEDIUM,
+	shape: BUTTON_SHAPES.NORMAL,
 	href: undefined,
 	to: undefined,
 });

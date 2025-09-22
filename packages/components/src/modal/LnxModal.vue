@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ButtonModes, ButtonShapes, ButtonVariants, LnxButton } from '../button';
+import { BUTTON_MODES, BUTTON_SHAPES, BUTTON_VARIANTS, LnxButton } from '../button';
 import { LnxIcon } from '../icon';
 
 withDefaults(defineProps<{
@@ -63,9 +63,9 @@ function closeModal() {
 						<LnxButton
 							v-if="!hideCloseButton"
 							class="btn-close"
-							:variant="ButtonVariants.GRAYSCALE"
-							:mode="ButtonModes.CLEAR"
-							:shape="ButtonShapes.ICON"
+							:variant="BUTTON_VARIANTS.GRAYSCALE"
+							:mode="BUTTON_MODES.CLEAR"
+							:shape="BUTTON_SHAPES.ICON"
 							@click="closeModal()"
 						>
 							<LnxIcon icon="mdi:times" />

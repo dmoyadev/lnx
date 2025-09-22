@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref, useAttrs, watch } from 'vue';
 import { LnxIcon } from '../icon';
-import { LnxButton, ButtonModes, ButtonShapes, ButtonSizes } from '../button';
+import { LnxButton, BUTTON_MODES, BUTTON_SHAPES, BUTTON_SIZES } from '../button';
 
 const props = defineProps<{
 	isClearable?: boolean; /* Indicates if a button should render to quickly clear the input */
@@ -83,9 +83,9 @@ const showPassword = ref(false);
 							&& !isLoading 
 							&& !isDisabled
 						"
-						:mode="ButtonModes.CLEAR"
-						:size="ButtonSizes.SMALL"
-						:shape="ButtonShapes.ICON"
+						:mode="BUTTON_MODES.CLEAR"
+						:size="BUTTON_SIZES.SMALL"
+						:shape="BUTTON_SHAPES.ICON"
 						type="button"
 						class="btn-icon"
 						@click="modelValue = inputType === 'number' ? 0 : ''"
@@ -119,9 +119,9 @@ const showPassword = ref(false);
 						<!-- Toggle password visibility button -->
 						<LnxButton
 							v-if="inputType === 'password'"
-							:mode="ButtonModes.CLEAR"
-							:shape="ButtonShapes.ICON"
-							:size="ButtonSizes.SMALL"
+							:mode="BUTTON_MODES.CLEAR"
+							:shape="BUTTON_SHAPES.ICON"
+							:size="BUTTON_SIZES.SMALL"
 							:disabled="isDisabled || isLoading"
 							type="button"
 							class="btn-icon"

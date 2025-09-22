@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ButtonModes, ButtonShapes, ButtonVariants, LnxButton } from '../../packages/components/src';
+import { BUTTON_MODES, BUTTON_SHAPES, BUTTON_VARIANTS, LnxButton } from '../../packages/components/src';
 import { ref } from 'vue';
 
 const props = defineProps<{
@@ -24,9 +24,9 @@ function copyCode() {
 <template>
 	<div class="demo-code">
 		<LnxButton
-			:variant="ButtonVariants.GRAYSCALE"
-			:shape="ButtonShapes.ICON"
-			:mode="ButtonModes.CLEAR"
+			:variant="BUTTON_VARIANTS.GRAYSCALE"
+			:shape="BUTTON_SHAPES.ICON"
+			:mode="BUTTON_MODES.CLEAR"
 			class="btn-copy"
 			:class="{ 'btn-copied': copied }"
 			@click="copyCode()"

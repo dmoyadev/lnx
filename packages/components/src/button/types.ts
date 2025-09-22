@@ -1,4 +1,7 @@
-export const ButtonVariants = {
+import { ValueOf } from '../helpers';
+
+// #region ButtonVariant
+export const BUTTON_VARIANTS = {
 	PRIMARY: 'primary',
 	GRAYSCALE: 'grayscale',
 	DANGER: 'danger',
@@ -6,26 +9,33 @@ export const ButtonVariants = {
 	INFO: 'info',
 	WARNING: 'warning',
 } as const;
-export type TButtonVariant = typeof ButtonVariants[keyof typeof ButtonVariants];
+export type ButtonVariant = ValueOf<typeof BUTTON_VARIANTS>;
+// #endregion ButtonVariant
 
-export const ButtonModes = {
+// #region ButtonMode
+export const BUTTON_MODES = {
 	SOLID: 'solid',
 	OUTLINE: 'outline',
 	CLEAR: 'clear',
 	LINK: 'link',
 } as const;
-export type TButtonMode = typeof ButtonModes[keyof typeof ButtonModes];
+export type ButtonMode = ValueOf<typeof BUTTON_MODES>;
+// #endregion ButtonMode
 
-export const ButtonSizes = {
+// #region ButtonSize
+export const BUTTON_SIZES = {
 	SMALL: 'small',
 	MEDIUM: 'medium',
 	LARGE: 'large',
 } as const;
-export type TButtonSize = typeof ButtonSizes[keyof typeof ButtonSizes];
+export type ButtonSize = ValueOf<typeof BUTTON_SIZES>;
+// #endregion ButtonSize
 
-export const ButtonShapes = {
+// #region ButtonShape
+export const BUTTON_SHAPES = {
 	NORMAL: 'normal',
 	ICON: 'icon',
 	CIRCLE: 'circle',
 } as const;
-export type TButtonShape = typeof ButtonShapes[keyof typeof ButtonShapes];
+export type ButtonShape = ValueOf<typeof BUTTON_SHAPES>;
+// #endregion ButtonShape

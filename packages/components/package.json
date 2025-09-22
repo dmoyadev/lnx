@@ -19,12 +19,12 @@
 		"version:sync": "node ../../scripts/sync-versions.js ../.. .",
 		"version": "pnpm version:sync && auto-changelog -p && git add CHANGELOG.md"
 	},
-	"dependencies": {
-		"iconify-icon": "^2.3.0"
-	},
 	"auto-changelog": {
 		"replaceText": {
 			"(\\[(.*?)\\])": "[`[$2]`](https://lnx.dmoya.dev/components/$2)"
 		}
+	},
+	"dependencies": {
+		"iconify-icon": "^2.3.0"
 	}
 }

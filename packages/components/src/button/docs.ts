@@ -7,41 +7,41 @@ import {
 } from '../../../../.vitepress/components/types';
 import { useProps } from '../../../../.vitepress/components/useProps';
 import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
-import { ButtonModes, ButtonShapes, ButtonSizes, ButtonVariants } from './types';
+import { BUTTON_MODES, BUTTON_SHAPES, BUTTON_SIZES, BUTTON_VARIANTS } from './types';
 
 export function useComponent() {
 	const componentProps = ref<Record<string, ComponentProp>>({
 		variant: {
 			description: 'Applies different palette of colors',
 			controlType: 'select',
-			type: 'TButtonVariant',
-			options: Object.values(ButtonVariants),
-			defaultValue: 'ButtonVariants.PRIMARY',
-			value: ButtonVariants.PRIMARY,
+			type: 'ButtonVariant',
+			options: Object.values(BUTTON_VARIANTS),
+			defaultValue: 'BUTTON_VARIANTS.PRIMARY',
+			value: BUTTON_VARIANTS.PRIMARY,
 		},
 		mode: {
 			description: 'Display mode. Recommended for changing the importance',
 			controlType: 'select',
-			type: 'TButtonMode',
-			options: Object.values(ButtonModes),
-			defaultValue: 'ButtonModes.SOLID',
-			value: ButtonModes.SOLID,
+			type: 'ButtonMode',
+			options: Object.values(BUTTON_MODES),
+			defaultValue: 'BUTTON_MODES.SOLID',
+			value: BUTTON_MODES.SOLID,
 		},
 		size: {
 			description: 'Modifies spacing and font sizing',
 			controlType: 'select',
-			type: 'TButtonSizes',
-			options: Object.values(ButtonSizes),
-			defaultValue: 'ButtonSizes.MEDIUM',
-			value: ButtonSizes.MEDIUM,
+			type: 'ButtonSize',
+			options: Object.values(BUTTON_SIZES),
+			defaultValue: 'BUTTON_SIZES.MEDIUM',
+			value: BUTTON_SIZES.MEDIUM,
 		},
 		shape: {
 			description: 'Reimagines how it\'s built',
 			controlType: 'select',
-			type: 'TButtonShapes',
-			options: Object.values(ButtonShapes),
-			defaultValue: 'ButtonShapes.NORMAL',
-			value: ButtonShapes.NORMAL,
+			type: 'ButtonShape',
+			options: Object.values(BUTTON_SHAPES),
+			defaultValue: 'BUTTON_SHAPES.NORMAL',
+			value: BUTTON_SHAPES.NORMAL,
 		},
 		href: {
 			description: 'Converts the button in an anchor tag with the given URL',

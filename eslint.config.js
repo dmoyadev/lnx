@@ -22,7 +22,7 @@ export default defineConfigWithVueTs([
 			'no-debugger': 'error',
 
 			'vue/html-indent': ['warn', 'tab'],
-			'vue/script-indent': ['warn', 'tab'],
+			'vue/script-indent': ['warn', 'tab', { 'switchCase': 1 }],
 
 			'semi': ['warn', 'always'],
 			'quotes': ['warn', 'single'],

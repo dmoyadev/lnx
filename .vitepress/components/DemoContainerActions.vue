@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {
-	ButtonModes,
-	ButtonShapes,
-	ButtonSizes,
-	ButtonVariants,
+	BUTTON_MODES,
+	BUTTON_SHAPES,
+	BUTTON_SIZES,
+	BUTTON_VARIANTS,
 	LnxButton,
 } from '../../packages/components/src';
 import { LnxIcon } from '../../packages/components/src/icon';
@@ -17,9 +17,9 @@ const showCode = defineModel<boolean>('showCode', { default: false });
 <template>
 	<aside>
 		<LnxButton
-			:variant="ButtonVariants.PRIMARY"
-			:size="ButtonSizes.SMALL"
-			:mode="ButtonModes.OUTLINE"
+			:variant="BUTTON_VARIANTS.PRIMARY"
+			:size="BUTTON_SIZES.SMALL"
+			:mode="BUTTON_MODES.OUTLINE"
 			@click="showCode = !showCode"
 		>
 			<template #prefix>
@@ -29,20 +29,20 @@ const showCode = defineModel<boolean>('showCode', { default: false });
 		</LnxButton>
 
 		<LnxButton
-			:variant="ButtonVariants.PRIMARY"
-			:size="ButtonSizes.SMALL"
-			:shape="ButtonShapes.ICON"
-			:mode="ButtonModes.OUTLINE"
+			:variant="BUTTON_VARIANTS.PRIMARY"
+			:size="BUTTON_SIZES.SMALL"
+			:shape="BUTTON_SHAPES.ICON"
+			:mode="BUTTON_MODES.OUTLINE"
 			@click="isDark = !isDark"
 		>
 			<LnxIcon :icon="isDark ? 'tdesign:mode-dark' : 'iconamoon:mode-light-bold'" />
 		</LnxButton>
 
 		<LnxButton
-			:variant="ButtonVariants.PRIMARY"
-			:size="ButtonSizes.SMALL"
-			:shape="ButtonShapes.ICON"
-			:mode="ButtonModes.OUTLINE"
+			:variant="BUTTON_VARIANTS.PRIMARY"
+			:size="BUTTON_SIZES.SMALL"
+			:shape="BUTTON_SHAPES.ICON"
+			:mode="BUTTON_MODES.OUTLINE"
 			@click="$emit('reset')"
 		>
 			<LnxIcon icon="ix:hard-reset" />

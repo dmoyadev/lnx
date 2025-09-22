@@ -37,7 +37,7 @@ function createPropLine(prop: ComponentProp, colon: string, propName: string, pr
 
 function getPropsLines(
 	props: Record<string, ComponentProp>,
-	checkDefaultValue: (defaultValue: unknown, value: unknown) => boolean,
+	checkDefaultValue: (defaultValue: string, value: unknown) => boolean,
 	showPropsColon = true,
 ): string[] | undefined {
 	const propLines: string[] = [];
@@ -115,7 +115,7 @@ function getSlotsLines(slots: Record<string, ComponentSlot>): string[] | undefin
 interface DemoCodeParams {
 	componentName: string
 	props?: Record<string, ComponentProp>;
-	checkDefault: (defaultValue: unknown, value: unknown) => boolean;
+	checkDefault: (defaultValue: string, value: unknown) => boolean;
 	slots?: Record<string, ComponentSlot>;
 	listeners?: Record<string, ComponentEvent>;
 }

@@ -2,9 +2,9 @@
 import { ref } from 'vue';
 import {
 	LnxButton,
-	ButtonVariants,
-	ButtonModes,
-	ButtonSizes,
+	BUTTON_VARIANTS,
+	BUTTON_MODES,
+	BUTTON_SIZES,
 	LnxInput,
 	LnxIcon,
 	LnxInputOTP,
@@ -24,7 +24,7 @@ function toggleDarkMode() {
 
 <template>
 	<LnxButton
-		:mode="ButtonModes.OUTLINE"
+		:mode="BUTTON_MODES.OUTLINE"
 		@click="toggleDarkMode"
 	>
 		🌚
@@ -60,19 +60,19 @@ function toggleDarkMode() {
 
 	<template v-if="show === 'button'">
 		<div
-			v-for="v in ButtonVariants"
+			v-for="v in BUTTON_VARIANTS"
 			:key="v"
 			class="variant-container"
 		>
 			<span class="variant">{{ v }}</span>
 			<div
-				v-for="m in ButtonModes"
+				v-for="m in BUTTON_MODES"
 				:key="m"
 				class="variant-container"
 			>
 				<span class="variant">{{ m }}</span>
 				<template
-					v-for="s in ButtonSizes"
+					v-for="s in BUTTON_SIZES"
 					:key="s"
 				>
 					<LnxButton
@@ -227,13 +227,13 @@ function toggleDarkMode() {
 
 					<template #actions="{ close }">
 						<LnxButton
-							:variant="ButtonVariants.GRAYSCALE"
-							:mode="ButtonModes.CLEAR"
+							:variant="BUTTON_VARIANTS.GRAYSCALE"
+							:mode="BUTTON_MODES.CLEAR"
 						>
 							A secondary action
 						</LnxButton>
 
-						<LnxButton :variant="ButtonVariants.GRAYSCALE">
+						<LnxButton :variant="BUTTON_VARIANTS.GRAYSCALE">
 							Another action
 						</LnxButton>
 
@@ -304,13 +304,13 @@ function toggleDarkMode() {
 
 					<template #actions="{ close }">
 						<LnxButton
-							:variant="ButtonVariants.GRAYSCALE"
-							:mode="ButtonModes.CLEAR"
+							:variant="BUTTON_VARIANTS.GRAYSCALE"
+							:mode="BUTTON_MODES.CLEAR"
 						>
 							A secondary action
 						</LnxButton>
 
-						<LnxButton :variant="ButtonVariants.GRAYSCALE">
+						<LnxButton :variant="BUTTON_VARIANTS.GRAYSCALE">
 							Another action
 						</LnxButton>
 

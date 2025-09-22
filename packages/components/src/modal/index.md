@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { LnxModal } from '.';
 import { useComponent } from './docs.js';
-import { LnxButton, LnxIcon, ButtonVariants, ButtonModes } from '..';
+import { LnxButton, LnxIcon, BUTTON_VARIANTS, BUTTON_MODES } from '..';
 
 const {
     componentProps,
