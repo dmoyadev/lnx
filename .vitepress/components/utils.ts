@@ -41,18 +41,32 @@ function getPropsLines(
 	showPropsColon = true,
 ): string[] | undefined {
 	const propLines: string[] = [];
-	for(const name of Object.keys(props)) {
-		const prop = props[name];
+	for(const [name, prop] of Object.entries(props)) {
+		const isNotEditable = prop.controlType === 'none' && prop.defaultValue !== undefined;
+		const isTwoWayBinding = name.startsWith('v-model');
+		const hasCustomValue = checkDefaultValue(prop.defaultValue, prop.value);
+		if((isNotEditable || !hasCustomValue) && !isTwoWayBinding) {
+			continue;
+		}
+
 		const propValueIsString = typeof prop.value === 'string';
-		const colon = (showPropsColon && propValueIsString) ? ':' : '';
+		const propValueIsArray = Array.isArray(prop.value);
+		const colon = (showPropsColon && (!propValueIsString || propValueIsArray) && !isTwoWayBinding) ? ':' : '';
 		const propName = getColoredText(toDashCase(name), 'prop');
-		const propStringifiedValue = (colon || !showPropsColon || propValueIsString) ? JSON.stringify(prop.value) : prop.value;
-		const propValue = propValueIsString
+		let propStringifiedValue = (colon || !showPropsColon || propValueIsString || isTwoWayBinding) ? JSON.stringify(prop.value) : prop.value;
+		if(propValueIsArray) {
+			propStringifiedValue = (propStringifiedValue as string).replaceAll('"', '\'');
+		}
+
+		const listenerComment = getColoredText('<-- Pass a reactive variable here to bind its value', 'comment');
+		if(isTwoWayBinding) {
+			propStringifiedValue = getColoredText('...', 'comment');
+		}
+		let propValue = propValueIsString
 			? getColoredText(`${propStringifiedValue}`, 'value')
 			: getColoredText(`"${propStringifiedValue}"`, 'value');
-
-		if (!checkDefaultValue(prop.defaultValue, prop.value)) {
-			continue;
+		if(isTwoWayBinding) {
+			propValue += ` ${listenerComment}`;
 		}
 
 		const propLine = createPropLine(prop, colon, propName, propValue);

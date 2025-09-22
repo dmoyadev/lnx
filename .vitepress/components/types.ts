@@ -21,11 +21,20 @@ interface InputComponentProp extends ComponentPropBase {
 	controlType: 'input' | 'number';
 }
 
+interface InputArrayComponentProp extends ComponentPropBase {
+	controlType: 'input-array';
+}
+
 interface StaticComponentProp extends ComponentPropBase {
 	controlType: 'none';
 }
 
-export type ComponentProp = SelectComponentProp | SwitchComponentProp | InputComponentProp | StaticComponentProp;
+export type ComponentProp = SelectComponentProp
+	| SwitchComponentProp
+	| InputComponentProp
+	| StaticComponentProp
+	| InputArrayComponentProp
+	;
 
 export interface ComponentSlot {
 	description: string;

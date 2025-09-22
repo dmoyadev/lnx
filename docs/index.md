@@ -17,6 +17,9 @@ features:
   - icon: 🔘
     title: Button
     link: '/components/button'
+  - icon: 📅
+    title: DatePickerWindow
+    link: '/components/date-picker-window'
   - icon: 📝
     title: Input
     link: '/components/input'

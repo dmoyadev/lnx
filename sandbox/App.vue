@@ -10,10 +10,14 @@ import {
 	LnxInputOTP,
 	LnxModal,
 } from 'lnxjs-components/src';
+import { CALENDAR_VIEW_TYPES, LnxDatePickerWindow } from 'lnxjs-components/src/date-picker-window';
 
 const show = ref('');
 const inputModel = ref('');
 const inputOTPModel = ref<string>('');
+const datePickerWindowModel = ref<Date>();
+const datePickerWindowStartModel = ref<Date>();
+const datePickerWindowEndModel = ref<Date>();
 
 const booleanVariants = [true, false];
 
@@ -56,6 +60,13 @@ function toggleDarkMode() {
 		@click="show === 'modal' ? show = '' : show = 'modal'"
 	>
 		LnxModal
+	</LnxButton>
+
+	<LnxButton
+		class="btn-toggle"
+		@click="show === 'date-picker-window' ? show = '' : show = 'date-picker-window'"
+	>
+		LnxDatePickerWindow
 	</LnxButton>
 
 	<template v-if="show === 'button'">
@@ -319,6 +330,57 @@ function toggleDarkMode() {
 						</LnxButton>
 					</template>
 				</LnxModal>
+			</div>
+		</div>
+	</template>
+
+	<template v-if="show === 'date-picker-window'">
+		<br>
+		selected single: {{ datePickerWindowModel }}
+		<br>
+		selected start: {{ datePickerWindowStartModel }}
+		<br>
+		selected end: {{ datePickerWindowEndModel }}
+		<br>
+		<div
+			v-for="isRange in booleanVariants"
+			:key="String(isRange)"
+			class="variant-container"
+		>
+			<span class="variant">{{ isRange ? 'Range' : 'Single' }}</span>
+			<div
+				v-for="allowDeselect in booleanVariants"
+				:key="String(allowDeselect)"
+				class="variant-container"
+			>
+				<span class="variant">{{ allowDeselect ? 'Allow Deselec' : 'Don\'t allow deselect' }}</span>
+
+				<LnxDatePickerWindow
+					v-model="datePickerWindowModel"
+					v-model:start="datePickerWindowStartModel"
+					v-model:end="datePickerWindowEndModel"
+					:is-range
+					:allow-deselect
+					:is-item-disabled-fn="(item) => item?.number % 2 === 0"
+				/>
+				<LnxDatePickerWindow
+					v-model="datePickerWindowModel"
+					v-model:start="datePickerWindowStartModel"
+					v-model:end="datePickerWindowEndModel"
+					:calendar-type="CALENDAR_VIEW_TYPES.MONTH"
+					:is-range
+					:allow-deselect
+					:is-item-disabled-fn="(item) => item?.number % 2 === 0"
+				/>
+				<LnxDatePickerWindow
+					v-model="datePickerWindowModel"
+					v-model:start="datePickerWindowStartModel"
+					v-model:end="datePickerWindowEndModel"
+					:calendar-type="CALENDAR_VIEW_TYPES.YEAR"
+					:is-range
+					:allow-deselect
+					:is-item-disabled-fn="(item) => item?.number % 2 === 0"
+				/>
 			</div>
 		</div>
 	</template>
