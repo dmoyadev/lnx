@@ -3,6 +3,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+### [v0.6.0](https://github.com/dmoyadev/lnx/compare/v0.5.0...v0.6.0)
+
+> 📅 Released on: 26 September 2025
+
+### ✨ New things
+
+- ✨ [`[LnxSelect]`](https://lnx.dmoya.dev/components/LnxSelect) Add component [`a208278`](https://github.com/dmoyadev/lnx/commit/a2082780303ce63a31cde2b17b302b9c57024c2c) <small>Daniel Moya</small>
 ### [v0.5.0](https://github.com/dmoyadev/lnx/compare/v0.3.3...v0.5.0)
 
 > 📅 Released on: 22 September 2025
