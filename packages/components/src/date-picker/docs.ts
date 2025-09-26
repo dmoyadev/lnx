@@ -129,18 +129,6 @@ export function useComponent() {
 	});
 
 	const componentOptions = ref<Record<string, ComponentProp>>({
-		'Input type': {
-			description: 'Changes the input type',
-			configurableOptionName: 'type',
-			controlType: 'select',
-			options: ['text', 'number', 'email', 'password', 'search', 'tel', 'url'],
-			type: {
-				name: 'Input type',
-				link: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types',
-			},
-			defaultValue: '"text"',
-			value: 'text',
-		},
 		'Placeholder': {
 			description: 'Changes the placeholder of the input',
 			configurableOptionName: 'placeholder',

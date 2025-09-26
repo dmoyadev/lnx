@@ -155,7 +155,7 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 					<input
 						class="type-input"
 						:type="prop.controlType"
-						:value="prop.value"
+						:value="JSON.stringify(prop.value)"
 						:disabled="showcasedProp === name"
 						@input="updateFromArrayInputValue($event as InputEvent, prop)"
 					>

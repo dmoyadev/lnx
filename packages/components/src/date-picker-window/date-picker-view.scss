@@ -5,6 +5,7 @@
 	border-collapse: separate;
 	border-spacing: var(--lnx-spacing-1);
 	padding: 0 8px;
+	color: var(--lnx-color-text);
 
 	tr, th { border: none; }
 
@@ -17,5 +18,6 @@
 		min-height: var(--cell-size);
 		height: var(--cell-size);
 		max-height: var(--cell-size);
+		vertical-align: middle;
 	}
 }

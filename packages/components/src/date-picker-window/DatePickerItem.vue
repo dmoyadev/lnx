@@ -85,6 +85,7 @@ function deselectPreselectedDays() {
 	height: var(--cell-size);
 	max-height: var(--cell-size);
 	border-radius: var(--lnx-radius-1);
+	color: var(--lnx-color-text);
 
 	&:not(.is-disabled) {
 		cursor: pointer;

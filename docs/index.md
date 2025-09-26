@@ -35,5 +35,8 @@ features:
   - icon: 💬
     title: Modal
     link: '/components/modal'
+  - icon: ✅
+    title: Select
+    link: '/components/select'
 ---
 

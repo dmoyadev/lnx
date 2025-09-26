@@ -12,6 +12,7 @@ import {
 	LnxDatePicker,
 	CALENDAR_VIEW_TYPES,
 	LnxDatePickerWindow,
+	LnxSelect,
 } from 'lnxjs-components/src';
 
 const show = ref('');
@@ -23,6 +24,75 @@ const datePickerWindowEndModel = ref<Date>();
 const datePickerModel = ref<Date>();
 const datePickerStartModel = ref<Date>();
 const datePickerEndModel = ref<Date>();
+const selectModel = ref();
+
+const selectItems = [
+	{
+		id: 1,
+		label: 'Option 1',
+		value: 1, 
+	},
+	{
+		id: 2,
+		label: 'Option 2a sasdf asdf asdf asf asf asdfasf asf asf asdf as fasf asfas fasdfs',
+		value: 2, 
+	},
+	{
+		id: 3,
+		label: 'Option 3',
+		value: 3, 
+	},
+	{
+		id: 4,
+		label: 'Option 4',
+		value: 4,
+	},
+	{
+		id: 5,
+		label: 'Option 5',
+		value: 5,
+	},
+	{
+		id: 6,
+		label: 'Option 6',
+		value: 6,
+	},
+	{
+		id: 7,
+		label: 'Option 7',
+		value: 7,
+	},
+	{
+		id: 8,
+		label: 'Option 8',
+		value: 8,
+	},
+	{
+		id: 9,
+		label: 'Option 9',
+		value: 9,
+	},
+	{
+		id: 10,
+		label: 'Option 10',
+		value: 10,
+	},
+	{
+		id: 11,
+		label: 'Option 11',
+		value: 11,
+	},
+	{
+		id: 12,
+		label: 'Option 12',
+		value: 12,
+	},
+	{
+		id: 13,
+		label: 'Option 13',
+		value: 13,
+	},
+];
 
 const booleanVariants = [true, false];
 
@@ -79,6 +149,13 @@ function toggleDarkMode() {
 		@click="show === 'date-picker-window' ? show = '' : show = 'date-picker-window'"
 	>
 		LnxDatePickerWindow
+	</LnxButton>
+
+	<LnxButton
+		class="btn-toggle"
+		@click="show === 'select' ? show = '' : show = 'select'"
+	>
+		LnxSelect
 	</LnxButton>
 
 	<template v-if="show === 'button'">
@@ -138,23 +215,54 @@ function toggleDarkMode() {
 						class="variant-container"
 					>
 						<span class="variant">{{ !hasError ? 'Has Error' : 'No error' }}</span>
-						<LnxInput
-							v-model="inputModel"
-							:type="t"
-							:is-loading="!isLoading"
-							:has-error="!hasError"
-							placeholder="placeholder"
+						<div
+							v-for="isClearable in booleanVariants"
+							:key="String(isClearable)"
+							class="variant-container"
 						>
-							This is the label
+							<span class="variant">{{ !isClearable ? 'Is clearable' : 'It is not clearable' }}</span>
+							<LnxInput
+								v-model="inputModel"
+								:type="t"
+								:is-loading="!isLoading"
+								:has-error="!hasError"
+								:is-clearable="!isClearable"
+								placeholder="placeholder"
+							>
+								This is the label
 
-							<template #helper>
-								This is a helper
-							</template>
+								<template #helper>
+									This is a helper
+								</template>
 
-							<template #error>
-								This is an error
-							</template>
-						</LnxInput>
+								<template #error>
+									This is an error
+								</template>
+							</LnxInput>
+
+							<LnxInput
+								v-model="inputModel"
+								:type="t"
+								:is-loading="!isLoading"
+								:has-error="!hasError"
+								:is-clearable="!isClearable"
+								placeholder="placeholder"
+							>
+								This is the label
+
+								<template #icon>
+									<LnxIcon icon="mdi:magnify" />
+								</template>
+
+								<template #helper>
+									This is a helper
+								</template>
+
+								<template #error>
+									This is an error
+								</template>
+							</LnxInput>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -439,12 +547,76 @@ function toggleDarkMode() {
 			</div>
 		</div>
 	</template>
+
+	<template v-if="show === 'select'">
+		<form>
+			<div
+				v-for="isLoading in booleanVariants"
+				:key="String(isLoading)"
+				class="variant-container"
+			>
+				<span class="variant">{{ !isLoading ? 'Loading' : 'Not loading' }}</span>
+				<div
+					v-for="hasError in booleanVariants"
+					:key="String(hasError)"
+					class="variant-container"
+				>
+					<span class="variant">{{ !hasError ? 'Has Error' : 'No error' }}</span>
+
+					<LnxSelect
+						v-model="selectModel"
+						:is-loading="!isLoading"
+						:has-error="!hasError"
+						placeholder="placeholder"
+						label-property="label"
+						:items="selectItems"
+					>
+						This is the label
+
+						<template #helper>
+							This is a helper
+						</template>
+
+						<template #error>
+							This is an error
+						</template>
+					</LnxSelect>
+
+					<LnxSelect
+						v-model="selectModel"
+						:is-loading="!isLoading"
+						:has-error="!hasError"
+						placeholder="placeholder"
+						:items="selectItems"
+					>
+						This is the label
+
+						<template #helper>
+							This is a helper
+						</template>
+
+						<template #error>
+							This is an error
+						</template>
+
+						<template #item="{ item }">
+							<span style="color: var(--lnx-color-primary)">{{ item.label }} (custom item)</span>
+						</template>
+					</LnxSelect>
+				</div>
+			</div>
+		</form>
+	</template>
 </template>
 
 <style scoped>
 :global(html.dark) {
 	background-color: var(--lnx-color-bg);
 	color: var(--lnx-color-text);
+	--lnx-select-list-color-bg: var(--lnx-color-gray-9);
+}
+:global(html:not(.dark)) {
+	--lnx-select-list-color-bg: var(--lnx-color-gray-0);
 }
 
 :global(body) {

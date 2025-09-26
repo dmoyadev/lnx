@@ -8,3 +8,4 @@ export * from './date-picker-window';
 export * from './input';
 export * from './input-otp';
 export * from './modal';
+export * from './select';

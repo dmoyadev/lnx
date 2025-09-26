@@ -141,7 +141,3 @@ const inputValue = computed(() => {
 		</template>
 	</Dropdown>
 </template>
-
-<style scoped lang="scss">
-/* Component styles */
-</style>

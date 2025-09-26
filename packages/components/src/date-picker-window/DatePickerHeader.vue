@@ -104,6 +104,7 @@ defineEmits<{
 	border-bottom: 1px solid var(--lnx-color-gray-2);
 	font-weight: var(--lnx-font-regular);
 	font-size: var(--lnx-font-size-body-1);
+	color: var(--lnx-color-text);
 
 	.month-changers {
 		width: 100%;

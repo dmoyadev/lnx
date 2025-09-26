@@ -200,33 +200,6 @@ div {
 			}
 		}
 
-		&:not(:has(:disabled)):focus-within,
-		&.has-value {
-			&:has(.btn-icon) {
-				input {
-					padding-right: 40px;
-				}
-			}
-
-			&:has(.icon) {
-				input {
-					padding-right: 36px;
-				}
-			}
-
-			&:has(.icon):has(.btn-icon) {
-				input {
-					padding-right: 70px;
-				}
-			}
-
-			&:has(.icon):has(.btn-icon:only-child) {
-				input {
-					padding-right: 40px;
-				}
-			}
-		}
-
 		.label {
 			font-size: var(--lnx-font-size-small);
 		}

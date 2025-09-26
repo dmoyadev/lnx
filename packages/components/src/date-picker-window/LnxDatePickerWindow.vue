@@ -239,6 +239,7 @@ function selectYear(year: Year) {
 .date-picker-window {
 	display: flex;
 	min-width: 280px;
+	background: var(--lnx-date-picker-window-color-bg, var(--lnx-color-gray-9));
 
 	.view {
 		display: flex;
