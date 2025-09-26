@@ -21,7 +21,7 @@ const end = ref();
 
 # DatePicker
 
-The date picker component allows users to select dates or date ranges. It triggers a dropdown containing the [LnxDatePickerWindow](/components/date-picker-window) when interacting with the input field.
+The date picker component allows users to select dates or date ranges. It triggers a dropdown containing the [DatePickerWindow](/components/date-picker-window) when interacting with the input field.
 
 <DemoContainer 
     v-slot="{ addEmit, variation, showcasedProp}"

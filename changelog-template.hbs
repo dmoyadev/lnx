@@ -1,24 +1,22 @@
 # Changelog
-> More info: https://github.com/cookpete/auto-changelog
+> Repo: https://github.com/dmoyadev/lnx
+>
+> More info about the changelog: https://github.com/cookpete/auto-changelog
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+
 {{#each releases}}
 {{#if href}}
-##{{#unless major}}#{{/unless}} [{{title}}]({{href}})
+#{{#unless major}}#{{/unless}} [{{title}}]({{href}})
 {{else}}
-### {{title}}
+## {{title}}
 {{/if}}
 
-> 📅 Released on: {{niceDate}}
+<small>📅 Released on: {{niceDate}}</small>
 
-{{#commit-list commits message='✨|🎨' heading='### ✨ New things'}}
+{{#commit-list commits }}
 - {{#if commit.breaking}}**Breaking change:** {{/if}}{{subject}} [`{{shorthash}}`]({{href}}) <small>{{author}}</small>
 {{/commit-list}}
-{{#commit-list commits message='🐛' heading='### 🐛 Fixes'}}
-- {{#if commit.breaking}}**Breaking change:** {{/if}}{{subject}} [`{{shorthash}}`]({{href}}) <small>{{author}}</small>
-{{/commit-list}}
-{{#commit-list commits message='🏗|✅|📖' heading='### 🏗 Core'}}
-- {{#if commit.breaking}}**Breaking change:** {{/if}}{{subject}} [`{{shorthash}}`]({{href}}) <small>{{author}}</small>
-{{/commit-list}}
+
 {{/each}}
