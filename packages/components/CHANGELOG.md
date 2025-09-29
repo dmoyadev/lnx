@@ -1,9 +1,15 @@
 # Changelog
 > Repo: https://github.com/dmoyadev/lnx
-> 
+>
 > More info about the changelog: https://github.com/cookpete/auto-changelog
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
+
+## [v0.7.0](https://github.com/dmoyadev/lnx/compare/v0.6.0...v0.7.0)
+
+<small>📅 Released on: 29 September 2025</small>
+
+- ✨ [`[file-uploader]`](https://lnx.dmoya.dev/components/file-uploader) Add component [`53f9104`](https://github.com/dmoyadev/lnx/commit/53f9104dd03ef295699743e2e553fd74b4a8cc12) <small>Daniel Moya</small>
 
 ## [v0.6.0](https://github.com/dmoyadev/lnx/compare/v0.5.0...v0.6.0)
 
