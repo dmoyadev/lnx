@@ -40,8 +40,8 @@ export interface ComponentSlot {
 	description: string;
 	readonly?: boolean;
 	value?: string;
-	initialValue?: string;
-	defaultValue?: string;
+	initialValue?: string; /* To reset the slot content in the showcase */
+	defaultValue?: string; /* Content that shows up when the slot is not given */
 	scopes?: {
 		name: string;
 		type: string;

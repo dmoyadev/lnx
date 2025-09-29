@@ -88,7 +88,7 @@ watch(showcasedProp, (newVal) => {
 					class="variation-container"
 				>
 					<template v-if="possibleVariations.length > 1">
-						<span class="title">{{ variation }}</span>
+						<span class="title">{{ variation == undefined ? 'undefined' : JSON.stringify(variation) }}</span>
 					</template>
 					<slot
 						:add-emit="addEmittedEvent"

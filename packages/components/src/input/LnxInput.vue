@@ -36,12 +36,9 @@ const showPassword = ref(false);
 </script>
 
 <template>
-	<div>
+	<div class="input">
 		<label
-			:class="{
-				'has-value': !!modelValue,
-				'has-error': hasError,
-			}"
+			:class="{ 'has-error': hasError }"
 		>
 			<!-- Label -->
 			<span
@@ -162,7 +159,7 @@ const showPassword = ref(false);
 </template>
 
 <style scoped lang="scss">
-div {
+.input {
 	width: 100%;
 	display: flex;
 	flex-direction: column;

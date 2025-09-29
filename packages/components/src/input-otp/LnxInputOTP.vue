@@ -89,10 +89,7 @@ onMounted(() => {
 <template>
 	<div
 		class="input-otp"
-		:class="{
-			'has-value': !!modelValue,
-			'has-error': hasError,
-		}"
+		:class="{ 'has-error': hasError }"
 		@paste.prevent="handlePaste($event)"
 	>
 		<!-- Label -->

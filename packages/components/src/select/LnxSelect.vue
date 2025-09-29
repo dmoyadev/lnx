@@ -122,10 +122,7 @@ function select(item: T) {
 <template>
 	<div
 		class="select"
-		:class="{
-			'has-value': modelValue,
-			'is-readonly': isDisabled || isReadonly,
-		}"
+		:class="{ 'has-error': hasError }"
 		@click="showItems = true;"
 		@focus="showItemsList()"
 		@keydown.esc="showItems = false"

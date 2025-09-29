@@ -5,6 +5,7 @@ export * from './button';
 export * from './icon';
 export * from './date-picker';
 export * from './date-picker-window';
+export * from './file-uploader';
 export * from './input';
 export * from './input-otp';
 export * from './modal';

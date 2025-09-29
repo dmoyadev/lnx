@@ -13,6 +13,7 @@ import {
 	CALENDAR_VIEW_TYPES,
 	LnxDatePickerWindow,
 	LnxSelect,
+	LnxFileUploader,
 } from 'lnxjs-components/src';
 
 const show = ref('');
@@ -25,6 +26,7 @@ const datePickerModel = ref<Date>();
 const datePickerStartModel = ref<Date>();
 const datePickerEndModel = ref<Date>();
 const selectModel = ref();
+const fileUploaderModel = ref();
 
 const selectItems = [
 	{
@@ -156,6 +158,13 @@ function toggleDarkMode() {
 		@click="show === 'select' ? show = '' : show = 'select'"
 	>
 		LnxSelect
+	</LnxButton>
+
+	<LnxButton
+		class="btn-toggle"
+		@click="show === 'file-uploader' ? show = '' : show = 'file-uploader'"
+	>
+		LnxFileUploader
 	</LnxButton>
 
 	<template v-if="show === 'button'">
@@ -603,6 +612,49 @@ function toggleDarkMode() {
 							<span style="color: var(--lnx-color-primary)">{{ item.label }} (custom item)</span>
 						</template>
 					</LnxSelect>
+				</div>
+			</div>
+		</form>
+	</template>
+
+	<template v-if="show === 'file-uploader'">
+		<form>
+			<div
+				v-for="isLoading in booleanVariants"
+				:key="String(isLoading)"
+				class="variant-container"
+			>
+				<span class="variant">{{ !isLoading ? 'Loading' : 'Not loading' }}</span>
+				<div
+					v-for="hasError in booleanVariants"
+					:key="String(hasError)"
+					class="variant-container"
+				>
+					<span class="variant">{{ !hasError ? 'Has Error' : 'No error' }}</span>
+					<div
+						v-for="multiple in booleanVariants"
+						:key="String(multiple)"
+						class="variant-container"
+					>
+						<span class="variant">{{ multiple ? 'Multiple' : 'Single' }}</span>
+						<LnxFileUploader
+							v-model="fileUploaderModel"
+							:is-loading="!isLoading"
+							:has-error="!hasError"
+							:multiple
+							:is-uploading
+						>
+							This is the label
+
+							<template #helper>
+								This is a helper
+							</template>
+
+							<template #error>
+								This is an error
+							</template>
+						</LnxFileUploader>
+					</div>
 				</div>
 			</div>
 		</form>

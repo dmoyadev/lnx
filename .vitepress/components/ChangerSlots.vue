@@ -42,6 +42,7 @@ defineModel<string>('showcasedProp', { default: '' });
 			<textarea
 				:readonly="slot.readonly"
 				:value="slot.value"
+				:placeholder="slot.defaultValue"
 				@input="slot.value = ($event.target as HTMLTextAreaElement).value"
 			/>
 
