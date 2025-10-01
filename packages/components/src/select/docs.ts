@@ -15,6 +15,7 @@ export function useComponent() {
 			controlType: 'none',
 			type: 'T extends { id: number | string }',
 			defaultValue: 'undefined',
+			helper: 'It has a modifier `convert` that converts the value with the convertFn prop before emitting it',
 			value: undefined,
 		},
 		items: {
@@ -31,6 +32,13 @@ export function useComponent() {
 				label: 'Option 3',
 				value: 'option-3', 
 			}],
+		},
+		convertFn: {
+			description: 'Function to convert the value before emitting it. It receives the item and must return the converted value',
+			controlType: 'none',
+			type: '(item: T) => unknown',
+			defaultValue: 'undefined',
+			value: undefined,
 		},
 		labelProperty: {
 			description: 'The property of the item to be shown as a label',

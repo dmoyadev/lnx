@@ -5,15 +5,25 @@ import { computed, onMounted, onUnmounted, Ref, ref, useAttrs, useTemplateRef, w
 import { isOutOfViewport, normalizeString, OutOfView } from '../helpers';
 import { onClickOutside } from './onClickOutside';
 
-const modelValue = defineModel<T>();
+const [modelValue, modifiers] = defineModel<T>({
+	set(value: T) {
+		if(modifiers.convert && props.convertFn) {
+			return props.convertFn(value);
+		}
+
+		return value;
+	},
+});
 
 const props = withDefaults(defineProps<{
 	items: T[]; /* The items to be shown in the select */
 	labelProperty?: string; /* The property of the item to be shown as a label */
+	convertFn?: (value: T) => unknown; /* Function to convert the v-model value to something */
 	isLoading?: boolean; /* When loading, it is disabled and shows different content */
 	hasError?: boolean; /* Indicates if it should show the error slot */
 	customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
 }>(), {
+	convertFn: undefined,
 	customValidity: undefined,
 	labelProperty: 'label',
 });
@@ -96,7 +106,6 @@ function focusItem(direction: 1 | -1) {
 		return;
 	}
 
-	console.log(focusedItemIndex.value);
 	if (focusedItemIndex.value == null) {
 		focusedItemIndex.value = 0;
 	} else {

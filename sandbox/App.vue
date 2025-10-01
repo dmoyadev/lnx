@@ -558,6 +558,9 @@ function toggleDarkMode() {
 	</template>
 
 	<template v-if="show === 'select'">
+		<br>
+		selected: {{ selectModel }}
+		<br>
 		<form>
 			<div
 				v-for="isLoading in booleanVariants"
@@ -613,6 +616,19 @@ function toggleDarkMode() {
 						</template>
 					</LnxSelect>
 				</div>
+			</div>
+
+			<div class="variant-container">
+				<span class="variant">With a convert function</span>
+				<LnxSelect
+					v-model.convert="selectModel"
+					placeholder="placeholder"
+					label-property="label"
+					:items="selectItems"
+					:convert-fn="(value) => JSON.stringify({ ...value, newProperty: 'cool!' })"
+				>
+					This is the label
+				</LnxSelect>
 			</div>
 		</form>
 	</template>
