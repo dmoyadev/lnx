@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T extends { id: number | string }">
 import { LnxInput } from '../input';
 import { LnxIcon } from '../icon';
-import { computed, onMounted, onUnmounted, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
 import { isOutOfViewport, normalizeString, OutOfView } from '../helpers';
 import { onClickOutside } from './onClickOutside';
 
@@ -81,24 +81,40 @@ onClickOutside($list as Ref<HTMLUListElement>, () => {
 });
 
 const showItems = ref(false);
-function showItemsList() {
+async function showItemsList() {
 	if (isDisabled.value || isReadonly.value) {
 		return;
 	}
 	focusedItemIndex.value = null;
 	showItems.value = true;
-	$list.value?.focus();
+
+	if (!$list.value || !$input.value || isDisabled.value || isReadonly.value) {
+		return;
+	}
+	calculateListPosition();
+	$list.value.focus();
 }
 
-const isListOutOfViewport = ref<OutOfView>();
-function checkListPosition() {
-	if ($list.value) {
-		isListOutOfViewport.value = isOutOfViewport($list.value);
+function calculateListPosition() {
+	if (!showItems.value || !$list.value || !$input.value) {
+		return;
+	}
+
+	// @ts-expect-error Vue internals
+	const inputPosition = $input.value.$el.getBoundingClientRect();
+
+	$list.value.style.width = `${inputPosition.width}px`;
+	console.log(`translate(${inputPosition.x}px, ${inputPosition.y + 56 + 8}px)`);
+	$list.value.style.transform = `translate(${inputPosition.x}px, ${inputPosition.y + 56 + 4}px)`;
+
+	const isListOutOfViewport: OutOfView = isOutOfViewport($list.value);
+	if(isListOutOfViewport.bottom) {
+		$list.value.style.transform = `translate(${inputPosition.x}px, ${inputPosition.y - $list.value.offsetHeight - 4}px)`;
 	}
 }
-onMounted(() => addEventListener('resize', checkListPosition));
-onUnmounted(() => removeEventListener('resize', checkListPosition));
-watch(showItems, () => checkListPosition);
+onMounted(() => addEventListener('resize', calculateListPosition));
+onUnmounted(() => removeEventListener('resize', calculateListPosition));
+watch(showItems, () => calculateListPosition);
 
 const focusedItemIndex = ref();
 function focusItem(direction: 1 | -1) {
@@ -161,58 +177,59 @@ function select(item: T) {
 		</LnxInput>
 
 		<!-- Option list -->
-		<Transition>
-			<ul
-				v-show="showItems"
-				ref="$list"
-				class="list"
-				:class="isListOutOfViewport"
-			>
-				<!-- Normal state -->
-				<template v-if="filteredItems?.length">
-					<li
-						v-for="(item, index) in filteredItems"
-						:key="index"
-						class="list-item"
-						:class="{
-							'selected': JSON.stringify(item) === JSON.stringify(modelValue),
-						}"
-						tabindex="0"
-						@click.stop="select(item)"
-						@keydown.enter="select(item)"
-					>
-						<span class="list-item-label">
-							<slot
-								name="item"
-								:item="item"
-							>
-								<span>{{ (labelProperty && labelProperty in item) ? item[labelProperty as keyof typeof item] : item }}</span>
-							</slot>
-						</span>
-
-						<span
-							v-if="JSON.stringify(item) === JSON.stringify(modelValue)"
-							class="selected-item-icon"
-						>
-							<LnxIcon
-								:size="12"
-								icon="mdi:check"
-							/>
-						</span>
-					</li>
-				</template>
-
-				<!-- Empty state -->
-				<li
-					v-else
-					class="list-item empty"
+		<Teleport to="body">
+			<Transition>
+				<ul
+					v-show="showItems"
+					ref="$list"
+					class="list"
 				>
-					<slot name="notFound">
-						<span class="list-item-label">Not found</span>
-					</slot>
-				</li>
-			</ul>
-		</Transition>
+					<!-- Normal state -->
+					<template v-if="filteredItems?.length">
+						<li
+							v-for="(item, index) in filteredItems"
+							:key="index"
+							class="list-item"
+							:class="{
+								'selected': JSON.stringify(item) === JSON.stringify(modelValue),
+							}"
+							tabindex="0"
+							@click.stop="select(item)"
+							@keydown.enter="select(item)"
+						>
+							<span class="list-item-label">
+								<slot
+									name="item"
+									:item="item"
+								>
+									<span>{{ (labelProperty && labelProperty in item) ? item[labelProperty as keyof typeof item] : item }}</span>
+								</slot>
+							</span>
+
+							<span
+								v-if="JSON.stringify(item) === JSON.stringify(modelValue)"
+								class="selected-item-icon"
+							>
+								<LnxIcon
+									:size="12"
+									icon="mdi:check"
+								/>
+							</span>
+						</li>
+					</template>
+
+					<!-- Empty state -->
+					<li
+						v-else
+						class="list-item empty"
+					>
+						<slot name="notFound">
+							<span class="list-item-label">Not found</span>
+						</slot>
+					</li>
+				</ul>
+			</Transition>
+		</Teleport>
 	</div>
 </template>
 
@@ -227,51 +244,46 @@ function select(item: T) {
 
 .select {
 	position: relative;
+}
 
-	.list {
-		--input-height: 52px;
-		z-index: 100001;
-		top: var(--input-height);
-		background: var(--lnx-select-list-color-bg, var(--lnx-color-gray-9));
-		border: 1px solid var(--lnx-color-gray-5);
-		border-radius: var(--lnx-radius-2);
-		padding: var(--lnx-spacing-2);
-		position: absolute;
-		width: 100%;
-		max-height: 296px;
-		overflow-y: auto;
+.list {
+	will-change: opacity;
+	--input-height: 52px;
+	background: var(--lnx-select-list-color-bg, var(--lnx-color-gray-9));
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100001;
+	border: 1px solid var(--lnx-color-gray-3);
+	border-radius: var(--lnx-radius-3);
+	box-shadow: var(--lnx-elevation-3);
+	max-height: 296px;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin: 0;
+
+	.list-item {
 		display: flex;
-		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
 		gap: 4px;
-		margin: 0;
+		padding: 8px;
 
-
-		// When out of viewport
-		&.left { left: 0; }
-		&.right { left: -100%; }
-		&.bottom { transform: translateY(calc(-100% - var(--input-height))); }
-
-		.list-item {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 4px;
-			padding: 8px;
-
-			&:hover:not(&.empty),
-			&:focus:not(&.empty),
-			&.selected:not(&.empty) {
-				cursor: pointer;
-				background: var(--lnx-color-gray-bg);
-				border-radius: var(--lnx-radius-2);
-			}
+		&:hover:not(&.empty),
+		&:focus:not(&.empty),
+		&.selected:not(&.empty) {
+			cursor: pointer;
+			background: var(--lnx-color-gray-bg);
+			border-radius: var(--lnx-radius-2);
 		}
 	}
 }
 
 .v-enter-active,
 .v-leave-active {
-	transition: opacity 0.2s ease;
+	transition: opacity .2s;
 }
 
 .v-enter-from,
