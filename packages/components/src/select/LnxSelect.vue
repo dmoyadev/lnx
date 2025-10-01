@@ -5,7 +5,7 @@ import { computed, onMounted, onUnmounted, Ref, ref, useAttrs, useTemplateRef, w
 import { isOutOfViewport, normalizeString, OutOfView } from '../helpers';
 import { onClickOutside } from './onClickOutside';
 
-const [modelValue, modifiers] = defineModel<T>({
+const [modelValue, modifiers] = defineModel<T, 'convert'>({
 	set(value: T) {
 		if(modifiers.convert && props.convertFn) {
 			return props.convertFn(value);

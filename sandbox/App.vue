@@ -25,10 +25,10 @@ const datePickerWindowEndModel = ref<Date>();
 const datePickerModel = ref<Date>();
 const datePickerStartModel = ref<Date>();
 const datePickerEndModel = ref<Date>();
-const selectModel = ref();
+const selectModel = ref<string>();
 const fileUploaderModel = ref();
 
-const selectItems = [
+const selectItems: { id:number, label: string, value: unknown }[] = [
 	{
 		id: 1,
 		label: 'Option 1',
