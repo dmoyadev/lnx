@@ -25,7 +25,7 @@ const datePickerWindowEndModel = ref<Date>();
 const datePickerModel = ref<Date>();
 const datePickerStartModel = ref<Date>();
 const datePickerEndModel = ref<Date>();
-const selectModel = ref<string>();
+const selectModel = ref<string>('');
 const fileUploaderModel = ref();
 
 const selectItems: { id:number, label: string, value: unknown }[] = [
@@ -561,7 +561,7 @@ function toggleDarkMode() {
 		<br>
 		selected: {{ selectModel }}
 		<br>
-		<form>
+		<form style="margin-top: 75px;">
 			<div
 				v-for="isLoading in booleanVariants"
 				:key="String(isLoading)"
@@ -623,11 +623,38 @@ function toggleDarkMode() {
 				<LnxSelect
 					v-model.convert="selectModel"
 					placeholder="placeholder"
-					label-property="label"
 					:items="selectItems"
-					:convert-fn="(value) => JSON.stringify({ ...value, newProperty: 'cool!' })"
+					label-property="label"
+					:convert-fn="(value) => ({ ...value, newProperty: 'cool!' })"
+				>
+					With a label property
+				</LnxSelect>
+
+				<LnxSelect
+					v-model.convert="selectModel"
+					placeholder="placeholder"
+					:items="selectItems"
+					:convert-fn="(value) => value.label + ' (converted)'"
+				>
+					With a custom convert function
+				</LnxSelect>
+			</div>
+
+			<div class="variant-container">
+				<span class="variant">With a custom item</span>
+				<LnxSelect
+					v-model="selectModel"
+					placeholder="placeholder"
+					:items="selectItems"
 				>
 					This is the label
+
+					<template #itemInput="{ item }">
+						<span style="display: flex; align-items: center; gap: 4px;">
+							<LnxIcon icon="mdi:star" />
+							<span style="color: var(--lnx-color-primary)">{{ item.label }} (custom item) as d f a s d f a s d f asf asdf as df</span>
+						</span>
+					</template>
 				</LnxSelect>
 			</div>
 		</form>

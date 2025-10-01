@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{
 }>(), {
 	convertFn: undefined,
 	customValidity: undefined,
-	labelProperty: 'label',
+	labelProperty: '',
 });
 
 const slots = defineSlots<{
@@ -33,6 +33,7 @@ const slots = defineSlots<{
 	helper(): unknown; /* The helper message of the input */
 	error(): unknown; /* The error message of the input */
 	item(props: { item: T }): unknown; /* How the item will be shown in the list */
+	itemInput(props: { item: T }): unknown; /* How the item will be shown in the input when selected */
 	notFound(): unknown; /* What will be shown when there are no items to show */
 }>();
 const inputSlotNames = Object.keys(slots).filter(slot => ['default', 'helper', 'error'].includes(slot)) as ('default' | 'helper' | 'error')[];
@@ -59,8 +60,20 @@ const inputValue = computed<string>(() => {
 	if (itemsQuery.value) {
 		return itemsQuery.value;
 	}
+
 	if (!showItems.value && modelValue.value?.[props.labelProperty as keyof T]) {
 		return String(modelValue.value[props.labelProperty as keyof T]);
+	}
+
+	if (!showItems.value && modelValue.value && props.convertFn) {
+		if (props.labelProperty) {
+			return String(modelValue.value[props.labelProperty as keyof T]);
+		}
+
+		if (typeof modelValue.value === 'string') {
+			return modelValue.value as string;
+		}
+		return String(modelValue.value);
 	}
 	return '';
 });
@@ -75,10 +88,7 @@ function cleanItemsQuery() {
 }
 
 const $list = useTemplateRef<HTMLUListElement>('$list');
-onClickOutside($list as Ref<HTMLUListElement>, () => {
-	itemsQuery.value = '';
-	showItems.value = false;
-});
+onClickOutside($list as Ref<HTMLUListElement>, () => hideItemsList());
 
 const showItems = ref(false);
 async function showItemsList() {
@@ -91,32 +101,44 @@ async function showItemsList() {
 	if (!$list.value || !$input.value || isDisabled.value || isReadonly.value) {
 		return;
 	}
-	calculateListPosition();
-	$list.value.focus();
+	await calculateListPosition();
+}
+function hideItemsList() {
+	showItems.value = false;
+	focusedItemIndex.value = null;
+	itemsQuery.value = '';
 }
 
-function calculateListPosition() {
+async function calculateListPosition() {
+	await nextTick();
 	if (!showItems.value || !$list.value || !$input.value) {
 		return;
 	}
 
 	// @ts-expect-error Vue internals
 	const inputPosition = $input.value.$el.getBoundingClientRect();
+	const scrollAmount = document.documentElement.scrollTop || document.body.scrollTop;
 
 	$list.value.style.width = `${inputPosition.width}px`;
-	console.log(`translate(${inputPosition.x}px, ${inputPosition.y + 56 + 8}px)`);
-	$list.value.style.transform = `translate(${inputPosition.x}px, ${inputPosition.y + 56 + 4}px)`;
+	$list.value.style.transform = `translate(${inputPosition.x}px, ${inputPosition.y + scrollAmount + 56 + 4}px)`;
 
 	const isListOutOfViewport: OutOfView = isOutOfViewport($list.value);
 	if(isListOutOfViewport.bottom) {
-		$list.value.style.transform = `translate(${inputPosition.x}px, ${inputPosition.y - $list.value.offsetHeight - 4}px)`;
+		$list.value.style.transform = `translate(${inputPosition.x}px, ${inputPosition.y + scrollAmount - $list.value.offsetHeight - 4}px)`;
 	}
 }
-onMounted(() => addEventListener('resize', calculateListPosition));
-onUnmounted(() => removeEventListener('resize', calculateListPosition));
+
+onMounted(() => {
+	addEventListener('resize', calculateListPosition);
+	addEventListener('scroll', calculateListPosition);
+});
+onUnmounted(() => {
+	removeEventListener('resize', calculateListPosition);
+	removeEventListener('scroll', calculateListPosition);
+});
 watch(showItems, () => calculateListPosition);
 
-const focusedItemIndex = ref();
+const focusedItemIndex = ref<number | null>(null);
 function focusItem(direction: 1 | -1) {
 	if (!showItems.value) {
 		return;
@@ -124,23 +146,32 @@ function focusItem(direction: 1 | -1) {
 
 	if (focusedItemIndex.value == null) {
 		focusedItemIndex.value = 0;
-	} else {
-		focusedItemIndex.value += direction;
-	}
-}
-watch(focusedItemIndex, (value) => {
-	const listItems = $list.value?.querySelectorAll('.list-item');
-	if (!listItems?.length || value == null) {
 		return;
 	}
 
-	(listItems[value] as HTMLElement).focus();
+	if (direction === -1 && focusedItemIndex.value === 0) {
+		focusedItemIndex.value = filteredItems.value.length - 1;
+		return;
+	}
+
+	if (direction === 1 && focusedItemIndex.value === filteredItems.value.length - 1) {
+		focusedItemIndex.value = 0;
+		return;
+	}
+	focusedItemIndex.value += direction;
+}
+watch(focusedItemIndex, (_, newValue) => {
+	const listItems = $list.value?.querySelectorAll('.list-item');
+	if (!listItems?.length || newValue == null) {
+		return;
+	}
+
+	(listItems[newValue] as HTMLElement).focus();
 });
 
 function select(item: T) {
 	modelValue.value = item;
-	itemsQuery.value = '';
-	showItems.value = false;
+	hideItemsList();
 }
 </script>
 
@@ -148,11 +179,8 @@ function select(item: T) {
 	<div
 		class="select"
 		:class="{ 'has-error': hasError }"
-		@click="showItems = true;"
-		@focus="showItemsList()"
-		@keydown.esc="showItems = false"
-		@keydown.up.prevent="focusItem(-1)"
-		@keydown.down.prevent="focusItem(1)"
+		@click="showItemsList()"
+		@keydown.esc="hideItemsList()"
 	>
 		<LnxInput
 			v-bind="{ ...$attrs, ...props }"
@@ -161,7 +189,8 @@ function select(item: T) {
 			:value="inputValue"
 			type="text"
 			@click="cleanItemsQuery()"
-			@focus="showItemsList()"
+			@keydown.up.prevent="focusItem(-1)"
+			@keydown.down.prevent="focusItem(1)"
 		>
 			<!-- Pass all slots to the input -->
 			<template
@@ -176,6 +205,18 @@ function select(item: T) {
 			</template>
 		</LnxInput>
 
+		<div
+			v-if="!!modelValue && !labelProperty && !!$slots.itemInput && !showItems"
+			class="input-content"
+		>
+			<slot
+				name="itemInput"
+				:item="modelValue"
+			>
+				{{ modelValue }}
+			</slot>
+		</div>
+
 		<!-- Option list -->
 		<Teleport to="body">
 			<Transition>
@@ -183,6 +224,9 @@ function select(item: T) {
 					v-show="showItems"
 					ref="$list"
 					class="list"
+					tabindex="0"
+					@keydown.up.prevent="focusItem(-1)"
+					@keydown.down.prevent="focusItem(1)"
 				>
 					<!-- Normal state -->
 					<template v-if="filteredItems?.length">
@@ -191,7 +235,10 @@ function select(item: T) {
 							:key="index"
 							class="list-item"
 							:class="{
-								'selected': JSON.stringify(item) === JSON.stringify(modelValue),
+								'selected': (!!convertFn
+									? JSON.stringify(convertFn(item))
+									: JSON.stringify(item)
+								) === JSON.stringify(modelValue),
 							}"
 							tabindex="0"
 							@click.stop="select(item)"
@@ -244,6 +291,26 @@ function select(item: T) {
 
 .select {
 	position: relative;
+
+	&:has(.input-content) {
+		.input {
+			::placeholder {
+				color: transparent;
+			}
+		}
+	}
+
+	.input-content {
+		position: absolute;
+		inset: 0;
+		top: 20px;
+		padding: 6px 28px 4px 8px;
+		overflow: hidden;
+		max-width: calc(100% - 36px);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		pointer-events: none;
+	}
 }
 
 .list {
@@ -270,6 +337,15 @@ function select(item: T) {
 		justify-content: space-between;
 		gap: 4px;
 		padding: 8px;
+		margin: 0 6px;
+
+		&:first-child {
+			margin-top: 6px;
+		}
+
+		&:last-child {
+			margin-bottom: 6px;
+		}
 
 		&:hover:not(&.empty),
 		&:focus:not(&.empty),

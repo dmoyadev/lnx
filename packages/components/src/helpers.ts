@@ -43,6 +43,5 @@ export function isOutOfViewport(element: HTMLElement): OutOfView {
 	out.right = bounding.right > (window.innerWidth || document.documentElement.clientWidth);
 	out.any = out.top || out.left || out.bottom || out.right;
 	out.all = out.top && out.left && out.bottom && out.right;
-
 	return out;
 }

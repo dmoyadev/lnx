@@ -18,7 +18,7 @@ export default defineConfigWithVueTs([
 
 	{
 		rules: {
-			'no-console': 'off',
+			'no-console': 'warn',
 			'no-debugger': 'error',
 
 			'vue/html-indent': ['warn', 'tab'],

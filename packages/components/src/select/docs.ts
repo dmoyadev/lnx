@@ -44,7 +44,7 @@ export function useComponent() {
 			description: 'The property of the item to be shown as a label',
 			controlType: 'input',
 			type: 'string',
-			defaultValue: '"label"',
+			defaultValue: '""',
 			value: 'label',
 		},
 		isLoading: {
@@ -101,6 +101,15 @@ export function useComponent() {
 				{
 					name: 'item',
 					type: 'T', 
+				},
+			],
+		},
+		itemInput: {
+			description: 'How the item will be shown in the input when selected',
+			scopes: [
+				{
+					name: 'item',
+					type: 'T',
 				},
 			],
 		},
