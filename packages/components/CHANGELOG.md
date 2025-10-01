@@ -5,6 +5,12 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.1](https://github.com/dmoyadev/lnx/compare/v0.7.0...v0.7.1)
+
+<small>📅 Released on: 1 October 2025</small>
+
+- ✨ [`[select]`](https://lnx.dmoya.dev/components/select) Allow conversion of selected value in two way binding [`4da4122`](https://github.com/dmoyadev/lnx/commit/4da4122ac1c86abc2ab1af69213369cf40ae1b6c) <small>Daniel Moya</small>
+
 ## [v0.7.0](https://github.com/dmoyadev/lnx/compare/v0.6.0...v0.7.0)
 
 <small>📅 Released on: 29 September 2025</small>
