@@ -5,6 +5,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.2](https://github.com/dmoyadev/lnx/compare/v0.7.1...v0.7.2)
+
+<small>📅 Released on: 1 October 2025</small>
+
+- ✨ [`[select]`](https://lnx.dmoya.dev/components/select) Fix dropdown not being actually absolute positioned [`a2a66d6`](https://github.com/dmoyadev/lnx/commit/a2a66d60c50aaded1ff0d7ae4ddfe103462ecbfc) <small>Daniel Moya</small>
+- ✨ [`[select]`](https://lnx.dmoya.dev/components/select) Fix typings of modifiers [`9f75d8a`](https://github.com/dmoyadev/lnx/commit/9f75d8ac8789d17f6f317d2868254378a65dbe5b) <small>Daniel Moya</small>
+
 ## [v0.7.1](https://github.com/dmoyadev/lnx/compare/v0.7.0...v0.7.1)
 
 <small>📅 Released on: 1 October 2025</small>
