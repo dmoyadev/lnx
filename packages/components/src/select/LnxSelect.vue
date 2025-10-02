@@ -1,9 +1,11 @@
 <script setup lang="ts" generic="T extends { id: number | string }">
 import { LnxInput } from '../input';
 import { LnxIcon } from '../icon';
-import { computed, nextTick, onMounted, onUnmounted, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
-import { isOutOfViewport, normalizeString, OutOfView } from '../helpers';
+import { computed, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
+import { normalizeString } from '../helpers';
 import { onClickOutside } from './onClickOutside';
+import { useListPosition } from './useListPosition';
+import { useListItemFocus } from './useListItemsFocus';
 
 const [modelValue, modifiers] = defineModel<T, 'convert'>({
 	set(value: T) {
@@ -43,7 +45,7 @@ const isReadonly = computed(() => props.isLoading || !!('readonly' in $attrs && 
 const isDisabled = computed(() => props.isLoading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
 
 const itemsQuery = ref<string>('');
-const filteredItems = computed(() => {
+const filteredItems = computed<T[]>(() => {
 	if (!itemsQuery.value) {
 		return props.items;
 	}
@@ -55,6 +57,7 @@ const filteredItems = computed(() => {
 		);
 	});
 });
+watch(itemsQuery, () => calculateListPosition());
 
 const inputValue = computed<string>(() => {
 	if (itemsQuery.value) {
@@ -88,9 +91,18 @@ function cleanItemsQuery() {
 }
 
 const $list = useTemplateRef<HTMLUListElement>('$list');
+
+function hideItemsList() {
+	showItems.value = false;
+	focusedItemIndex.value = null;
+	itemsQuery.value = '';
+}
 onClickOutside($list as Ref<HTMLUListElement>, () => hideItemsList());
 
+const { calculateListPosition } = useListPosition($list as Ref<HTMLElement>, $input as Ref<HTMLElement>);
 const showItems = ref(false);
+watch(showItems, () => calculateListPosition);
+
 async function showItemsList() {
 	if (isDisabled.value || isReadonly.value) {
 		return;
@@ -103,63 +115,8 @@ async function showItemsList() {
 	}
 	await calculateListPosition();
 }
-function hideItemsList() {
-	showItems.value = false;
-	focusedItemIndex.value = null;
-	itemsQuery.value = '';
-}
 
-async function calculateListPosition() {
-	await nextTick();
-	if (!showItems.value || !$list.value || !$input.value) {
-		return;
-	}
-
-	// @ts-expect-error Vue internals
-	const inputPosition = $input.value.$el.getBoundingClientRect();
-	const scrollAmount = document.documentElement.scrollTop || document.body.scrollTop;
-
-	$list.value.style.width = `${inputPosition.width}px`;
-	$list.value.style.transform = `translate(${inputPosition.x}px, ${inputPosition.y + scrollAmount + 56 + 4}px)`;
-
-	const isListOutOfViewport: OutOfView = isOutOfViewport($list.value);
-	if(isListOutOfViewport.bottom) {
-		$list.value.style.transform = `translate(${inputPosition.x}px, ${inputPosition.y + scrollAmount - $list.value.offsetHeight - 4}px)`;
-	}
-}
-
-onMounted(() => {
-	addEventListener('resize', calculateListPosition);
-	addEventListener('scroll', calculateListPosition);
-});
-onUnmounted(() => {
-	removeEventListener('resize', calculateListPosition);
-	removeEventListener('scroll', calculateListPosition);
-});
-watch(showItems, () => calculateListPosition);
-
-const focusedItemIndex = ref<number | null>(null);
-function focusItem(direction: 1 | -1) {
-	if (!showItems.value) {
-		return;
-	}
-
-	if (focusedItemIndex.value == null) {
-		focusedItemIndex.value = 0;
-		return;
-	}
-
-	if (direction === -1 && focusedItemIndex.value === 0) {
-		focusedItemIndex.value = filteredItems.value.length - 1;
-		return;
-	}
-
-	if (direction === 1 && focusedItemIndex.value === filteredItems.value.length - 1) {
-		focusedItemIndex.value = 0;
-		return;
-	}
-	focusedItemIndex.value += direction;
-}
+const { focusedItemIndex, focusItem } = useListItemFocus(filteredItems.value.length);
 watch(focusedItemIndex, (_, newValue) => {
 	const listItems = $list.value?.querySelectorAll('.list-item');
 	if (!listItems?.length || newValue == null) {
@@ -280,7 +237,6 @@ function select(item: T) {
 	</div>
 </template>
 
-<!--suppress CssInvalidFunction -->
 <style scoped lang="scss">
 :global(.select-dropdown .v-popper__arrow-container) {
 	display: none;
@@ -303,8 +259,8 @@ function select(item: T) {
 	.input-content {
 		position: absolute;
 		inset: 0;
-		top: 20px;
-		padding: 6px 28px 4px 8px;
+		top: 23px;
+		padding: 0 28px 0 8px;
 		overflow: hidden;
 		max-width: calc(100% - 36px);
 		text-overflow: ellipsis;
