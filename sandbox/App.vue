@@ -95,7 +95,18 @@ const selectItems: { id:number, label: string, value: unknown }[] = [
 		value: 13,
 	},
 ];
-
+const asyncSelectItems = ref();
+const loadingSelectItems = ref(false);
+async function getAsyncItems() {
+	asyncSelectItems.value = [];
+	loadingSelectItems.value = true;
+	return new Promise(() => {
+		setTimeout(() => {
+			loadingSelectItems.value = false;
+			asyncSelectItems.value = selectItems;
+		}, 2000);
+	});
+}
 const booleanVariants = [true, false];
 
 function toggleDarkMode() {
@@ -599,6 +610,7 @@ function toggleDarkMode() {
 						:is-loading="!isLoading"
 						:has-error="!hasError"
 						placeholder="placeholder"
+						label-property="label"
 						:items="selectItems"
 					>
 						This is the label
@@ -654,6 +666,25 @@ function toggleDarkMode() {
 							<LnxIcon icon="mdi:star" />
 							<span style="color: var(--lnx-color-primary)">{{ item.label }} (custom item) as d f a s d f a s d f asf asdf as df</span>
 						</span>
+					</template>
+				</LnxSelect>
+			</div>
+
+			<div class="variant-container">
+				<span class="variant">Async items</span>
+				<LnxSelect
+					v-model="selectModel"
+					placeholder="placeholder"
+					:items="asyncSelectItems"
+					label-property="label"
+					:loading-items="loadingSelectItems"
+					are-items-async
+					@query="getAsyncItems"
+				>
+					This is the label
+
+					<template #notFound>
+						<small>Start writing to see suggestions</small>
 					</template>
 				</LnxSelect>
 			</div>

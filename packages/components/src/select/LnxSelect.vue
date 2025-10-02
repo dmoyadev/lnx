@@ -17,18 +17,27 @@ const [modelValue, modifiers] = defineModel<T, 'convert'>({
 	},
 });
 
-const props = withDefaults(defineProps<{
-	items: T[]; /* The items to be shown in the select */
-	labelProperty?: string; /* The property of the item to be shown as a label */
-	convertFn?: (value: T) => unknown; /* Function to convert the v-model value to something */
-	isLoading?: boolean; /* When loading, it is disabled and shows different content */
-	hasError?: boolean; /* Indicates if it should show the error slot */
-	customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
-}>(), {
-	convertFn: undefined,
-	customValidity: undefined,
-	labelProperty: '',
-});
+const props = withDefaults(
+	defineProps<{
+		items?: T[]; /* The items to be shown in the select */
+		areItemsAsync?: boolean; /* Indicates if the items are being loaded asynchronously */
+		labelProperty?: string; /* The property of the item to be shown as a label */
+		convertFn?: (value: T) => unknown; /* Function to convert the v-model value to something */
+		isLoading?: boolean; /* When loading, it is disabled and shows different content */
+		hasError?: boolean; /* Indicates if it should show the error slot */
+		loadingItems?: boolean; /* Indicates if the items are being loaded asynchronously */
+		customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
+	}>(), {
+		items: () => [],
+		convertFn: undefined,
+		customValidity: undefined,
+		labelProperty: '',
+	},
+);
+
+const emit = defineEmits<{
+	query: [query: string] /* When the input search is written */
+}>();
 
 const slots = defineSlots<{
 	default(): unknown; /* The label of the input */
@@ -36,6 +45,7 @@ const slots = defineSlots<{
 	error(): unknown; /* The error message of the input */
 	item(props: { item: T }): unknown; /* How the item will be shown in the list */
 	itemInput(props: { item: T }): unknown; /* How the item will be shown in the input when selected */
+	loadingItems(): unknown; /* What will be shown when async items are being loaded */
 	notFound(): unknown; /* What will be shown when there are no items to show */
 }>();
 const inputSlotNames = Object.keys(slots).filter(slot => ['default', 'helper', 'error'].includes(slot)) as ('default' | 'helper' | 'error')[];
@@ -45,8 +55,16 @@ const isReadonly = computed(() => props.isLoading || !!('readonly' in $attrs && 
 const isDisabled = computed(() => props.isLoading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
 
 const itemsQuery = ref<string>('');
+watch(itemsQuery, (newValue) => {
+	calculateListPosition();
+	emit('query', newValue);
+});
 const filteredItems = computed<T[]>(() => {
 	if (!itemsQuery.value) {
+		return props.items;
+	}
+
+	if (props.areItemsAsync) {
 		return props.items;
 	}
 
@@ -57,28 +75,44 @@ const filteredItems = computed<T[]>(() => {
 		);
 	});
 });
-watch(itemsQuery, () => calculateListPosition());
+watch(filteredItems, () => calculateListPosition());
 
 const inputValue = computed<string>(() => {
 	if (itemsQuery.value) {
 		return itemsQuery.value;
 	}
 
-	if (!showItems.value && modelValue.value?.[props.labelProperty as keyof T]) {
-		return String(modelValue.value[props.labelProperty as keyof T]);
+	if(!modelValue.value) {
+		return '';
 	}
 
-	if (!showItems.value && modelValue.value && props.convertFn) {
-		if (props.labelProperty) {
+	if(!showItems.value) {
+		// When a custom item input slot is provided, show nothing in the input to allow the slot to be shown
+		if(!!slots.itemInput) {
+			return '';
+		}
+
+		// When there is a selected item and a label property
+		if (modelValue.value[props.labelProperty as keyof T]) {
 			return String(modelValue.value[props.labelProperty as keyof T]);
 		}
 
-		if (typeof modelValue.value === 'string') {
-			return modelValue.value as string;
+		// When there is a selected item and no label property but a convert function
+		if (props.convertFn && props.labelProperty) {
+			return String(modelValue.value[props.labelProperty as keyof T]);
 		}
-		return String(modelValue.value);
 	}
-	return '';
+
+	// When there is a selected item and items are shown, clear the input to allow filtering
+	if(showItems.value) {
+		return '';
+	}
+
+	if(typeof modelValue.value !== 'string') {
+		console.warn('⚠️ [LnxSelect]: When using a non-string v-model value, a labelProperty or convertFn must be provided to show the selected value properly.');
+	}
+
+	return String(modelValue.value || '');
 });
 
 const $input = useTemplateRef<HTMLInputElement>('$input');
@@ -107,6 +141,7 @@ async function showItemsList() {
 	if (isDisabled.value || isReadonly.value) {
 		return;
 	}
+
 	focusedItemIndex.value = null;
 	showItems.value = true;
 
@@ -129,6 +164,14 @@ watch(focusedItemIndex, (_, newValue) => {
 function select(item: T) {
 	modelValue.value = item;
 	hideItemsList();
+}
+
+function isSelected(item: T) {
+	if (!!props.convertFn) {
+		return JSON.stringify(props.convertFn(item)) === JSON.stringify(modelValue.value);
+	}
+
+	return JSON.stringify(item) === JSON.stringify(modelValue.value);
 }
 </script>
 
@@ -157,7 +200,10 @@ function select(item: T) {
 				<slot :name />
 			</template>
 
-			<template #icon>
+			<template
+				v-if="items?.length"
+				#icon
+			>
 				<LnxIcon icon="mdi:chevron-down" />
 			</template>
 		</LnxInput>
@@ -192,10 +238,7 @@ function select(item: T) {
 							:key="index"
 							class="list-item"
 							:class="{
-								'selected': (!!convertFn
-									? JSON.stringify(convertFn(item))
-									: JSON.stringify(item)
-								) === JSON.stringify(modelValue),
+								'selected': isSelected(item),
 							}"
 							tabindex="0"
 							@click.stop="select(item)"
@@ -222,13 +265,26 @@ function select(item: T) {
 						</li>
 					</template>
 
+					<!-- Loading state -->
+					<li
+						v-else-if="loadingItems"
+						class="list-item empty"
+					>
+						<slot name="loadingItems">
+							<LnxIcon
+								icon="line-md:loading-twotone-loop"
+								:size="16"
+							/>
+						</slot>
+					</li>
+
 					<!-- Empty state -->
 					<li
 						v-else
 						class="list-item empty"
 					>
 						<slot name="notFound">
-							<span class="list-item-label">Not found</span>
+							<small class="list-item-label">Not found</small>
 						</slot>
 					</li>
 				</ul>
@@ -309,6 +365,12 @@ function select(item: T) {
 			cursor: pointer;
 			background: var(--lnx-color-gray-bg);
 			border-radius: var(--lnx-radius-2);
+		}
+
+		&.empty {
+			text-align: center;
+			justify-content: center;
+			font-style: italic;
 		}
 	}
 }
