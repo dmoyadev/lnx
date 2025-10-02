@@ -5,6 +5,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.4](https://github.com/dmoyadev/lnx/compare/v0.7.3...v0.7.4)
+
+<small>📅 Released on: 2 October 2025</small>
+
+- ✨ [`[select]`](https://lnx.dmoya.dev/components/select) Add async capabilities [`fd1fc1c`](https://github.com/dmoyadev/lnx/commit/fd1fc1c0662356fbf6d58e2f0f24db869ace5977) <small>Daniel Moya</small>
+- 🏗️ [`[select]`](https://lnx.dmoya.dev/components/select) Refactor some features into composables [`526d137`](https://github.com/dmoyadev/lnx/commit/526d1377a85267a9a0c986b4b019617e7b6d6cf6) <small>Daniel Moya</small>
+
 ## [v0.7.3](https://github.com/dmoyadev/lnx/compare/v0.7.2...v0.7.3)
 
 <small>📅 Released on: 1 October 2025</small>
