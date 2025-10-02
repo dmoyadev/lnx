@@ -101,10 +101,8 @@ async function getAsyncItems() {
 	asyncSelectItems.value = [];
 	loadingSelectItems.value = true;
 	return new Promise(() => {
-		setTimeout(() => {
-			loadingSelectItems.value = false;
-			asyncSelectItems.value = selectItems;
-		}, 2000);
+		loadingSelectItems.value = false;
+		asyncSelectItems.value = selectItems;
 	});
 }
 const booleanVariants = [true, false];

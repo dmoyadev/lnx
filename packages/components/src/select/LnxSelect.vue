@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends { id: number | string }">
+<script setup lang="ts" generic="T, U">
 import { LnxInput } from '../input';
 import { LnxIcon } from '../icon';
 import { computed, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
@@ -10,10 +10,10 @@ import { useListItemFocus } from './useListItemsFocus';
 const [modelValue, modifiers] = defineModel<T, 'convert'>({
 	set(value: T) {
 		if(modifiers.convert && props.convertFn) {
-			return props.convertFn(value);
+			return props.convertFn(value) as U;
 		}
 
-		return value;
+		return value as T;
 	},
 });
 
@@ -22,7 +22,7 @@ const props = withDefaults(
 		items?: T[]; /* The items to be shown in the select */
 		areItemsAsync?: boolean; /* Indicates if the items are being loaded asynchronously */
 		labelProperty?: string; /* The property of the item to be shown as a label */
-		convertFn?: (value: T) => unknown; /* Function to convert the v-model value to something */
+		convertFn?: (value: T) => U; /* Function to convert the v-model value to something */
 		isLoading?: boolean; /* When loading, it is disabled and shows different content */
 		hasError?: boolean; /* Indicates if it should show the error slot */
 		loadingItems?: boolean; /* Indicates if the items are being loaded asynchronously */
@@ -69,13 +69,14 @@ const filteredItems = computed<T[]>(() => {
 	}
 
 	return props.items.filter((item) => {
-		const itemValues = Object.values(item);
-		return itemValues.some(value => normalizeString(String(value))
-			.includes(normalizeString(itemsQuery.value)),
-		);
+		if(typeof item === 'object' && item !== null) {
+			const itemValues = Object.values(item);
+			return itemValues.some(value => normalizeString(String(value)).includes(normalizeString(itemsQuery.value)));
+		}
+		return normalizeString(String(item)).includes(normalizeString(itemsQuery.value));
 	});
 });
-watch(filteredItems, () => calculateListPosition());
+watch(filteredItems, () => calculateListPosition(), { deep: true });
 
 const inputValue = computed<string>(() => {
 	if (itemsQuery.value) {
@@ -249,7 +250,13 @@ function isSelected(item: T) {
 									name="item"
 									:item="item"
 								>
-									<span>{{ (labelProperty && labelProperty in item) ? item[labelProperty as keyof typeof item] : item }}</span>
+									<span>
+										{{
+											(typeof item === 'object' && item !== null && labelProperty && labelProperty in item)
+												? item[labelProperty as keyof typeof item]
+												: item
+										}}
+									</span>
 								</slot>
 							</span>
 
