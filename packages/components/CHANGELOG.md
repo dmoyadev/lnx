@@ -5,6 +5,12 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.6](https://github.com/dmoyadev/lnx/compare/v0.7.5...v0.7.6)
+
+<small>📅 Released on: 3 October 2025</small>
+
+- 🐛 [`[select]`](https://lnx.dmoya.dev/components/select) Remove debugging info [`fc6f6b1`](https://github.com/dmoyadev/lnx/commit/fc6f6b1352df35996408de6df59fc2fce5b6ec20) <small>Daniel Moya</small>
+
 ## [v0.7.5](https://github.com/dmoyadev/lnx/compare/v0.7.4...v0.7.5)
 
 <small>📅 Released on: 3 October 2025</small>
