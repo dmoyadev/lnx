@@ -5,6 +5,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.5](https://github.com/dmoyadev/lnx/compare/v0.7.4...v0.7.5)
+
+<small>📅 Released on: 3 October 2025</small>
+
+- ✨ [`[select]`](https://lnx.dmoya.dev/components/select) Allow free text to be entered on demand [`3fce7ab`](https://github.com/dmoyadev/lnx/commit/3fce7ab18422f4c7da8455db9a58517ce088ac0c) <small>Daniel Moya</small>
+- 🎨 [`[select]`](https://lnx.dmoya.dev/components/select) Resize list dropdown on input resize [`067506b`](https://github.com/dmoyadev/lnx/commit/067506b37b85364c14356d48c8e1fb63fb8cab8c) <small>Daniel Moya</small>
+
 ## [v0.7.4](https://github.com/dmoyadev/lnx/compare/v0.7.3...v0.7.4)
 
 <small>📅 Released on: 2 October 2025</small>
