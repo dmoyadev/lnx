@@ -38,6 +38,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
 	query: [query: string] /* When the input search is written */
+	select: [item: T] /* When an item is selected */
 }>();
 
 const slots = defineSlots<{
@@ -182,6 +183,7 @@ watch(focusedItemIndex, (_, newValue) => {
 
 function select(item: T) {
 	modelValue.value = item;
+	emit('select', item);
 	if(!!props.convertFn) {
 		inputContent.value = String(props.convertFn(item));
 	} else {
@@ -206,10 +208,6 @@ function isSelected(item: T) {
 		@click="showItemsList()"
 		@keydown.enter="!showItems && showItemsList()"
 	>
-		inputContent: {{ inputContent }}
-		<br>
-		modelValue: {{ modelValue }}
-		<br>
 		<LnxInput
 			v-bind="{ ...$attrs, ...props }"
 			ref="$input"
