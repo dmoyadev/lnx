@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T, U">
+<script setup lang="ts" generic="T">
 import { LnxInput } from '../input';
 import { LnxIcon } from '../icon';
 import { computed, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
@@ -9,11 +9,11 @@ import { useListItemFocus } from './useListItemsFocus';
 
 const [modelValue, modifiers] = defineModel<T, 'convert'>({
 	set(value: T) {
-		if(modifiers.convert && props.convertFn) {
-			return props.convertFn(value) as U;
+		if(!!modifiers.convert && !!props.convertFn && typeof value !== 'string') {
+			return props.convertFn(value);
 		}
 
-		return value as T;
+		return value;
 	},
 });
 
@@ -22,7 +22,8 @@ const props = withDefaults(
 		items?: T[]; /* The items to be shown in the select */
 		areItemsAsync?: boolean; /* Indicates if the items are being loaded asynchronously */
 		labelProperty?: string; /* The property of the item to be shown as a label */
-		convertFn?: (value: T) => U; /* Function to convert the v-model value to something */
+		convertFn?: (value: T) => unknown; /* Function to convert the v-model value to something */
+		allowFreeText?: boolean; /* Allow free text input that is not in the items list */
 		isLoading?: boolean; /* When loading, it is disabled and shows different content */
 		hasError?: boolean; /* Indicates if it should show the error slot */
 		loadingItems?: boolean; /* Indicates if the items are being loaded asynchronously */
@@ -54,13 +55,21 @@ const $attrs = useAttrs();
 const isReadonly = computed(() => props.isLoading || !!('readonly' in $attrs && ($attrs.readonly || $attrs.readonly === '')));
 const isDisabled = computed(() => props.isLoading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
 
-const itemsQuery = ref<string>('');
-watch(itemsQuery, (newValue) => {
+const inputContent = ref<string>('');
+watch(inputContent, (newValue) => {
 	calculateListPosition();
 	emit('query', newValue);
+	if(props.allowFreeText) {
+		modelValue.value = newValue as unknown as T;
+		return;
+	}
 });
 const filteredItems = computed<T[]>(() => {
-	if (!itemsQuery.value) {
+	if (props.allowFreeText) {
+		return props.items;
+	}
+
+	if (!inputContent.value) {
 		return props.items;
 	}
 
@@ -71,16 +80,17 @@ const filteredItems = computed<T[]>(() => {
 	return props.items.filter((item) => {
 		if(typeof item === 'object' && item !== null) {
 			const itemValues = Object.values(item);
-			return itemValues.some(value => normalizeString(String(value)).includes(normalizeString(itemsQuery.value)));
+			return itemValues.some(value => normalizeString(String(value)).includes(normalizeString(inputContent.value)));
 		}
-		return normalizeString(String(item)).includes(normalizeString(itemsQuery.value));
+		return normalizeString(String(item)).includes(normalizeString(inputContent.value));
 	});
 });
 watch(filteredItems, () => calculateListPosition(), { deep: true });
 
 const inputValue = computed<string>(() => {
-	if (itemsQuery.value) {
-		return itemsQuery.value;
+	// When there is a query or free text is allowed, show the query
+	if (inputContent.value || props.allowFreeText) {
+		return inputContent.value;
 	}
 
 	if(!modelValue.value) {
@@ -117,20 +127,26 @@ const inputValue = computed<string>(() => {
 });
 
 const $input = useTemplateRef<HTMLInputElement>('$input');
-function cleanItemsQuery() {
+function cleanInputContent() {
+	if (props.allowFreeText) {
+		return;
+	}
+
 	if (document.activeElement !== $input.value) {
 		return;
 	}
 
-	itemsQuery.value = '';
+	inputContent.value = '';
 }
 
 const $list = useTemplateRef<HTMLUListElement>('$list');
 
-function hideItemsList() {
+function hideItemsList(clearInput = false) {
 	showItems.value = false;
 	focusedItemIndex.value = null;
-	itemsQuery.value = '';
+	if(clearInput && !props.allowFreeText) {
+		inputContent.value = '';
+	}
 }
 onClickOutside($list as Ref<HTMLUListElement>, () => hideItemsList());
 
@@ -142,6 +158,8 @@ async function showItemsList() {
 	if (isDisabled.value || isReadonly.value) {
 		return;
 	}
+
+	cleanInputContent();
 
 	focusedItemIndex.value = null;
 	showItems.value = true;
@@ -164,7 +182,12 @@ watch(focusedItemIndex, (_, newValue) => {
 
 function select(item: T) {
 	modelValue.value = item;
-	hideItemsList();
+	if(!!props.convertFn) {
+		inputContent.value = String(props.convertFn(item));
+	} else {
+		inputContent.value = String(item);
+	}
+	hideItemsList(true);
 }
 
 function isSelected(item: T) {
@@ -181,15 +204,18 @@ function isSelected(item: T) {
 		class="select"
 		:class="{ 'has-error': hasError }"
 		@click="showItemsList()"
-		@keydown.esc="hideItemsList()"
+		@keydown.enter="!showItems && showItemsList()"
 	>
+		inputContent: {{ inputContent }}
+		<br>
+		modelValue: {{ modelValue }}
+		<br>
 		<LnxInput
 			v-bind="{ ...$attrs, ...props }"
 			ref="$input"
-			v-model="itemsQuery"
+			v-model="inputContent"
 			:value="inputValue"
 			type="text"
-			@click="cleanItemsQuery()"
 			@keydown.up.prevent="focusItem(-1)"
 			@keydown.down.prevent="focusItem(1)"
 		>
@@ -202,7 +228,7 @@ function isSelected(item: T) {
 			</template>
 
 			<template
-				v-if="items?.length"
+				v-if="!props.allowFreeText || filteredItems?.length"
 				#icon
 			>
 				<LnxIcon icon="mdi:chevron-down" />
@@ -225,12 +251,13 @@ function isSelected(item: T) {
 		<Teleport to="body">
 			<Transition>
 				<ul
-					v-show="showItems"
+					v-show="showItems && (filteredItems.length || !props.allowFreeText)"
 					ref="$list"
 					class="list"
 					tabindex="0"
 					@keydown.up.prevent="focusItem(-1)"
 					@keydown.down.prevent="focusItem(1)"
+					@keydown.esc="hideItemsList()"
 				>
 					<!-- Normal state -->
 					<template v-if="filteredItems?.length">
@@ -287,7 +314,7 @@ function isSelected(item: T) {
 
 					<!-- Empty state -->
 					<li
-						v-else
+						v-else-if="!allowFreeText"
 						class="list-item empty"
 					>
 						<slot name="notFound">

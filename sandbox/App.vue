@@ -570,7 +570,7 @@ function toggleDarkMode() {
 		<br>
 		selected: {{ selectModel }}
 		<br>
-		<form style="margin-top: 75px;">
+		<form>
 			<div
 				v-for="isLoading in booleanVariants"
 				:key="String(isLoading)"
@@ -684,6 +684,30 @@ function toggleDarkMode() {
 					<template #notFound>
 						<small>Start writing to see suggestions</small>
 					</template>
+				</LnxSelect>
+			</div>
+
+			<div class="variant-container">
+				<span class="variant">Allow free text</span>
+				<LnxSelect
+					v-model.convert="selectModel"
+					:convert-fn="(value: typeof selectItems[number]) => value.label"
+					placeholder="placeholder"
+					label-property="label"
+					:items="selectItems"
+					allow-free-text
+				>
+					free text with objects
+				</LnxSelect>
+
+				<LnxSelect
+					v-model.convert="selectModel"
+					placeholder="placeholder"
+					label-property="label"
+					:items="['Uno', 'Dos', 'Tres', 'Cuatro', 'Cinco']"
+					allow-free-text
+				>
+					free text with strings
 				</LnxSelect>
 			</div>
 		</form>
