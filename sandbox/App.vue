@@ -28,7 +28,7 @@ const datePickerEndModel = ref<Date>();
 const selectModel = ref<string>('');
 const fileUploaderModel = ref();
 
-const selectItems: { id:number, label: string, value: unknown }[] = [
+const selectOptions: { id:number, label: string, value: unknown }[] = [
 	{
 		id: 1,
 		label: 'Option 1',
@@ -95,14 +95,14 @@ const selectItems: { id:number, label: string, value: unknown }[] = [
 		value: 13,
 	},
 ];
-const asyncSelectItems = ref();
-const loadingSelectItems = ref(false);
-async function getAsyncItems() {
-	asyncSelectItems.value = [];
-	loadingSelectItems.value = true;
+const asyncSelectOptions = ref();
+const loadingSelectOptions = ref(false);
+async function getAsyncOptions() {
+	asyncSelectOptions.value = [];
+	loadingSelectOptions.value = true;
 	return new Promise(() => {
-		loadingSelectItems.value = false;
-		asyncSelectItems.value = selectItems;
+		loadingSelectOptions.value = false;
+		asyncSelectOptions.value = selectOptions;
 	});
 }
 const booleanVariants = [true, false];
@@ -590,7 +590,7 @@ function toggleDarkMode() {
 						:has-error="!hasError"
 						placeholder="placeholder"
 						label-property="label"
-						:items="selectItems"
+						:options="selectOptions"
 					>
 						This is the label
 
@@ -609,7 +609,7 @@ function toggleDarkMode() {
 						:has-error="!hasError"
 						placeholder="placeholder"
 						label-property="label"
-						:items="selectItems"
+						:options="selectOptions"
 					>
 						This is the label
 
@@ -621,8 +621,8 @@ function toggleDarkMode() {
 							This is an error
 						</template>
 
-						<template #item="{ item }">
-							<span style="color: var(--lnx-color-primary)">{{ item.label }} (custom item)</span>
+						<template #option="{ option }">
+							<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
 						</template>
 					</LnxSelect>
 				</div>
@@ -633,7 +633,7 @@ function toggleDarkMode() {
 				<LnxSelect
 					v-model.convert="selectModel"
 					placeholder="placeholder"
-					:items="selectItems"
+					:options="selectOptions"
 					label-property="label"
 					:convert-fn="(value) => ({ ...value, newProperty: 'cool!' })"
 				>
@@ -643,7 +643,7 @@ function toggleDarkMode() {
 				<LnxSelect
 					v-model.convert="selectModel"
 					placeholder="placeholder"
-					:items="selectItems"
+					:options="selectOptions"
 					:convert-fn="(value) => value.label + ' (converted)'"
 				>
 					With a custom convert function
@@ -651,33 +651,33 @@ function toggleDarkMode() {
 			</div>
 
 			<div class="variant-container">
-				<span class="variant">With a custom item</span>
+				<span class="variant">With a custom option</span>
 				<LnxSelect
 					v-model="selectModel"
 					placeholder="placeholder"
-					:items="selectItems"
+					:options="selectOptions"
 				>
 					This is the label
 
-					<template #itemInput="{ item }">
+					<template #optionInput="{ option }">
 						<span style="display: flex; align-items: center; gap: 4px;">
 							<LnxIcon icon="mdi:star" />
-							<span style="color: var(--lnx-color-primary)">{{ item.label }} (custom item) as d f a s d f a s d f asf asdf as df</span>
+							<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option) as d f a s d f a s d f asf asdf as df</span>
 						</span>
 					</template>
 				</LnxSelect>
 			</div>
 
 			<div class="variant-container">
-				<span class="variant">Async items</span>
+				<span class="variant">Async options</span>
 				<LnxSelect
 					v-model="selectModel"
 					placeholder="placeholder"
-					:items="asyncSelectItems"
+					:options="asyncSelectOptions"
 					label-property="label"
-					:loading-items="loadingSelectItems"
-					are-items-async
-					@query="getAsyncItems"
+					:loading-options="loadingSelectOptions"
+					are-options-async
+					@query="getAsyncOptions"
 				>
 					This is the label
 
@@ -691,10 +691,10 @@ function toggleDarkMode() {
 				<span class="variant">Allow free text</span>
 				<LnxSelect
 					v-model.convert="selectModel"
-					:convert-fn="(value: typeof selectItems[number]) => value.label"
+					:convert-fn="(value: typeof selectOptions[number]) => value.label"
 					placeholder="placeholder"
 					label-property="label"
-					:items="selectItems"
+					:options="selectOptions"
 					allow-free-text
 				>
 					free text with objects
@@ -704,7 +704,7 @@ function toggleDarkMode() {
 					v-model.convert="selectModel"
 					placeholder="placeholder"
 					label-property="label"
-					:items="['Uno', 'Dos', 'Tres', 'Cuatro', 'Cinco']"
+					:options="['Uno', 'Dos', 'Tres', 'Cuatro', 'Cinco']"
 					allow-free-text
 				>
 					free text with strings
@@ -738,7 +738,6 @@ function toggleDarkMode() {
 							:is-loading="!isLoading"
 							:has-error="!hasError"
 							:multiple
-							:is-uploading
 						>
 							This is the label
 

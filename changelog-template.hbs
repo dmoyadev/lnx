@@ -16,7 +16,7 @@ Here new features, changes in the UI/UX, bug fixes, refactors and new documentat
 <small>📅 Released on: {{niceDate}}</small>
 
 {{#commit-list commits }}
-- {{#if commit.breaking}}**Breaking change:** {{/if}}{{subject}} [`{{shorthash}}`]({{href}}) <small>{{author}}</small>
+- {{#if commit.breaking}}**⚠️ Breaking change:** {{/if}}{{subject}} [`{{shorthash}}`]({{href}}) <small>{{author}}</small>
 {{/commit-list}}
 
 {{/each}}

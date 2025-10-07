@@ -5,7 +5,7 @@ import { computed, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
 import { normalizeString } from '../helpers';
 import { onClickOutside } from './onClickOutside';
 import { useListPosition } from './useListPosition';
-import { useListItemFocus } from './useListItemsFocus';
+import { useListOptionsFocus } from './useListOptionsFocus';
 
 const [modelValue, modifiers] = defineModel<unknown, 'convert'>({
 	set(value) {
@@ -19,17 +19,17 @@ const [modelValue, modifiers] = defineModel<unknown, 'convert'>({
 
 const props = withDefaults(
 	defineProps<{
-		items?: T[]; /* The items to be shown in the select */
-		areItemsAsync?: boolean; /* Indicates if the items are being loaded asynchronously */
-		labelProperty?: string; /* The property of the item to be shown as a label */
+		options?: T[]; /* The options to be shown in the select */
+		areOptionsAsync?: boolean; /* Indicates if the options are being loaded asynchronously */
+		labelProperty?: string; /* The property of the option to be shown as a label */
 		convertFn?: (value: T) => unknown; /* Function to convert the v-model value to something */
-		allowFreeText?: boolean; /* Allow free text input that is not in the items list */
+		allowFreeText?: boolean; /* Allow free text input that is not in the options list */
 		isLoading?: boolean; /* When loading, it is disabled and shows different content */
 		hasError?: boolean; /* Indicates if it should show the error slot */
-		loadingItems?: boolean; /* Indicates if the items are being loaded asynchronously */
+		loadingOptions?: boolean; /* Indicates if the options are being loaded asynchronously */
 		customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
 	}>(), {
-		items: () => [],
+		options: () => [],
 		convertFn: undefined,
 		customValidity: undefined,
 		labelProperty: '',
@@ -38,17 +38,17 @@ const props = withDefaults(
 
 const emit = defineEmits<{
 	query: [query: string] /* When the input search is written */
-	select: [item: T] /* When an item is selected */
+	select: [option: T] /* When an option is selected */
 }>();
 
 const slots = defineSlots<{
 	default(): unknown; /* The label of the input */
 	helper(): unknown; /* The helper message of the input */
 	error(): unknown; /* The error message of the input */
-	item(props: { item: T }): unknown; /* How the item will be shown in the list */
-	itemInput(props: { item: T }): unknown; /* How the item will be shown in the input when selected */
-	loadingItems(): unknown; /* What will be shown when async items are being loaded */
-	notFound(): unknown; /* What will be shown when there are no items to show */
+	option(props: { option: T }): unknown; /* How the option will be shown in the list */
+	optionInput(props: { option: unknown }): unknown; /* How the option will be shown in the input when selected */
+	loadingOptions(): unknown; /* What will be shown when async options are being loaded */
+	notFound(): unknown; /* What will be shown when there are no options to show */
 }>();
 const inputSlotNames = Object.keys(slots).filter(slot => ['default', 'helper', 'error'].includes(slot)) as ('default' | 'helper' | 'error')[];
 
@@ -65,28 +65,28 @@ watch(inputContent, (newValue) => {
 		return;
 	}
 });
-const filteredItems = computed<T[]>(() => {
+const filteredOptions = computed<T[]>(() => {
 	if (props.allowFreeText) {
-		return props.items;
+		return props.options;
 	}
 
 	if (!inputContent.value) {
-		return props.items;
+		return props.options;
 	}
 
-	if (props.areItemsAsync) {
-		return props.items;
+	if (props.areOptionsAsync) {
+		return props.options;
 	}
 
-	return props.items.filter((item) => {
-		if(typeof item === 'object' && item !== null) {
-			const itemValues = Object.values(item);
-			return itemValues.some(value => normalizeString(String(value)).includes(normalizeString(inputContent.value)));
+	return props.options.filter((option) => {
+		if(typeof option === 'object' && option !== null) {
+			const optionValues = Object.values(option);
+			return optionValues.some(value => normalizeString(String(value)).includes(normalizeString(inputContent.value)));
 		}
-		return normalizeString(String(item)).includes(normalizeString(inputContent.value));
+		return normalizeString(String(option)).includes(normalizeString(inputContent.value));
 	});
 });
-watch(filteredItems, () => calculateListPosition(), { deep: true });
+watch(filteredOptions, () => calculateListPosition(), { deep: true });
 
 const inputValue = computed<string>(() => {
 	// When there is a query or free text is allowed, show the query
@@ -98,13 +98,13 @@ const inputValue = computed<string>(() => {
 		return '';
 	}
 
-	if(!showItems.value) {
-		// When a custom item input slot is provided, show nothing in the input to allow the slot to be shown
-		if(!!slots.itemInput) {
+	if(!showOptions.value) {
+		// When a custom option input slot is provided, show nothing in the input to allow the slot to be shown
+		if(!!slots.optionInput) {
 			return '';
 		}
 
-		// When there is a selected item and a label property
+		// When there is a selected option and a label property
 		if (
 			typeof modelValue.value === 'object'
 			&& typeof props.labelProperty === 'string'
@@ -114,8 +114,8 @@ const inputValue = computed<string>(() => {
 		}
 	}
 
-	// When there is a selected item and items are shown, clear the input to allow filtering
-	if(showItems.value) {
+	// When there is a selected option and options are shown, clear the input to allow filtering
+	if(showOptions.value) {
 		return '';
 	}
 
@@ -141,28 +141,28 @@ function cleanInputContent() {
 
 const $list = useTemplateRef<HTMLUListElement>('$list');
 
-function hideItemsList(clearInput = false) {
-	showItems.value = false;
-	focusedItemIndex.value = null;
+function hideOptionsList(clearInput = false) {
+	showOptions.value = false;
+	focusedOptionIndex.value = null;
 	if(clearInput && !props.allowFreeText) {
 		inputContent.value = '';
 	}
 }
-onClickOutside($list as Ref<HTMLUListElement>, () => hideItemsList());
+onClickOutside($list as Ref<HTMLUListElement>, () => hideOptionsList());
 
 const { calculateListPosition } = useListPosition($list as Ref<HTMLElement>, $input as Ref<HTMLElement>);
-const showItems = ref(false);
-watch(showItems, () => calculateListPosition);
+const showOptions = ref(false);
+watch(showOptions, () => calculateListPosition);
 
-async function showItemsList() {
+async function showOptionsList() {
 	if (isDisabled.value || isReadonly.value) {
 		return;
 	}
 
 	cleanInputContent();
 
-	focusedItemIndex.value = null;
-	showItems.value = true;
+	focusedOptionIndex.value = null;
+	showOptions.value = true;
 
 	if (!$list.value || !$input.value || isDisabled.value || isReadonly.value) {
 		return;
@@ -170,33 +170,33 @@ async function showItemsList() {
 	await calculateListPosition();
 }
 
-const { focusedItemIndex, focusItem } = useListItemFocus(filteredItems.value.length);
-watch(focusedItemIndex, (_, newValue) => {
-	const listItems = $list.value?.querySelectorAll('.list-item');
-	if (!listItems?.length || newValue == null) {
+const { focusedOptionIndex, focusOption } = useListOptionsFocus(filteredOptions.value.length);
+watch(focusedOptionIndex, (_, newValue) => {
+	const listOptions = $list.value?.querySelectorAll('.list-option');
+	if (!listOptions?.length || newValue == null) {
 		return;
 	}
 
-	(listItems[newValue] as HTMLElement).focus();
+	(listOptions[newValue] as HTMLElement).focus();
 });
 
-function select(item: T) {
-	modelValue.value = item;
-	emit('select', item);
+function select(option: T) {
+	modelValue.value = option;
+	emit('select', option);
 	if(!!props.convertFn) {
-		inputContent.value = String(props.convertFn(item));
+		inputContent.value = String(props.convertFn(option));
 	} else {
-		inputContent.value = String(item);
+		inputContent.value = String(option);
 	}
-	hideItemsList(true);
+	hideOptionsList(true);
 }
 
-function isSelected(item: T) {
+function isSelected(option: T) {
 	if (!!props.convertFn) {
-		return JSON.stringify(props.convertFn(item)) === JSON.stringify(modelValue.value);
+		return JSON.stringify(props.convertFn(option)) === JSON.stringify(modelValue.value);
 	}
 
-	return JSON.stringify(item) === JSON.stringify(modelValue.value);
+	return JSON.stringify(option) === JSON.stringify(modelValue.value);
 }
 </script>
 
@@ -204,8 +204,8 @@ function isSelected(item: T) {
 	<div
 		class="select"
 		:class="{ 'has-error': hasError }"
-		@click="showItemsList()"
-		@keydown.enter="!showItems && showItemsList()"
+		@click="showOptionsList()"
+		@keydown.enter="!showOptions && showOptionsList()"
 	>
 		<LnxInput
 			v-bind="{ ...$attrs, ...props }"
@@ -213,8 +213,8 @@ function isSelected(item: T) {
 			v-model="inputContent"
 			:value="inputValue"
 			type="text"
-			@keydown.up.prevent="focusItem(-1)"
-			@keydown.down.prevent="focusItem(1)"
+			@keydown.up.prevent="focusOption(-1)"
+			@keydown.down.prevent="focusOption(1)"
 		>
 			<!-- Pass all slots to the input -->
 			<template
@@ -225,7 +225,7 @@ function isSelected(item: T) {
 			</template>
 
 			<template
-				v-if="!props.allowFreeText || filteredItems?.length"
+				v-if="!props.allowFreeText || filteredOptions?.length"
 				#icon
 			>
 				<LnxIcon icon="mdi:chevron-down" />
@@ -233,12 +233,12 @@ function isSelected(item: T) {
 		</LnxInput>
 
 		<div
-			v-if="!!modelValue && !labelProperty && !!$slots.itemInput && !showItems"
+			v-if="!!modelValue && !labelProperty && !!$slots.optionInput && !showOptions"
 			class="input-content"
 		>
 			<slot
-				name="itemInput"
-				:item="modelValue"
+				name="optionInput"
+				:option="modelValue"
 			>
 				{{ modelValue }}
 			</slot>
@@ -248,45 +248,45 @@ function isSelected(item: T) {
 		<Teleport to="body">
 			<Transition>
 				<ul
-					v-show="showItems && (filteredItems.length || !props.allowFreeText)"
+					v-show="showOptions && (filteredOptions.length || !props.allowFreeText)"
 					ref="$list"
 					class="list"
 					tabindex="0"
-					@keydown.up.prevent="focusItem(-1)"
-					@keydown.down.prevent="focusItem(1)"
-					@keydown.esc="hideItemsList()"
+					@keydown.up.prevent="focusOption(-1)"
+					@keydown.down.prevent="focusOption(1)"
+					@keydown.esc="hideOptionsList()"
 				>
 					<!-- Normal state -->
-					<template v-if="filteredItems?.length">
+					<template v-if="filteredOptions?.length">
 						<li
-							v-for="(item, index) in filteredItems"
+							v-for="(option, index) in filteredOptions"
 							:key="index"
-							class="list-item"
+							class="list-option"
 							:class="{
-								'selected': isSelected(item),
+								'selected': isSelected(option),
 							}"
 							tabindex="0"
-							@click.stop="select(item)"
-							@keydown.enter="select(item)"
+							@click.stop="select(option)"
+							@keydown.enter="select(option)"
 						>
-							<span class="list-item-label">
+							<span class="list-option-label">
 								<slot
-									name="item"
-									:item="item"
+									name="option"
+									:option
 								>
 									<span>
 										{{
-											(typeof item === 'object' && item !== null && labelProperty && labelProperty in item)
-												? item[labelProperty as keyof typeof item]
-												: item
+											(typeof option === 'object' && option !== null && labelProperty && labelProperty in option)
+												? option[labelProperty as keyof typeof option]
+												: option
 										}}
 									</span>
 								</slot>
 							</span>
 
 							<span
-								v-if="JSON.stringify(item) === JSON.stringify(modelValue)"
-								class="selected-item-icon"
+								v-if="JSON.stringify(option) === JSON.stringify(modelValue)"
+								class="selected-option-icon"
 							>
 								<LnxIcon
 									:size="12"
@@ -298,10 +298,10 @@ function isSelected(item: T) {
 
 					<!-- Loading state -->
 					<li
-						v-else-if="loadingItems"
-						class="list-item empty"
+						v-else-if="loadingOptions"
+						class="list-option empty"
 					>
-						<slot name="loadingItems">
+						<slot name="loadingOptions">
 							<LnxIcon
 								icon="line-md:loading-twotone-loop"
 								:size="16"
@@ -312,10 +312,10 @@ function isSelected(item: T) {
 					<!-- Empty state -->
 					<li
 						v-else-if="!allowFreeText"
-						class="list-item empty"
+						class="list-option empty"
 					>
 						<slot name="notFound">
-							<small class="list-item-label">Not found</small>
+							<small class="list-option-label">Not found</small>
 						</slot>
 					</li>
 				</ul>
@@ -374,9 +374,9 @@ function isSelected(item: T) {
 	gap: 4px;
 	margin: 0;
 
-	.list-item {
+	.list-option {
 		display: flex;
-		align-items: center;
+		align-options: center;
 		justify-content: space-between;
 		gap: 4px;
 		padding: 8px;

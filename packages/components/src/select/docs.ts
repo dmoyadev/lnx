@@ -13,15 +13,15 @@ export function useComponent() {
 		'v-model': {
 			description: 'Binds the value of the select to the reactive variable used as prop',
 			controlType: 'none',
-			type: 'T extends { id: number | string }',
+			type: 'unknown',
 			defaultValue: 'undefined',
 			helper: 'It has a modifier `convert` that converts the value with the convertFn prop before emitting it',
 			value: undefined,
 		},
-		items: {
-			description: 'The items to be shown in the select',
+		options: {
+			description: 'The options to be shown in the select',
 			controlType: 'none',
-			type: '(T extends { id: number | string })[]',
+			type: 'T[]',
 			value: [{
 				label: 'Option 1',
 				value: 'option-1', 
@@ -34,14 +34,14 @@ export function useComponent() {
 			}],
 		},
 		convertFn: {
-			description: 'Function to convert the value before emitting it. It receives the item and must return the converted value',
+			description: 'Function to convert the value before emitting it. It receives the option and must return the converted value',
 			controlType: 'none',
-			type: '(item: T) => unknown',
+			type: '(option: T) => unknown',
 			defaultValue: 'undefined',
 			value: undefined,
 		},
 		labelProperty: {
-			description: 'The property of the item to be shown as a label',
+			description: 'The property of the option to be shown as a label',
 			controlType: 'input',
 			type: 'string',
 			defaultValue: '""',
@@ -95,26 +95,26 @@ export function useComponent() {
 			value: 'Enter something',
 			initialValue: 'Enter something',
 		},
-		item: {
-			description: 'Custom content for each item',
+		option: {
+			description: 'Custom content for each option',
 			scopes: [
 				{
-					name: 'item',
+					name: 'option',
 					type: 'T', 
 				},
 			],
 		},
-		itemInput: {
-			description: 'How the item will be shown in the input when selected',
+		optionInput: {
+			description: 'How the option will be shown in the input when selected',
 			scopes: [
 				{
-					name: 'item',
+					name: 'option',
 					type: 'T',
 				},
 			],
 		},
 		notFound: {
-			description: 'What to display when no items are found',
+			description: 'What to display when no options are found',
 			value: 'Nothing found',
 		},
 		icon: {
