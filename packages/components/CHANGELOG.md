@@ -5,6 +5,12 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.8](https://github.com/dmoyadev/lnx/compare/v0.7.7...v0.7.8)
+
+<small>📅 Released on: 7 October 2025</small>
+
+- 🐛 [`[select]`](https://lnx.dmoya.dev/components/select) Fix typing slots scopes [`403f29d`](https://github.com/dmoyadev/lnx/commit/403f29d3bf64794ca6f682e095e523dc1b3b9cac) <small>Daniel Moya</small>
+
 ## [v0.7.7](https://github.com/dmoyadev/lnx/compare/v0.7.6...v0.7.7)
 
 <small>📅 Released on: 7 October 2025</small>
