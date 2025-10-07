@@ -5,6 +5,12 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.9](https://github.com/dmoyadev/lnx/compare/v0.7.8...v0.7.9)
+
+<small>📅 Released on: 7 October 2025</small>
+
+- ✨ [`[dropdown]`](https://lnx.dmoya.dev/components/dropdown) Add component [`eefa6bd`](https://github.com/dmoyadev/lnx/commit/eefa6bde3e74734328b484c8e81470bcc966746f) <small>Daniel Moya</small>
+
 ## [v0.7.8](https://github.com/dmoyadev/lnx/compare/v0.7.7...v0.7.8)
 
 <small>📅 Released on: 7 October 2025</small>
