@@ -5,6 +5,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.7](https://github.com/dmoyadev/lnx/compare/v0.7.6...v0.7.7)
+
+<small>📅 Released on: 7 October 2025</small>
+
+- ⚠️ [`[select]`](https://lnx.dmoya.dev/components/select) Change "items" for "options" [`bcbc16f`](https://github.com/dmoyadev/lnx/commit/bcbc16f74336d29a75552392be41fec82aeec36c) <small>Daniel Moya</small>
+- 🐛 [`[select]`](https://lnx.dmoya.dev/components/select) Fix typing the modelValue [`d8a5ff6`](https://github.com/dmoyadev/lnx/commit/d8a5ff66c1fb0057d4da7a5b786d0fd7e0d11f3d) <small>Daniel Moya</small>
+
 ## [v0.7.6](https://github.com/dmoyadev/lnx/compare/v0.7.5...v0.7.6)
 
 <small>📅 Released on: 3 October 2025</small>
