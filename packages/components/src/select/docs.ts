@@ -13,7 +13,7 @@ export function useComponent() {
 		'v-model': {
 			description: 'Binds the value of the select to the reactive variable used as prop',
 			controlType: 'none',
-			type: 'unknown',
+			type: 'U',
 			defaultValue: 'undefined',
 			helper: 'It has a modifier `convert` that converts the value with the convertFn prop before emitting it',
 			value: undefined,
@@ -36,7 +36,7 @@ export function useComponent() {
 		convertFn: {
 			description: 'Function to convert the value before emitting it. It receives the option and must return the converted value',
 			controlType: 'none',
-			type: '(option: T) => unknown',
+			type: '(option: T) => T | U',
 			defaultValue: 'undefined',
 			value: undefined,
 		},
@@ -46,6 +46,27 @@ export function useComponent() {
 			type: 'string',
 			defaultValue: '""',
 			value: 'label',
+		},
+		searchPlaceholderText: {
+			description: 'The placeholder text of the search input',
+			controlType: 'input',
+			type: 'string',
+			defaultValue: '"Search..."',
+			value: undefined,
+		},
+		areOptionsAsync: {
+			description: 'Indicates if the options are loaded asynchronously',
+			controlType: 'switch',
+			type: 'boolean',
+			defaultValue: 'false',
+			value: false,
+		},
+		loadingOptions: {
+			description: 'Indicates if the options are being loaded asynchronously at the moment',
+			controlType: 'switch',
+			type: 'boolean',
+			defaultValue: 'false',
+			value: false,
 		},
 		isLoading: {
 			description: 'When loading, it is disabled and shows different content',
@@ -108,14 +129,18 @@ export function useComponent() {
 			description: 'How the option will be shown in the input when selected',
 			scopes: [
 				{
-					name: 'option',
-					type: 'T',
+					name: 'value',
+					type: 'U',
 				},
 			],
 		},
 		notFound: {
 			description: 'What to display when no options are found',
 			value: 'Nothing found',
+		},
+		loadingOptions: {
+			description: 'What will be shown when async options are being loaded',
+			value: '',
 		},
 		icon: {
 			description: 'Content to be displayed at the right of the input value',
@@ -134,6 +159,14 @@ export function useComponent() {
 	const componentEvents = ref<Record<string, ComponentEvent>>({
 		'update:modelValue': {
 			description: 'Two way binding of the component',
+			type: 'T',
+		},
+		'query': {
+			description: 'When the input search is written',
+			type: 'string',
+		},
+		'select': {
+			description: 'When an option is selected',
 			type: 'T',
 		},
 	});

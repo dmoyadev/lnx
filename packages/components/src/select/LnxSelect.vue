@@ -4,8 +4,8 @@ import { LnxIcon } from '../icon';
 import { computed, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
 import { normalizeString } from '../helpers';
 import { onClickOutside } from './onClickOutside';
-import { useListPosition } from './useListPosition';
 import { useListOptionsFocus } from './useListOptionsFocus';
+import { LnxDropdown } from '../dropdown';
 
 const [modelValue, modifiers] = defineModel<U, 'convert'>({
 	set(value: U) {
@@ -20,19 +20,20 @@ const [modelValue, modifiers] = defineModel<U, 'convert'>({
 const props = withDefaults(
 	defineProps<{
 		options?: T[]; /* The options to be shown in the select */
-		areOptionsAsync?: boolean; /* Indicates if the options are being loaded asynchronously */
+		areOptionsAsync?: boolean; /* Indicates if the options are loaded asynchronously */
 		labelProperty?: string; /* The property of the option to be shown as a label */
-		convertFn?: (value: T) => unknown; /* Function to convert the v-model value to something */
-		allowFreeText?: boolean; /* Allow free text input that is not in the options list */
+		searchPlaceholderText?: string; /* The placeholder text of the search input */
+		convertFn?: (value: T) => T | U; /* Function to convert the v-model value to something */
 		isLoading?: boolean; /* When loading, it is disabled and shows different content */
 		hasError?: boolean; /* Indicates if it should show the error slot */
-		loadingOptions?: boolean; /* Indicates if the options are being loaded asynchronously */
+		loadingOptions?: boolean; /* Indicates if the options are being loaded asynchronously at the moment */
 		customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
 	}>(), {
 		options: () => [],
 		convertFn: undefined,
 		customValidity: undefined,
 		labelProperty: '',
+		searchPlaceholderText: 'Search...',
 	},
 );
 
@@ -46,7 +47,7 @@ const slots = defineSlots<{
 	helper(): unknown; /* The helper message of the input */
 	error(): unknown; /* The error message of the input */
 	option(props: { option: T }): unknown; /* How the option will be shown in the list */
-	optionInput(props: { option: U }): unknown; /* How the option will be shown in the input when selected */
+	optionInput(props: { value: U }): unknown; /* How the option will be shown in the input when selected */
 	loadingOptions(): unknown; /* What will be shown when async options are being loaded */
 	notFound(): unknown; /* What will be shown when there are no options to show */
 }>();
@@ -56,21 +57,16 @@ const $attrs = useAttrs();
 const isReadonly = computed(() => props.isLoading || !!('readonly' in $attrs && ($attrs.readonly || $attrs.readonly === '')));
 const isDisabled = computed(() => props.isLoading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
 
-const inputContent = ref<string>('');
-watch(inputContent, (newValue) => {
-	calculateListPosition();
+const showOptions = ref(false);
+const $dropdown = useTemplateRef<typeof LnxDropdown>('$dropdown');
+
+const searchQuery = ref<string>('');
+watch(searchQuery, (newValue) => {
+	$dropdown.value!.calculatePosition();
 	emit('query', newValue);
-	if(props.allowFreeText) {
-		modelValue.value = newValue as U;
-		return;
-	}
 });
 const filteredOptions = computed<T[]>(() => {
-	if (props.allowFreeText) {
-		return props.options;
-	}
-
-	if (!inputContent.value) {
+	if (!searchQuery.value) {
 		return props.options;
 	}
 
@@ -81,24 +77,23 @@ const filteredOptions = computed<T[]>(() => {
 	return props.options.filter((option) => {
 		if(typeof option === 'object' && option !== null) {
 			const optionValues = Object.values(option);
-			return optionValues.some(value => normalizeString(String(value)).includes(normalizeString(inputContent.value)));
+			return optionValues.some(value => normalizeString(String(value)).includes(normalizeString(searchQuery.value)));
 		}
-		return normalizeString(String(option)).includes(normalizeString(inputContent.value));
+		return normalizeString(String(option)).includes(normalizeString(searchQuery.value));
 	});
 });
-watch(filteredOptions, () => calculateListPosition(), { deep: true });
+watch(filteredOptions, () => $dropdown.value!.calculatePosition(), { deep: true });
 
 const inputValue = computed<string>(() => {
-	// When there is a query or free text is allowed, show the query
-	if (inputContent.value || props.allowFreeText) {
-		return inputContent.value;
+	if (searchQuery.value) {
+		return searchQuery.value;
 	}
 
-	if(!modelValue.value) {
+	if (!modelValue.value) {
 		return '';
 	}
 
-	if(!showOptions.value) {
+	if (!showOptions.value) {
 		// When a custom option input slot is provided, show nothing in the input to allow the slot to be shown
 		if(!!slots.optionInput) {
 			return '';
@@ -115,11 +110,11 @@ const inputValue = computed<string>(() => {
 	}
 
 	// When there is a selected option and options are shown, clear the input to allow filtering
-	if(showOptions.value) {
+	if (showOptions.value) {
 		return '';
 	}
 
-	if(typeof modelValue.value !== 'string') {
+	if (typeof modelValue.value !== 'string') {
 		console.warn('⚠️ [LnxSelect]: When using a non-string v-model value, a labelProperty or convertFn must be provided to show the selected value properly.');
 	}
 
@@ -128,31 +123,21 @@ const inputValue = computed<string>(() => {
 
 const $input = useTemplateRef<HTMLInputElement>('$input');
 function cleanInputContent() {
-	if (props.allowFreeText) {
-		return;
-	}
-
 	if (document.activeElement !== $input.value) {
 		return;
 	}
 
-	inputContent.value = '';
+	searchQuery.value = '';
 }
 
 const $list = useTemplateRef<HTMLUListElement>('$list');
 
-function hideOptionsList(clearInput = false) {
+function hideOptionsList() {
 	showOptions.value = false;
 	focusedOptionIndex.value = null;
-	if(clearInput && !props.allowFreeText) {
-		inputContent.value = '';
-	}
+	searchQuery.value = '';
 }
 onClickOutside($list as Ref<HTMLUListElement>, () => hideOptionsList());
-
-const { calculateListPosition } = useListPosition($list as Ref<HTMLElement>, $input as Ref<HTMLElement>);
-const showOptions = ref(false);
-watch(showOptions, () => calculateListPosition);
 
 async function showOptionsList() {
 	if (isDisabled.value || isReadonly.value) {
@@ -167,7 +152,7 @@ async function showOptionsList() {
 	if (!$list.value || !$input.value || isDisabled.value || isReadonly.value) {
 		return;
 	}
-	await calculateListPosition();
+	await $dropdown.value!.calculatePosition();
 }
 
 const { focusedOptionIndex, focusOption } = useListOptionsFocus(filteredOptions.value.length);
@@ -183,12 +168,7 @@ watch(focusedOptionIndex, (_, newValue) => {
 function select(option: T) {
 	modelValue.value = option as unknown as U;
 	emit('select', option);
-	if(!!props.convertFn) {
-		inputContent.value = String(props.convertFn(option));
-	} else {
-		inputContent.value = String(option);
-	}
-	hideOptionsList(true);
+	hideOptionsList();
 }
 
 function isSelected(option: T) {
@@ -198,140 +178,142 @@ function isSelected(option: T) {
 
 	return JSON.stringify(option) === JSON.stringify(modelValue.value);
 }
+
+const dropdownOffsetY = computed(() => {
+	let total = 6;
+	if (!!slots.helper) {
+		total -= 16;
+	}
+	if (!!slots.error) {
+		total -= 16;
+	}
+	return total;
+});
 </script>
 
 <template>
-	<div
-		class="select"
-		:class="{ 'has-error': hasError }"
-		@click="showOptionsList()"
-		@keydown.enter="!showOptions && showOptionsList()"
+	<LnxDropdown
+		ref="$dropdown"
+		:is-open="showOptions"
+		:offset-y="dropdownOffsetY"
 	>
-		<LnxInput
-			v-bind="{ ...$attrs, ...props }"
-			ref="$input"
-			v-model="inputContent"
-			:value="inputValue"
-			type="text"
-			@keydown.up.prevent="focusOption(-1)"
-			@keydown.down.prevent="focusOption(1)"
-		>
-			<!-- Pass all slots to the input -->
-			<template
-				v-for="name in inputSlotNames"
-				#[name]
-			>
-				<slot :name />
-			</template>
-
-			<template
-				v-if="!props.allowFreeText || filteredOptions?.length"
-				#icon
-			>
-				<LnxIcon icon="mdi:chevron-down" />
-			</template>
-		</LnxInput>
-
 		<div
-			v-if="!!modelValue && !labelProperty && !!$slots.optionInput && !showOptions"
-			class="input-content"
+			class="select"
+			:class="{ 'has-error': hasError }"
+			@click="showOptionsList()"
+			@keydown.enter="!showOptions && showOptionsList()"
 		>
-			<slot
-				name="optionInput"
-				:option="modelValue as U"
+			<LnxInput
+				v-bind="{ ...$attrs, ...props }"
+				ref="$input"
+				v-model="searchQuery"
+				:placeholder="showOptions ? searchPlaceholderText : $attrs.placeholder"
+				:value="inputValue"
+				type="text"
+				@keydown.up.prevent="focusOption(-1)"
+				@keydown.down.prevent="focusOption(1)"
 			>
-				{{ modelValue }}
-			</slot>
+				<!-- Pass all slots to the input -->
+				<template
+					v-for="name in inputSlotNames"
+					#[name]
+				>
+					<slot :name />
+				</template>
+
+				<template #icon>
+					<LnxIcon icon="mdi:chevron-down" />
+				</template>
+			</LnxInput>
+
+			<div
+				v-if="!!modelValue && !labelProperty && !!$slots.optionInput && !showOptions"
+				class="input-content"
+			>
+				<slot
+					name="optionInput"
+					:value="modelValue as U"
+				>
+					{{ modelValue }}
+				</slot>
+			</div>
 		</div>
 
-		<!-- Option list -->
-		<Teleport to="body">
-			<Transition>
-				<ul
-					v-show="showOptions && (filteredOptions.length || !props.allowFreeText)"
-					ref="$list"
-					class="list"
-					tabindex="0"
-					@keydown.up.prevent="focusOption(-1)"
-					@keydown.down.prevent="focusOption(1)"
-					@keydown.esc="hideOptionsList()"
-				>
-					<!-- Normal state -->
-					<template v-if="filteredOptions?.length">
-						<li
-							v-for="(option, index) in filteredOptions"
-							:key="index"
-							class="list-option"
-							:class="{
-								'selected': isSelected(option),
-							}"
-							tabindex="0"
-							@click.stop="select(option)"
-							@keydown.enter="select(option)"
-						>
-							<span class="list-option-label">
-								<slot
-									name="option"
-									:option
-								>
-									<span>
-										{{
-											(typeof option === 'object' && option !== null && labelProperty && labelProperty in option)
-												? option[labelProperty as keyof typeof option]
-												: option
-										}}
-									</span>
-								</slot>
-							</span>
-
-							<span
-								v-if="JSON.stringify(option) === JSON.stringify(modelValue)"
-								class="selected-option-icon"
+		<template #content>
+			<ul
+				class="list"
+				@keydown.up.prevent="focusOption(-1)"
+				@keydown.down.prevent="focusOption(1)"
+				@keydown.esc="hideOptionsList()"
+			>
+				<!-- Normal state -->
+				<template v-if="filteredOptions?.length">
+					<li
+						v-for="(option, index) in filteredOptions"
+						:key="index"
+						class="list-option"
+						:class="{
+							'selected': isSelected(option),
+						}"
+						tabindex="0"
+						@click.stop="select(option)"
+						@keydown.enter="select(option)"
+					>
+						<span class="list-option-label">
+							<slot
+								name="option"
+								:option
 							>
-								<LnxIcon
-									:size="12"
-									icon="mdi:check"
-								/>
-							</span>
-						</li>
-					</template>
+								<span>
+									{{
+										(typeof option === 'object' && option !== null && labelProperty && labelProperty in option)
+											? option[labelProperty as keyof typeof option]
+											: option
+									}}
+								</span>
+							</slot>
+						</span>
 
-					<!-- Loading state -->
-					<li
-						v-else-if="loadingOptions"
-						class="list-option empty"
-					>
-						<slot name="loadingOptions">
+						<span
+							v-if="JSON.stringify(option) === JSON.stringify(modelValue)"
+							class="selected-option-icon"
+						>
 							<LnxIcon
-								icon="line-md:loading-twotone-loop"
-								:size="16"
+								:size="12"
+								icon="mdi:check"
 							/>
-						</slot>
+						</span>
 					</li>
+				</template>
 
-					<!-- Empty state -->
-					<li
-						v-else-if="!allowFreeText"
-						class="list-option empty"
-					>
-						<slot name="notFound">
-							<small class="list-option-label">Not found</small>
-						</slot>
-					</li>
-				</ul>
-			</Transition>
-		</Teleport>
-	</div>
+				<!-- Loading state -->
+				<li
+					v-else-if="loadingOptions"
+					class="list-option empty"
+				>
+					<slot name="loadingOptions">
+						<LnxIcon
+							icon="line-md:loading-twotone-loop"
+							:size="16"
+						/>
+					</slot>
+				</li>
+
+				<!-- Empty state -->
+				<li
+					v-else
+					class="list-option empty"
+				>
+					<slot name="notFound">
+						<small class="list-option-label">Not found</small>
+					</slot>
+				</li>
+			</ul>
+		</template>
+	</LnxDropdown>
 </template>
 
 <style scoped lang="scss">
-:global(.select-dropdown .v-popper__arrow-container) {
-	display: none;
-}
-:global(.select-dropdown .v-popper__wrapper) {
-	width: 100%;
-}
-
 .select {
 	position: relative;
 
@@ -346,7 +328,7 @@ function isSelected(option: T) {
 	.input-content {
 		position: absolute;
 		inset: 0;
-		top: 23px;
+		top: 24px;
 		padding: 0 28px 0 8px;
 		overflow: hidden;
 		max-width: calc(100% - 36px);
@@ -357,18 +339,6 @@ function isSelected(option: T) {
 }
 
 .list {
-	will-change: opacity;
-	--input-height: 52px;
-	background: var(--lnx-select-list-color-bg, var(--lnx-color-gray-9));
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 100001;
-	border: 1px solid var(--lnx-color-gray-3);
-	border-radius: var(--lnx-radius-3);
-	box-shadow: var(--lnx-elevation-3);
-	max-height: 296px;
-	overflow-y: auto;
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
@@ -404,15 +374,5 @@ function isSelected(option: T) {
 			font-style: italic;
 		}
 	}
-}
-
-.v-enter-active,
-.v-leave-active {
-	transition: opacity .2s;
-}
-
-.v-enter-from,
-.v-leave-to {
-	opacity: 0;
 }
 </style>

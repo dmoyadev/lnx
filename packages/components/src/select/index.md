@@ -34,6 +34,8 @@ const {
         :placeholder="showcasedProp === 'Placeholder' ? variation : componentOptions['Placeholder'].value"
         :disabled="showcasedProp === 'Make it disabled' ? variation : componentOptions['Make it disabled'].value"
         @update:modelValue="addEmit('update:modelValue', $event)"
+        @query="addEmit('query', $event)"
+        @select="addEmit('select', $event)"
     >
         <template
             v-for="[name, data] in Object.entries(componentSlots).filter(([, data]) => !!data.value)"

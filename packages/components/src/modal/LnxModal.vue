@@ -96,7 +96,7 @@ function closeModal() {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 1000000;
+	z-index: var(--lnx-zindex-modal);
 
 	.overlay {
 		position: absolute;

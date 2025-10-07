@@ -10,3 +10,4 @@ export * from './input';
 export * from './input-otp';
 export * from './modal';
 export * from './select';
+export * from './dropdown';

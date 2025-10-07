@@ -38,5 +38,8 @@ features:
   - icon: ✅
     title: Select
     link: '/components/select'
+  - icon: 🔽
+    title: Dropdown
+    link: '/components/dropdown'
 ---
 

@@ -25,7 +25,7 @@ const datePickerWindowEndModel = ref<Date>();
 const datePickerModel = ref<Date>();
 const datePickerStartModel = ref<Date>();
 const datePickerEndModel = ref<Date>();
-const selectModel = ref<string>('');
+const selectModel = ref();
 const fileUploaderModel = ref();
 
 const selectOptions: { id:number, label: string, value: unknown }[] = [
@@ -101,8 +101,10 @@ async function getAsyncOptions() {
 	asyncSelectOptions.value = [];
 	loadingSelectOptions.value = true;
 	return new Promise(() => {
-		loadingSelectOptions.value = false;
-		asyncSelectOptions.value = selectOptions;
+		setTimeout(() => {
+			loadingSelectOptions.value = false;
+			asyncSelectOptions.value = selectOptions;
+		}, 1000);
 	});
 }
 const booleanVariants = [true, false];
@@ -412,6 +414,16 @@ function toggleDarkMode() {
 					</template>
 
 					<template #content>
+						<LnxSelect
+							v-model="selectModel"
+							:options="[1, 2, 3]"
+						>
+							Select a value
+						</LnxSelect>
+
+						<LnxDatePicker>
+							Select a value
+						</LnxDatePicker>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a ligula tristique enim luctus maximus. Fusce at dolor nisi. Vivamus rhoncus nisl id mauris consectetur lobortis. Duis suscipit sapien sit amet purus varius mollis. Morbi tincidunt eleifend tristique. Sed egestas ultrices rutrum. In hac habitasse platea dictumst. Aenean eget purus eget nulla finibus lacinia. Donec porttitor eros tincidunt, accumsan libero et, gravida orci. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed id augue ullamcorper, pretium erat vel, rhoncus justo.
 
 						Nullam aliquam imperdiet enim, id iaculis arcu pretium in. Vestibulum volutpat semper luctus. Sed eget magna nisi. Fusce tellus leo, dictum et aliquam non, fermentum eu lorem. Nullam non eros ac metus lobortis tincidunt eu vel felis. Praesent sodales tincidunt congue. In vitae augue quam. Etiam in dui ut nunc pellentesque pharetra a sed quam. Pellentesque ut justo eget ante aliquam ultrices. Maecenas tempor neque ut metus pellentesque scelerisque. Nam sed cursus ipsum. Integer vel dictum odio, sit amet dictum enim.
@@ -571,61 +583,78 @@ function toggleDarkMode() {
 		selected: {{ selectModel }}
 		<br>
 		<form>
-			<div
-				v-for="isLoading in booleanVariants"
-				:key="String(isLoading)"
-				class="variant-container"
-			>
-				<span class="variant">{{ !isLoading ? 'Loading' : 'Not loading' }}</span>
-				<div
-					v-for="hasError in booleanVariants"
-					:key="String(hasError)"
-					class="variant-container"
+			<div class="variant-container">
+				<span class="variant">Basic</span>
+
+				<LnxSelect
+					v-model="selectModel"
+					placeholder="placeholder"
+					label-property="label"
+					:options="selectOptions"
 				>
-					<span class="variant">{{ !hasError ? 'Has Error' : 'No error' }}</span>
+					This is the label
 
-					<LnxSelect
-						v-model="selectModel"
-						:is-loading="!isLoading"
-						:has-error="!hasError"
-						placeholder="placeholder"
-						label-property="label"
-						:options="selectOptions"
-					>
-						This is the label
+					<template #option="{ option }">
+						<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
+					</template>
+				</LnxSelect>
 
-						<template #helper>
-							This is a helper
-						</template>
+				<LnxSelect
+					v-model="selectModel"
+					placeholder="placeholder"
+					label-property="label"
+					:options="selectOptions"
+				>
+					This is the label
 
-						<template #error>
-							This is an error
-						</template>
-					</LnxSelect>
+					<template #helper>
+						This is a helper
+					</template>
 
-					<LnxSelect
-						v-model="selectModel"
-						:is-loading="!isLoading"
-						:has-error="!hasError"
-						placeholder="placeholder"
-						label-property="label"
-						:options="selectOptions"
-					>
-						This is the label
+					<template #option="{ option }">
+						<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
+					</template>
+				</LnxSelect>
 
-						<template #helper>
-							This is a helper
-						</template>
+				<LnxSelect
+					v-model="selectModel"
+					placeholder="placeholder"
+					label-property="label"
+					has-error
+					:options="selectOptions"
+				>
+					This is the label
 
-						<template #error>
-							This is an error
-						</template>
+					<template #error>
+						This is an error
+					</template>
 
-						<template #option="{ option }">
-							<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
-						</template>
-					</LnxSelect>
-				</div>
+					<template #option="{ option }">
+						<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
+					</template>
+				</LnxSelect>
+
+				<LnxSelect
+					v-model="selectModel"
+					placeholder="placeholder"
+					label-property="label"
+					has-error
+					:options="selectOptions"
+				>
+					This is the label
+
+					<template #helper>
+						This is a helper
+					</template>
+
+					<template #error>
+						This is an error
+					</template>
+
+					<template #option="{ option }">
+						<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
+					</template>
+				</LnxSelect>
 			</div>
 
 			<div class="variant-container">
@@ -659,10 +688,10 @@ function toggleDarkMode() {
 				>
 					This is the label
 
-					<template #optionInput="{ option }">
+					<template #optionInput="{ value }">
 						<span style="display: flex; align-items: center; gap: 4px;">
 							<LnxIcon icon="mdi:star" />
-							<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option) as d f a s d f a s d f asf asdf as df</span>
+							<span style="color: var(--lnx-color-primary)">{{ value }} (custom option) as d f a s d f a s d f asf asdf as df</span>
 						</span>
 					</template>
 				</LnxSelect>
@@ -684,30 +713,6 @@ function toggleDarkMode() {
 					<template #notFound>
 						<small>Start writing to see suggestions</small>
 					</template>
-				</LnxSelect>
-			</div>
-
-			<div class="variant-container">
-				<span class="variant">Allow free text</span>
-				<LnxSelect
-					v-model.convert="selectModel"
-					:convert-fn="(value: typeof selectOptions[number]) => value.label"
-					placeholder="placeholder"
-					label-property="label"
-					:options="selectOptions"
-					allow-free-text
-				>
-					free text with objects
-				</LnxSelect>
-
-				<LnxSelect
-					v-model.convert="selectModel"
-					placeholder="placeholder"
-					label-property="label"
-					:options="['Uno', 'Dos', 'Tres', 'Cuatro', 'Cinco']"
-					allow-free-text
-				>
-					free text with strings
 				</LnxSelect>
 			</div>
 		</form>
