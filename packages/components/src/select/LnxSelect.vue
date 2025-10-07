@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T">
+<script setup lang="ts" generic="T, U">
 import { LnxInput } from '../input';
 import { LnxIcon } from '../icon';
 import { computed, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
@@ -7,13 +7,13 @@ import { onClickOutside } from './onClickOutside';
 import { useListPosition } from './useListPosition';
 import { useListOptionsFocus } from './useListOptionsFocus';
 
-const [modelValue, modifiers] = defineModel<unknown, 'convert'>({
-	set(value) {
+const [modelValue, modifiers] = defineModel<U, 'convert'>({
+	set(value: U) {
 		if(!!modifiers.convert && !!props.convertFn && typeof value !== 'string') {
-			return props.convertFn(value as T);
+			return props.convertFn(value as unknown as T);
 		}
 
-		return value as T;
+		return value as U;
 	},
 });
 
@@ -46,7 +46,7 @@ const slots = defineSlots<{
 	helper(): unknown; /* The helper message of the input */
 	error(): unknown; /* The error message of the input */
 	option(props: { option: T }): unknown; /* How the option will be shown in the list */
-	optionInput(props: { option: unknown }): unknown; /* How the option will be shown in the input when selected */
+	optionInput(props: { option: U }): unknown; /* How the option will be shown in the input when selected */
 	loadingOptions(): unknown; /* What will be shown when async options are being loaded */
 	notFound(): unknown; /* What will be shown when there are no options to show */
 }>();
@@ -61,7 +61,7 @@ watch(inputContent, (newValue) => {
 	calculateListPosition();
 	emit('query', newValue);
 	if(props.allowFreeText) {
-		modelValue.value = newValue as unknown as T;
+		modelValue.value = newValue as U;
 		return;
 	}
 });
@@ -181,7 +181,7 @@ watch(focusedOptionIndex, (_, newValue) => {
 });
 
 function select(option: T) {
-	modelValue.value = option;
+	modelValue.value = option as unknown as U;
 	emit('select', option);
 	if(!!props.convertFn) {
 		inputContent.value = String(props.convertFn(option));
@@ -238,7 +238,7 @@ function isSelected(option: T) {
 		>
 			<slot
 				name="optionInput"
-				:option="modelValue"
+				:option="modelValue as U"
 			>
 				{{ modelValue }}
 			</slot>
