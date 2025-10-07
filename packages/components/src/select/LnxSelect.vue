@@ -7,13 +7,13 @@ import { onClickOutside } from './onClickOutside';
 import { useListPosition } from './useListPosition';
 import { useListItemFocus } from './useListItemsFocus';
 
-const [modelValue, modifiers] = defineModel<T, 'convert'>({
-	set(value: T) {
+const [modelValue, modifiers] = defineModel<unknown, 'convert'>({
+	set(value) {
 		if(!!modifiers.convert && !!props.convertFn && typeof value !== 'string') {
-			return props.convertFn(value);
+			return props.convertFn(value as T);
 		}
 
-		return value;
+		return value as T;
 	},
 });
 
@@ -105,13 +105,12 @@ const inputValue = computed<string>(() => {
 		}
 
 		// When there is a selected item and a label property
-		if (modelValue.value[props.labelProperty as keyof T]) {
-			return String(modelValue.value[props.labelProperty as keyof T]);
-		}
-
-		// When there is a selected item and no label property but a convert function
-		if (props.convertFn && props.labelProperty) {
-			return String(modelValue.value[props.labelProperty as keyof T]);
+		if (
+			typeof modelValue.value === 'object'
+			&& typeof props.labelProperty === 'string'
+			&& props.labelProperty in modelValue.value
+		) {
+			return String((modelValue.value as Record<string, unknown>)[props.labelProperty]);
 		}
 	}
 

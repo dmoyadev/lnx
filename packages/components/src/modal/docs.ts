@@ -68,8 +68,8 @@ export function useComponent() {
 		},
 		actions: {
 			description: 'Some actions to show at the end of the dialog',
-			value: '<LnxButton :variant="ButtonVariants.GRAYSCALE" :mode="ButtonModes.CLEAR" > A secondary action </LnxButton> <LnxButton :variant="ButtonVariants.GRAYSCALE"> Another action </LnxButton> <LnxButton @click="scopes.close()"> Close </LnxButton> </template>',
-			initialValue: '<LnxButton :variant="ButtonVariants.GRAYSCALE" :mode="ButtonModes.CLEAR" > A secondary action </LnxButton> <LnxButton :variant="ButtonVariants.GRAYSCALE"> Another action </LnxButton> <LnxButton @click="scopes.close()"> Close </LnxButton> </template>',
+			value: '<LnxButton :variant="BUTTON_VARIANTS.GRAYSCALE" :mode="ButtonModes.CLEAR" > A secondary action </LnxButton> <LnxButton :variant="BUTTON_VARIANTS.GRAYSCALE"> Another action </LnxButton> <LnxButton @click="scopes.close()"> Close </LnxButton> </template>',
+			initialValue: '<LnxButton :variant="BUTTON_VARIANTS.GRAYSCALE" :mode="ButtonModes.CLEAR" > A secondary action </LnxButton> <LnxButton :variant="BUTTON_VARIANTS.GRAYSCALE"> Another action </LnxButton> <LnxButton @click="scopes.close()"> Close </LnxButton> </template>',
 			readonly: true,
 			scopes: [
 				{

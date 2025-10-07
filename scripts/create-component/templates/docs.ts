@@ -15,9 +15,9 @@ export function useComponent() {
 		// 	description: 'Applies different palette of colors',
 		// 	controlType: 'select',
 		// 	type: 'ButtonVariant',
-		// 	options: Object.values(ButtonVariants),
-		// 	defaultValue: 'ButtonVariants.PRIMARY',
-		// 	value: ButtonVariants.PRIMARY,
+		// 	options: Object.values(BUTTON_VARIANTS),
+		// 	defaultValue: 'BUTTON_VARIANTS.PRIMARY',
+		// 	value: BUTTON_VARIANTS.PRIMARY,
 		// },
 	});
 

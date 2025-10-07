@@ -47,13 +47,13 @@ A button lets the user perform an action with a tap or a click, like starting a 
 
 ## Types
 ### ButtonVariant
-<<< ./types.ts#ButtonVariants
+<<< ./types.ts#ButtonVariant
 
 ### ButtonMode
-<<< ./types.ts#ButtonModes
+<<< ./types.ts#ButtonMode
 
 ### ButtonSize
-<<< ./types.ts#ButtonSizes
+<<< ./types.ts#ButtonSize
 
 ### ButtonShape
-<<< ./types.ts#ButtonShapes
+<<< ./types.ts#ButtonShape

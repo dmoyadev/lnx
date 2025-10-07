@@ -40,10 +40,10 @@ Modals are used to display content in a layer above the main application, often 
             <LnxIcon icon="mdi:warning" :size="24" style="color: var(--lnx-color-danger)" />
         </template>
         <template #actions>
-            <LnxButton :variant="ButtonVariants.GRAYSCALE" :mode="ButtonModes.CLEAR">
+            <LnxButton :variant="BUTTON_VARIANTS.GRAYSCALE" :mode="ButtonModes.CLEAR">
                 A secondary action
             </LnxButton>
-            <LnxButton :variant="ButtonVariants.GRAYSCALE">
+            <LnxButton :variant="BUTTON_VARIANTS.GRAYSCALE">
                 Another action
             </LnxButton>
             <LnxButton @click="scopes.close()">
