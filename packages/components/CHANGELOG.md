@@ -5,6 +5,13 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.10](https://github.com/dmoyadev/lnx/compare/v0.7.9...v0.7.10)
+
+<small>📅 Released on: 8 October 2025</small>
+
+- ✨ [`[file-uploader]`](https://lnx.dmoya.dev/components/file-uploader) Improve how uploads are managed [`fc7149c`](https://github.com/dmoyadev/lnx/commit/fc7149cf643bcf974a353c84a31ec47150458e2e) <small>Daniel Moya</small>
+- ✨ [`[select]`](https://lnx.dmoya.dev/components/select) Add searching in all values at all levels of an option [`6382e26`](https://github.com/dmoyadev/lnx/commit/6382e26aef4b613e30c0911b424e3c00d520fe74) <small>Daniel Moya</small>
+
 ## [v0.7.9](https://github.com/dmoyadev/lnx/compare/v0.7.8...v0.7.9)
 
 <small>📅 Released on: 7 October 2025</small>
