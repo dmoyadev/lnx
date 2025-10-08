@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, watch } from 'vue';
+import { UploadedFile } from './types';
 import { LnxIcon } from '../icon';
 import { BUTTON_MODES, BUTTON_SIZES, BUTTON_VARIANTS, LnxButton } from '../button';
 
-const modelValue = defineModel<File[]>();
-
 const props = defineProps<{
-	fileUrls?: string[]; /* When a file is uploaded, the url to it */
+	files?: UploadedFile[]; /* Files uploaded */
+	isUploading?: boolean; /* When uploading, it is disabled */
 	isLoading?: boolean; /* When loading, it is disabled */
 	hasError?: boolean; /* Indicates if it should show the error slot */
 	customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
@@ -18,13 +18,19 @@ defineSlots<{
 	error(): unknown; /* The error message of the input */
 	textWaitingState(): unknown; /* Text to be shown when idle */
 	textDraggedOverState(): unknown; /* Text to be shown when a file is being dragged over the component */
+	textUploading(): unknown; /* Text to be shown when a file is being uploaded */
+}>();
+
+const emit = defineEmits<{
+	upload: [file: File[]] /* When a file is added to the input */
+	delete: [file: UploadedFile] /* When a file needs to be removed */
 }>();
 
 const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
 
 const $attrs = useAttrs();
 const isMultiple = computed(() => !!('multiple' in $attrs && ($attrs.multiple || $attrs.multiple === 'true')));
-const isDisabled = computed(() =>  props.isLoading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
+const isDisabled = computed(() =>  props.isLoading || props.isUploading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
 
 const $input = ref<HTMLInputElement>();
 defineExpose({ $input }); // Components outside this one can see and use this ref
@@ -40,7 +46,7 @@ function upload(event: Event) {
 		return;
 	}
 
-	modelValue.value = Array.from(files);
+	emit('upload', Array.from(files));
 }
 
 function getIcon(): string {
@@ -50,6 +56,10 @@ function getIcon(): string {
 
 	if(isMultiple.value) {
 		return 'mdi:folder-multiple';
+	}
+
+	if(props.isUploading) {
+		return 'line-md:loading-twotone-loop';
 	}
 
 	return 'mdi:folder';
@@ -87,7 +97,7 @@ function getIcon(): string {
 			</span>
 
 			<span
-				v-if="!modelValue?.length"
+				v-if="!files?.length"
 				class="box"
 				:class="{ 'is-dragover': isDragging }"
 			>
@@ -99,13 +109,14 @@ function getIcon(): string {
 						/>
 					</span>
 
-					<span v-if="!isDragging">
-						<!-- @slot Text to be shown when idle -->
+					<span v-if="!isDragging && !isUploading">
 						<slot name="textWaitingState">Drop a file or click</slot>
 					</span>
-					<span v-else>
-						<!-- @slot Text to be shown when a file is being dragged over the component -->
+					<span v-else-if="!isUploading">
 						<slot name="textDraggedOverState">Drop it!</slot>
+					</span>
+					<span v-else>
+						<slot name="textUploading">Uploading...</slot>
 					</span>
 				</small>
 			</span>
@@ -113,10 +124,10 @@ function getIcon(): string {
 
 		<!-- With file state -->
 		<div
-			v-for="(file, index) in modelValue || []"
-			:key="file?.name"
+			v-for="(file, index) in files || []"
+			:key="file.name || index"
 			class="file"
-			:class="{ 'single': modelValue?.length === 1 }"
+			:class="{ 'single': files?.length === 1 }"
 		>
 			<div class="file-info">
 				<LnxButton
@@ -124,7 +135,7 @@ function getIcon(): string {
 					:mode="BUTTON_MODES.CLEAR"
 					:variant="BUTTON_VARIANTS.GRAYSCALE"
 					:size="BUTTON_SIZES.SMALL"
-					@click="modelValue?.splice(index, 1)"
+					@click="$emit('delete', file)"
 				>
 					<LnxIcon icon="mdi:times" />
 				</LnxButton>
@@ -136,10 +147,10 @@ function getIcon(): string {
 
 				<!-- @slot Text to be shown for the delete button -->
 				<a
-					:href="fileUrls?.[index] || '#'"
+					:href="file.url || '#'"
 					target="_blank"
 				>
-					<template v-if="file!.name">{{ file!.name }}</template>
+					<template v-if="file.name">{{ file.name }}</template>
 					<template v-else-if="$attrs.name">{{ $attrs.name }}</template>
 					<LnxIcon
 						:size="12"

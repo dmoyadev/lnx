@@ -32,8 +32,3 @@ A simple icon component that uses the Iconify library to render icons.
         :rotate="showcasedProp === 'Rotate' ? variation : componentOptions['Rotate'].value"
     />
 </DemoContainer>
-
-## Types
-```ts
-
-```

@@ -6,25 +6,23 @@ import {
 } from '../../../../.vitepress/components/types';
 import { useProps } from '../../../../.vitepress/components/useProps';
 import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
+import { UploadedFile } from './types';
 
 export function useComponent() {
 	const componentProps = ref<Record<string, ComponentProp>>({
-		'v-model': {
-			description: 'Binds the value of the input to the reactive variable used as prop',
-			controlType: 'none',
-			type: {
-				name : 'File[]',
-				link: 'https://developer.mozilla.org/en-US/docs/Web/API/File',
-			},
+		files: {
+			description: 'When a file is uploaded, the url to it',
+			controlType: 'input-array',
+			type: 'UploadedFile[]',
 			defaultValue: 'undefined',
 			value: undefined,
 		},
-		fileUrls: {
-			description: 'When a file is uploaded, the url to it',
-			controlType: 'input-array',
-			type: 'string[]',
-			defaultValue: 'undefined',
-			value: undefined,
+		isUploading: {
+			description: 'When uploading a file, it is disabled and shows a different content',
+			controlType: 'switch',
+			type: 'boolean',
+			defaultValue: 'false',
+			value: false,
 		},
 		isLoading: {
 			description: 'When loading, it is disabled and shows a different content',
@@ -105,20 +103,24 @@ export function useComponent() {
 			value: '',
 			defaultValue: 'Drop it!',
 		},
-		textClearBtn: {
-			description: 'Text to be shown for the clear input button',
+		textUploading: {
+			description: 'Text to be shown when a file is being uploaded',
 			value: '',
-			defaultValue: 'Clear file',
+			defaultValue: 'Uploading...',
 		},
 	});
 
 	const componentEvents = ref<Record<string, ComponentEvent>>({
-		'update:modelValue': {
-			description: 'Two way binding of the component',
+		upload: {
+			description: 'When a file is added to the input',
 			type: {
 				name : 'File | File[]',
 				link: 'https://developer.mozilla.org/en-US/docs/Web/API/File', 
 			},
+		},
+		delete: {
+			description: 'When a file needs to be removed',
+			type: 'UploadedFile',
 		},
 	});
 

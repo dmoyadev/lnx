@@ -23,12 +23,18 @@ features:
   - icon: 🗓️
     title: DatePickerWindow
     link: '/components/date-picker-window'
-  - icon: 📝
-    title: Input
-    link: '/components/input'
+  - icon: 🔽
+    title: Dropdown
+    link: '/components/dropdown'
+  - icon: 📁
+    title: FileUploader
+    link: '/components/file-uploader'
   - icon: ✨
     title: Icon
     link: '/components/icon'
+  - icon: 📝
+    title: Input
+    link: '/components/input'
   - icon: 🔢
     title: InputOTP
     link: '/components/input-otp'
@@ -38,8 +44,5 @@ features:
   - icon: ✅
     title: Select
     link: '/components/select'
-  - icon: 🔽
-    title: Dropdown
-    link: '/components/dropdown'
 ---
 
