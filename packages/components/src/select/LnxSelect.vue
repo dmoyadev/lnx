@@ -65,6 +65,26 @@ watch(searchQuery, (newValue) => {
 	$dropdown.value!.calculatePosition();
 	emit('query', newValue);
 });
+
+function getAllValuesOfObject(obj: Record<string, unknown>): unknown[] {
+	let values: unknown[] = [];
+
+	for (const key in obj) {
+		if (!Object.prototype.hasOwnProperty.call(obj, key)) {
+			continue;
+		}
+
+		const value = obj[key];
+		if (typeof value === 'object' && value !== null) {
+			values = values.concat(getAllValuesOfObject(value as Record<string, unknown>));
+			continue;
+		}
+
+		values.push(value);
+	}
+	return values;
+}
+
 const filteredOptions = computed<T[]>(() => {
 	if (!searchQuery.value) {
 		return props.options;
@@ -76,7 +96,7 @@ const filteredOptions = computed<T[]>(() => {
 
 	return props.options.filter((option) => {
 		if(typeof option === 'object' && option !== null) {
-			const optionValues = Object.values(option);
+			const optionValues = getAllValuesOfObject(option as Record<string, unknown>);
 			return optionValues.some(value => normalizeString(String(value)).includes(normalizeString(searchQuery.value)));
 		}
 		return normalizeString(String(option)).includes(normalizeString(searchQuery.value));
