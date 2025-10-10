@@ -5,6 +5,12 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.7.11](https://github.com/dmoyadev/lnx/compare/v0.7.10...v0.7.11)
+
+<small>📅 Released on: 10 October 2025</small>
+
+- ✨ [`[modal]`](https://lnx.dmoya.dev/components/modal) Expose isOpen to allow programmatically opening/closing a modal [`9bfcc4a`](https://github.com/dmoyadev/lnx/commit/9bfcc4a4340a278a1105672953b88f28ee5a72d9) <small>Daniel Moya</small>
+
 ## [v0.7.10](https://github.com/dmoyadev/lnx/compare/v0.7.9...v0.7.10)
 
 <small>📅 Released on: 8 October 2025</small>
