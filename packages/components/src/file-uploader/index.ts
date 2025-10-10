@@ -8,3 +8,5 @@ export default {
 } as Plugin;
 
 export { LnxFileUploader };
+
+export * from './types';

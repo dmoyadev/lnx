@@ -6,7 +6,6 @@ import {
 } from '../../../../.vitepress/components/types';
 import { useProps } from '../../../../.vitepress/components/useProps';
 import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
-import { UploadedFile } from './types';
 
 export function useComponent() {
 	const componentProps = ref<Record<string, ComponentProp>>({

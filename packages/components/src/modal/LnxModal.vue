@@ -22,6 +22,7 @@ defineSlots<{
 }>();
 
 const isOpen = ref(false);
+defineExpose({ isOpen });
 function openModal() {
 	isOpen.value = true;
 	emit('open');

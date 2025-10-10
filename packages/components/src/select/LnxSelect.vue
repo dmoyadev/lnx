@@ -366,7 +366,6 @@ const dropdownOffsetY = computed(() => {
 
 	.list-option {
 		display: flex;
-		align-options: center;
 		justify-content: space-between;
 		gap: 4px;
 		padding: 8px;
