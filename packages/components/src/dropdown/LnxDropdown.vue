@@ -60,6 +60,7 @@ defineExpose({ calculatePosition });
 <style scoped lang="scss">
 .dropdown {
 	position: relative;
+	width: 100%; /* Fields fill their container, like the input does */
 }
 
 .wrapper {
