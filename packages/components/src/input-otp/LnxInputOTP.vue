@@ -67,13 +67,11 @@ function handlePaste(event: ClipboardEvent) {
 	});
 
 	// Focus the next empty input
-	if (digits.length <= props.length) {
-		$inputs.value![digits.length].focus();
-	}
+	$inputs.value![Math.min(digits.length, props.length - 1)].focus();
 }
 
 function handleArrow(newFocusedIndex: number) {
-	$inputs.value![newFocusedIndex - 1].focus();
+	$inputs.value![newFocusedIndex - 1]?.focus();
 }
 
 onMounted(() => {
