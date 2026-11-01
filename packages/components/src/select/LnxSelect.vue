@@ -53,7 +53,14 @@ const slots = defineSlots<{
 }>();
 const inputSlotNames = Object.keys(slots).filter(slot => ['default', 'helper', 'error'].includes(slot)) as ('default' | 'helper' | 'error')[];
 
+// class and style go to the dropdown (so CSS vars reach the options list); the rest goes to the input
+defineOptions({ inheritAttrs: false });
 const $attrs = useAttrs();
+const inputAttrs = computed(() => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { class: _class, style, ...rest } = $attrs;
+	return rest;
+});
 const isReadonly = computed(() => props.isLoading || !!('readonly' in $attrs && ($attrs.readonly || $attrs.readonly === '')));
 const isDisabled = computed(() => props.isLoading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
 
@@ -214,6 +221,8 @@ const dropdownOffsetY = computed(() => {
 <template>
 	<LnxDropdown
 		ref="$dropdown"
+		:class="$attrs.class"
+		:style="$attrs.style"
 		:is-open="showOptions"
 		:offset-y="dropdownOffsetY"
 	>
@@ -224,9 +233,12 @@ const dropdownOffsetY = computed(() => {
 			@keydown.enter="!showOptions && showOptionsList()"
 		>
 			<LnxInput
-				v-bind="{ ...$attrs, ...props }"
+				v-bind="inputAttrs"
 				ref="$input"
 				v-model="searchQuery"
+				:is-loading
+				:has-error
+				:custom-validity
 				:placeholder="showOptions ? searchPlaceholderText : $attrs.placeholder"
 				:value="inputValue"
 				type="text"
