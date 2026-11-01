@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, useAttrs, watch } from 'vue';
+import { computed, ref, useAttrs, watchPostEffect } from 'vue';
 import { LnxIcon } from '../icon';
 import { LnxButton, BUTTON_MODES, BUTTON_SHAPES, BUTTON_SIZES } from '../button';
 
@@ -36,8 +36,9 @@ const isDisabled = computed(() => props.isLoading || !!('disabled' in $attrs && 
 
 const $input = ref<HTMLInputElement>();
 defineExpose({ $input }); // Components outside this one can see and use this ref
-watch(() => props.hasError, (value) => {
-	$input.value?.setCustomValidity((value && props.customValidity) ? props.customValidity : '');
+// Post effect: runs once the input exists and again when hasError or customValidity change
+watchPostEffect(() => {
+	$input.value?.setCustomValidity((props.hasError && props.customValidity) ? props.customValidity : '');
 });
 
 const showPassword = ref(false);
