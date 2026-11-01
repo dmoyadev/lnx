@@ -124,15 +124,15 @@ function createRippleEffect(event: MouseEvent) {
 button,
 a,
 router-link {
-	--lnx-button-content-gap: 8px; /* Separation between elements inside the button */
+	--lnx-button-content-gap: var(--lnx-spacing-2); /* Separation between elements inside the button */
 	--lnx-button-border: 1px solid;
-	--lnx-button-border-color: var(--lnx-color-gray-3);
-	--lnx-button-border-radius: var(--lnx-radius-2);
-	--lnx-button–box-shadow: var(--lnx-elevation-2);
+	--lnx-button-border-color: var(--lnx-color-border);
+	--lnx-button-border-radius: var(--lnx-control-radius);
+	--lnx-button-box-shadow: var(--lnx-elevation-2);
 	--lnx-button-background: var(--lnx-color-bg);
 	--lnx-button-color: var(--lnx-color-text); /* Text color */
-	--lnx-button-padding: var(--lnx-spacing-1) var(--lnx-spacing-3);
-	--lnx-button-size: 40px;
+	--lnx-button-padding: var(--lnx-spacing-1) var(--lnx-control-padding-x);
+	--lnx-button-size: var(--lnx-control-height-medium);
 
 	position: relative; /* Required for the ripple effect */
 	overflow: hidden; /* Required for the ripple effect */
@@ -153,7 +153,7 @@ router-link {
 	padding: var(--lnx-button-padding);
 
 	&:hover:not(.is-disabled):not(.button-mode-clear, .button-mode-link) {
-		box-shadow: var(--lnx-button–box-shadow);
+		box-shadow: var(--lnx-button-box-shadow);
 	}
 
 	&.button-variant- {
@@ -164,7 +164,7 @@ router-link {
 		}
 
 		&grayscale {
-			--lnx-button-border-color: var(--lnx-color-gray-3);
+			--lnx-button-border-color: var(--lnx-color-border);
 		}
 
 		&danger {
@@ -284,18 +284,18 @@ router-link {
 
 	&.button-size- {
 		&small {
-			--lnx-button-size: 26px;
-			--lnx-button-padding: var(--lnx-spacing-0) var(--lnx-spacing-2);
+			--lnx-button-size: var(--lnx-control-height-small);
+			--lnx-button-padding: 0 var(--lnx-spacing-2);
 			font-size: var(--lnx-font-size-small);
 		}
 
 		&medium {
-			--lnx-button-size: 40px;
-			--lnx-button-padding: var(--lnx-spacing-1) var(--lnx-spacing-3);
+			--lnx-button-size: var(--lnx-control-height-medium);
+			--lnx-button-padding: var(--lnx-spacing-1) var(--lnx-control-padding-x);
 		}
 
 		&large {
-			--lnx-button-size: 52px;
+			--lnx-button-size: var(--lnx-control-height-large);
 			--lnx-button-padding: var(--lnx-spacing-2) var(--lnx-spacing-5);
 		}
 	}
