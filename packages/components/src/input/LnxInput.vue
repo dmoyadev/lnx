@@ -172,46 +172,28 @@ const showPassword = ref(false);
 </template>
 
 <style scoped lang="scss">
+@use '../field';
+
 .input {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
-	gap: 4px;
+	gap: var(--lnx-control-gap);
 
 	label {
 		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: var(--lnx-control-gap);
 
 		&:has(input:read-only),
 		&:has(input:disabled) {
 			opacity: .5;
 		}
 
-		&.has-error {
-			@keyframes shake {
-				0% { transform: translateX(0); }
-				25% { transform: translateX(0.5rem); }
-				75% { transform: translateX(-0.5rem); }
-				100% { transform: translateX(0); }
-			}
-
-			.label {
-				color: var(--lnx-color-danger);
-			}
-
-			input,
-			input:invalid {
-				border-color: var(--lnx-color-danger) !important;
-				animation: shake 0.2s ease-in-out 0s 2;
-			}
-
-			&:not(:has(:disabled)):focus-within input {
-				border-color: var(--lnx-color-primary);
-			}
-		}
-
-		.label {
-			font-size: var(--lnx-font-size-small);
+		&.has-error .input-wrapper input {
+			@include field.control-error;
 		}
 
 		.input-wrapper {
@@ -219,16 +201,8 @@ const showPassword = ref(false);
 			width: 100%;
 
 			input {
-				height: 32px;
+				@include field.control;
 				width: 100%;
-				border: 1px solid var(--lnx-color-gray-5);
-				border-radius: 4px;
-				padding: 12px 8px;
-				font-size: var(--lnx-font-size-body);
-
-				&::placeholder {
-					color: var(--lnx-color-gray-3);
-				}
 
 				&::-webkit-inner-spin-button,
 				&::-webkit-outer-spin-button {
@@ -237,33 +211,24 @@ const showPassword = ref(false);
 				}
 			}
 
+			// Leave room for the icon so the text never runs under it
+			&:has(.icon) input {
+				padding-right: calc(var(--lnx-control-padding-x) + 1.4em + var(--lnx-spacing-1));
+			}
+
+			&:has(.btn-icon) input {
+				padding-right: calc(var(--lnx-control-padding-x) + var(--lnx-control-height-small) + var(--lnx-spacing-1));
+			}
+
 			.icon {
 				display: flex;
 				align-items: center;
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
-				right: 8px;
+				right: var(--lnx-control-padding-x);
 			}
 		}
-	}
-
-	.error {
-		color: var(--lnx-color-danger);
-		font-size: var(--lnx-font-size-small);
-		line-height: var(--lnx-font-size-small);
-		display: flex;
-		align-items: center;
-		gap: 4px;
-	}
-
-	.helper {
-		color: var(--lnx-color-primary);
-		font-size: var(--lnx-font-size-small);
-		line-height: var(--lnx-font-size-small);
-		display: flex;
-		align-items: center;
-		gap: 4px;
 	}
 }
 
@@ -276,4 +241,3 @@ input[type="search"]::-webkit-search-results-decoration {
 	display: none;
 }
 </style>
-
