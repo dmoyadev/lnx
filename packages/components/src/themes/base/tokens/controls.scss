@@ -1,0 +1,13 @@
+:root {
+	/* Shared by buttons and form fields so they line up when placed side by side */
+	--lnx-control-height-small: 28px;
+	--lnx-control-height-medium: 40px;
+	--lnx-control-height-large: 52px;
+	--lnx-control-padding-x: var(--lnx-spacing-3);
+	--lnx-control-radius: var(--lnx-radius-2);
+	--lnx-control-border: 1px solid var(--lnx-color-border);
+	--lnx-control-gap: var(--lnx-spacing-1); /* Between the label, the control and its messages */
+
+	/* Floating panels: dropdowns, calendars, modals */
+	--lnx-surface-radius: var(--lnx-radius-3);
+}

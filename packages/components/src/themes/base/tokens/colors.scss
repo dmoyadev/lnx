@@ -34,6 +34,10 @@
 	/** Backgrounds **/
 	--lnx-color-bg: var(--lnx-color-gray-9);
 	--lnx-color-text: var(--lnx-color-gray-2);
+	--lnx-color-text-muted: var(--lnx-color-gray-5); /* Placeholders and secondary content */
+	--lnx-color-surface: var(--lnx-color-gray-9); /* Floating panels: dropdowns, calendars, modals */
+	--lnx-color-border: var(--lnx-color-gray-5); /* Borders of controls and panels */
+	--lnx-color-divider: var(--lnx-color-gray-8); /* Separators inside panels */
 	--lnx-color-gray-bg: #99999922;
 	--lnx-color-gray-bg-accent: #99999955;
 	--lnx-color-danger-bg: #F4949855;
@@ -43,9 +47,8 @@
 html:not(.dark) {
 	--lnx-color-bg: var(--lnx-color-gray-1);
 	--lnx-color-text: var(--lnx-color-gray-8);
-
-	@media (prefers-color-scheme: light) {
-		--lnx-color-bg: var(--lnx-color-gray-1);
-		--lnx-color-text: var(--lnx-color-gray-8);
-	}
+	--lnx-color-text-muted: var(--lnx-color-gray-6);
+	--lnx-color-surface: var(--lnx-color-gray-0);
+	--lnx-color-border: var(--lnx-color-gray-4);
+	--lnx-color-divider: var(--lnx-color-gray-2);
 }

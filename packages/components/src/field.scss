@@ -1,0 +1,59 @@
+// Shared by form fields (input, input OTP, file uploader) so labels, messages and error feedback look the same.
+// It is @use'd inside each component's scoped styles, like date-picker-view.scss.
+
+@keyframes shake {
+	0% { transform: translateX(0); }
+	25% { transform: translateX(0.5rem); }
+	75% { transform: translateX(-0.5rem); }
+	100% { transform: translateX(0); }
+}
+
+// The box of a single-line control: same height, border and radius as a medium button
+@mixin control {
+	height: var(--lnx-control-height-medium);
+	padding: 0 var(--lnx-control-padding-x);
+	border: var(--lnx-control-border);
+	border-radius: var(--lnx-control-radius);
+	background: transparent;
+	color: var(--lnx-color-text);
+	font-size: var(--lnx-font-size-body);
+	transition: border-color .15s;
+
+	&::placeholder {
+		color: var(--lnx-color-text-muted);
+	}
+
+	&:focus {
+		border-color: var(--lnx-color-primary);
+	}
+}
+
+@mixin control-error {
+	border-color: var(--lnx-color-danger);
+	animation: shake 0.2s ease-in-out 0s 2;
+}
+
+.label {
+	font-size: var(--lnx-font-size-small);
+}
+
+.helper,
+.error {
+	display: flex;
+	align-items: center;
+	gap: var(--lnx-spacing-1);
+	font-size: var(--lnx-font-size-small);
+	line-height: var(--lnx-font-size-small);
+}
+
+.helper {
+	color: var(--lnx-color-primary);
+}
+
+.error {
+	color: var(--lnx-color-danger);
+}
+
+.has-error .label {
+	color: var(--lnx-color-danger);
+}
