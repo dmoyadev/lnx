@@ -5,6 +5,31 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.8.0](https://github.com/dmoyadev/lnx/compare/v0.7.11...v0.8.0)
+
+<small>📅 Released on: 1 November 2026</small>
+
+- ⬆️ [`[icon]`](https://lnx.dmoya.dev/components/icon) Upgrade iconify-icon to 3 [`c2ea1f5`](https://github.com/dmoyadev/lnx/commit/c2ea1f518c16f04963fa0a493f2f90851462ebd3) <small>Daniel Moya</small>
+- ⬆️ [`[deps]`](https://lnx.dmoya.dev/components/deps) Upgrade TypeScript to 6 and drop options removed in TypeScript 7 [`dc05cc5`](https://github.com/dmoyadev/lnx/commit/dc05cc59e280c1495107412e437837c7aa9e506d) <small>Daniel Moya</small>
+- ⬆️ [`[deps]`](https://lnx.dmoya.dev/components/deps) Upgrade Vite to 8 and keep VitePress on a maintained Vite [`1479ada`](https://github.com/dmoyadev/lnx/commit/1479ada1abfd8a7bec70394c1e7d95befb429569) <small>Daniel Moya</small>
+- ⬆️ [`[deps]`](https://lnx.dmoya.dev/components/deps) Upgrade ESLint to 10 [`c9abc0d`](https://github.com/dmoyadev/lnx/commit/c9abc0dd4c3fd4fa77c2fa2413f784660f13b6d4) <small>Daniel Moya</small>
+- 👷 [`[ci]`](https://lnx.dmoya.dev/components/ci) Check types, lint and builds on every pull request [`836d692`](https://github.com/dmoyadev/lnx/commit/836d692f35b7971a013923f0cab407f03ff6cd5a) <small>Daniel Moya</small>
+- ♻️ [`[date-picker]`](https://lnx.dmoya.dev/components/date-picker) Use the library dropdown instead of floating-vue and read dates in UTC [`499254a`](https://github.com/dmoyadev/lnx/commit/499254a69317e8f1bbff9e71996dadaf76c2d972) <small>Daniel Moya</small>
+- 🐛 [`[date-picker-window]`](https://lnx.dmoya.dev/components/date-picker-window) Show the selected day the same in every timezone [`d2471c7`](https://github.com/dmoyadev/lnx/commit/d2471c70d5466db3081baeacdc1ee137a343478a) <small>Daniel Moya</small>
+- 🐛 [`[file-uploader]`](https://lnx.dmoya.dev/components/file-uploader) Apply custom validity from the first render [`d6be962`](https://github.com/dmoyadev/lnx/commit/d6be9626b54ca5587a49c617e1d808918c6d49db) <small>Daniel Moya</small>
+- 🐛 [`[input]`](https://lnx.dmoya.dev/components/input) Apply custom validity from the first render [`bb96e31`](https://github.com/dmoyadev/lnx/commit/bb96e31b9749fa43056376016fb5f8bcc88b8387) <small>Daniel Moya</small>
+- 🐛 [`[select]`](https://lnx.dmoya.dev/components/select) Send attributes and own props only where they belong [`dd0c4c0`](https://github.com/dmoyadev/lnx/commit/dd0c4c0a47103804526eb6812493d8667d570d19) <small>Daniel Moya</small>
+- ♿ [`[modal]`](https://lnx.dmoya.dev/components/modal) Open as a native modal with Esc, focus handling and a labelled title [`c71e670`](https://github.com/dmoyadev/lnx/commit/c71e670f8dac7786ae7eeb6464497a310580bb10) <small>Daniel Moya</small>
+- ✨ [`[dropdown]`](https://lnx.dmoya.dev/components/dropdown) Show content above modals, add fitContent and keep it inside the viewport [`ff63039`](https://github.com/dmoyadev/lnx/commit/ff630396edad4b34387481aa99b7a66ece569b70) <small>Daniel Moya</small>
+- 🔥 [`[components]`](https://lnx.dmoya.dev/components/components) Remove install plugins that registered components without a name [`e384b5b`](https://github.com/dmoyadev/lnx/commit/e384b5b40121bc61949d8ca1d9133ef1200ba9de) <small>Daniel Moya</small>
+- 🐛 [`[dropdown]`](https://lnx.dmoya.dev/components/dropdown) Apply offset changes after mount [`e6a8f47`](https://github.com/dmoyadev/lnx/commit/e6a8f47ac4a73f125204bb91833abda01c0d8dd1) <small>Daniel Moya</small>
+- 🐛 [`[date-picker-window]`](https://lnx.dmoya.dev/components/date-picker-window) Fix weekday header order, first day offset and range disabled months [`6f0b050`](https://github.com/dmoyadev/lnx/commit/6f0b050f5f87552b14aa8b9c16d5cad104a13264) <small>Daniel Moya</small>
+- 🐛 [`[input-otp]`](https://lnx.dmoya.dev/components/input-otp) Fix errors when pasting a full code or using arrows at the edges [`b17e62a`](https://github.com/dmoyadev/lnx/commit/b17e62ac80aae6f9c118d0f72571088cf41326be) <small>Daniel Moya</small>
+- 🐛 [`[file-uploader]`](https://lnx.dmoya.dev/components/file-uploader) Stop attributes and listeners being applied twice [`aadd943`](https://github.com/dmoyadev/lnx/commit/aadd943135c43fa9422b4566b9590b7d44da434c) <small>Daniel Moya</small>
+- 🐛 [`[input]`](https://lnx.dmoya.dev/components/input) Stop attributes and listeners being applied twice [`2df3b11`](https://github.com/dmoyadev/lnx/commit/2df3b1114fd23f26e7c24c2ef17d242b7e3cde10) <small>Daniel Moya</small>
+- 🐛 [`[select]`](https://lnx.dmoya.dev/components/select) Restore keyboard navigation and fix click outside closing the list [`addd19e`](https://github.com/dmoyadev/lnx/commit/addd19e0a7e77f43486bbf37eaeda9bb671a8869) <small>Daniel Moya</small>
+- ⬆️ [`[deps]`](https://lnx.dmoya.dev/components/deps) Update dependencies within current major versions [`de950c5`](https://github.com/dmoyadev/lnx/commit/de950c5ee78be166d96b181d29ae8ac2fd4d1009) <small>Daniel Moya</small>
+
 ## [v0.7.11](https://github.com/dmoyadev/lnx/compare/v0.7.10...v0.7.11)
 
 <small>📅 Released on: 10 October 2025</small>
