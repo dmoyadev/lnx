@@ -30,6 +30,13 @@ export function useComponent() {
 			defaultValue: '0',
 			value: 0,
 		},
+		fitContent: {
+			description: 'Lets the content be wider than the element that opens the dropdown',
+			controlType: 'boolean',
+			type: 'boolean',
+			defaultValue: 'false',
+			value: false,
+		},
 	});
 
 	const componentSlots = ref<Record<string, ComponentSlot>>({

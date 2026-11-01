@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useDropdownPosition } from './useDropdownPosition';
-import { Ref, useTemplateRef, watch } from 'vue';
+import { Ref, ref, useTemplateRef, watch } from 'vue';
 
 const props = defineProps<{
 	isOpen?: boolean; /* Whether to show the dropdown */
 	offsetX?: number; /* Horizontal offset of the dropdown */
 	offsetY?: number; /* Vertical offset of the dropdown */
+	fitContent?: boolean; /* Lets the content be wider than the element that opens the dropdown */
 }>();
 
 defineSlots<{
@@ -16,7 +17,14 @@ defineSlots<{
 const $handler = useTemplateRef('$handler');
 const $dropdown = useTemplateRef('$dropdown');
 const { calculatePosition } = useDropdownPosition($dropdown as Ref<HTMLElement>, $handler as Ref<HTMLElement>, props);
-watch(() => props.isOpen, async () => await calculatePosition());
+// Inside a modal <dialog> (top layer) the content must live in the dialog, or it would be hidden behind it and inert
+const teleportTarget = ref<string | HTMLElement>('body');
+watch(() => props.isOpen, async (isOpen) => {
+	if(isOpen) {
+		teleportTarget.value = $handler.value?.closest<HTMLElement>('dialog[open]') ?? 'body';
+	}
+	await calculatePosition();
+});
 
 defineExpose({ calculatePosition });
 </script>
@@ -30,12 +38,13 @@ defineExpose({ calculatePosition });
 			<slot />
 		</summary>
 
-		<Teleport to="body">
+		<Teleport :to="teleportTarget">
 			<Transition>
 				<div
 					v-if="isOpen"
 					ref="$dropdown"
 					class="wrapper"
+					:class="{ 'fit-content': fitContent }"
 					tabindex="0"
 					v-bind="{ ...$attrs }"
 				>
@@ -54,7 +63,7 @@ defineExpose({ calculatePosition });
 }
 
 .wrapper {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	will-change: opacity;
@@ -66,6 +75,10 @@ defineExpose({ calculatePosition });
 	max-height: 296px;
 	overflow-y: auto;
 	margin: 0;
+
+	&.fit-content {
+		max-height: none;
+	}
 }
 
 .v-enter-active,
