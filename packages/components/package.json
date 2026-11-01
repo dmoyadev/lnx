@@ -28,6 +28,6 @@
 		"vue": "^3.5.0"
 	},
 	"dependencies": {
-		"iconify-icon": "^2.3.0"
+		"iconify-icon": "^3.0.5"
 	}
 }

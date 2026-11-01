@@ -11,4 +11,4 @@ overrides:
 
 peerDependencyRules:
   allowedVersions:
-    vitepress>vite: '7'
+    '@vitejs/plugin-vue>vite': '7'

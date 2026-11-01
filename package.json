@@ -14,7 +14,7 @@
   "type": "module",
   "packageManager": "pnpm@10.34.9",
   "scripts": {
-    "dev": "pnpm ---filter \"sandbox\" dev",
+    "dev": "pnpm --filter \"sandbox\" dev",
     "create-component": "node scripts/create-component/create-component.js",
     "build": "pnpm -r build",
     "version": "pnpm -r version",

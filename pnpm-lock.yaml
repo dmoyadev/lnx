@@ -57,8 +57,8 @@ importers:
   packages/components:
     dependencies:
       iconify-icon:
-        specifier: ^2.3.0
-        version: 2.3.0
+        specifier: ^3.0.5
+        version: 3.0.5
       vue:
         specifier: ^3.5.0
         version: 3.5.44(typescript@6.0.3)
@@ -1519,8 +1519,8 @@ packages:
   html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
 
-  iconify-icon@2.3.0:
-    resolution: {integrity: sha512-C0beI9oTDxQz6voI5CKl7MiJf0Lw4UU8K4G4t6pcUDClLmCvuMOpcvd8MAztQ2SfoH0iv7WHdxBFjekKPFKH2Q==}
+  iconify-icon@3.0.5:
+    resolution: {integrity: sha512-tApy9Ojh7ZGAuKRiPbUHpqd+hwNwM516al7vwX0dU6f7FoLI11DWGZwl85OYknGIwo4KnWeaqPJvCEMOrnKPWw==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -3690,7 +3690,7 @@ snapshots:
 
   html-void-elements@3.0.0: {}
 
-  iconify-icon@2.3.0:
+  iconify-icon@3.0.5:
     dependencies:
       '@iconify/types': 2.0.0
 
