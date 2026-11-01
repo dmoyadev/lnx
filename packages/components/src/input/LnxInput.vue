@@ -19,9 +19,17 @@ defineSlots<{
 
 const modelValue = defineModel<string | number>();
 
+// $attrs go to the <input>; only class and style stay on the wrapper, so listeners don't fire twice
+defineOptions({ inheritAttrs: false });
+
 const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
 
 const $attrs = useAttrs();
+const inputAttrs = computed(() => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { class: _class, style, ...rest } = $attrs;
+	return rest;
+});
 const inputType = computed<string>(() => $attrs.type as string ?? 'text');
 const isReadonly = computed(() => props.isLoading || !!('readonly' in $attrs && ($attrs.readonly || $attrs.readonly === '')));
 const isDisabled = computed(() => props.isLoading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
@@ -36,7 +44,11 @@ const showPassword = ref(false);
 </script>
 
 <template>
-	<div class="input">
+	<div
+		class="input"
+		:class="$attrs.class"
+		:style="$attrs.style"
+	>
 		<label
 			:class="{ 'has-error': hasError }"
 		>
@@ -55,7 +67,7 @@ const showPassword = ref(false);
 					:id="($attrs.id as string) || _componentUID"
 					ref="$input"
 					v-model="modelValue"
-					v-bind="$attrs"
+					v-bind="inputAttrs"
 					:type="showPassword ? 'text' : inputType"
 					:readonly="isReadonly"
 					:disabled="isDisabled"
