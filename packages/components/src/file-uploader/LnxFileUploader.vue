@@ -26,9 +26,17 @@ const emit = defineEmits<{
 	delete: [file: UploadedFile] /* When a file needs to be removed */
 }>();
 
+// $attrs go to the <input>; only class and style stay on the wrapper, so listeners don't fire twice
+defineOptions({ inheritAttrs: false });
+
 const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
 
 const $attrs = useAttrs();
+const inputAttrs = computed(() => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { class: _class, style, ...rest } = $attrs;
+	return rest;
+});
 const isMultiple = computed(() => !!('multiple' in $attrs && ($attrs.multiple || $attrs.multiple === 'true')));
 const isDisabled = computed(() =>  props.isLoading || props.isUploading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
 
@@ -67,7 +75,11 @@ function getIcon(): string {
 </script>
 
 <template>
-	<div class="file-uploader">
+	<div
+		class="file-uploader"
+		:class="$attrs.class"
+		:style="$attrs.style"
+	>
 		<!-- Empty and uploading states -->
 		<label
 			:class="{ 'has-error': hasError }"
@@ -80,7 +92,7 @@ function getIcon(): string {
 			<input
 				:id="($attrs.id as string) || _componentUID"
 				ref="$input"
-				v-bind="$attrs"
+				v-bind="inputAttrs"
 				:disabled="isDisabled"
 				aria-label=""
 				type="file"
