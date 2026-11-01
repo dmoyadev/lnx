@@ -6,6 +6,7 @@ import { normalizeString } from '../helpers';
 import { onClickOutside } from './onClickOutside';
 import { useListOptionsFocus } from './useListOptionsFocus';
 import { LnxDropdown } from '../dropdown';
+import { BUTTON_SIZES, ButtonSize } from '../button';
 
 const [modelValue, modifiers] = defineModel<U, 'convert'>({
 	set(value: U) {
@@ -19,6 +20,7 @@ const [modelValue, modifiers] = defineModel<U, 'convert'>({
 
 const props = withDefaults(
 	defineProps<{
+		size?: ButtonSize; /* Height, spacing and font size. Same scale as buttons, so they line up side by side */
 		options?: T[]; /* The options to be shown in the select */
 		areOptionsAsync?: boolean; /* Indicates if the options are loaded asynchronously */
 		labelProperty?: string; /* The property of the option to be shown as a label */
@@ -29,6 +31,7 @@ const props = withDefaults(
 		loadingOptions?: boolean; /* Indicates if the options are being loaded asynchronously at the moment */
 		customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
 	}>(), {
+		size: BUTTON_SIZES.MEDIUM,
 		options: () => [],
 		convertFn: undefined,
 		customValidity: undefined,
@@ -228,7 +231,7 @@ const dropdownOffsetY = computed(() => {
 	>
 		<div
 			class="select"
-			:class="{ 'has-error': hasError }"
+			:class="[`size-${size}`, { 'has-error': hasError }]"
 			@click="showOptionsList()"
 			@keydown.enter="!showOptions && showOptionsList()"
 		>
@@ -236,6 +239,7 @@ const dropdownOffsetY = computed(() => {
 				v-bind="inputAttrs"
 				ref="$input"
 				v-model="searchQuery"
+				:size
 				:is-loading
 				:has-error
 				:custom-validity
@@ -347,6 +351,8 @@ const dropdownOffsetY = computed(() => {
 </template>
 
 <style scoped lang="scss">
+@use '../field';
+
 .select {
 	position: relative;
 
@@ -360,9 +366,10 @@ const dropdownOffsetY = computed(() => {
 		top: 0;
 		left: 0;
 		right: 0;
-		height: var(--lnx-control-height-medium);
-		line-height: var(--lnx-control-height-medium); // Centers it vertically; flex would break the ellipsis
-		padding: 0 calc(var(--lnx-control-padding-x) + 1.4em + var(--lnx-spacing-1)) 0 var(--lnx-control-padding-x);
+		height: var(--lnx-field-height, var(--lnx-control-height-medium));
+		line-height: var(--lnx-field-height, var(--lnx-control-height-medium)); // Centers it vertically; flex would break the ellipsis
+		padding: 0 calc(var(--lnx-field-padding-x, var(--lnx-control-padding-x)) + 1.4em + var(--lnx-spacing-1)) 0 var(--lnx-field-padding-x, var(--lnx-control-padding-x));
+		font-size: var(--lnx-field-font-size, var(--lnx-font-size-body));
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
