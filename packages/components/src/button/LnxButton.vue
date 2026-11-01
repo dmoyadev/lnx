@@ -136,6 +136,7 @@ router-link {
 
 	position: relative; /* Required for the ripple effect */
 	overflow: hidden; /* Required for the ripple effect */
+	flex-shrink: 0; /* overflow: hidden lets flex squeeze it below its content, cutting the text */
 	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
