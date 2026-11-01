@@ -6,12 +6,14 @@ import { CALENDAR_VIEW_TYPES, CalendarViewType, Item, LnxDatePickerWindow } from
 import { DATE_FORMATS, formatDate } from './helpers';
 import { LnxInput } from '../input';
 import { LnxIcon } from '../icon';
+import { BUTTON_SIZES, ButtonSize } from '../button';
 
 const modelValue = defineModel<Date>();
 const start = defineModel<Date>('start');
 const end = defineModel<Date>('end');
 
 const props = withDefaults(defineProps<{
+	size?: ButtonSize; /* Height, spacing and font size. Same scale as buttons, so they line up side by side */
 	monthsNames?: string[]; /* Names of months to be shown */
 	weekDaysNames?: string[]; /* Names of week days to be shown in the header of the month */
 	firstDayOfWeek?: number; /* Day to be used as the start of the week */
@@ -25,6 +27,7 @@ const props = withDefaults(defineProps<{
 	hasError?: boolean; /* Indicates if it should show the error slot */
 	customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
 }>(), {
+	size: BUTTON_SIZES.MEDIUM,
 	monthsNames: () => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 	weekDaysNames: () => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 	firstDayOfWeek: 1,
@@ -145,6 +148,7 @@ const inputValue = computed(() => {
 				v-bind="inputAttrs"
 				type="text"
 				:model-value="inputValue"
+				:size
 				:is-loading
 				:has-error
 				:custom-validity
