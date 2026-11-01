@@ -53,9 +53,9 @@ const {
 	changeSmall,
 	setToday,
 } = useCalendar({
-	firstDayOfWeek: props.firstDayOfWeek,
+	firstDayOfWeek: computed(() => props.firstDayOfWeek),
 	isRange: computed(() => props.isRange),
-	isItemDisabledFn: props.isItemDisabledFn,
+	isItemDisabledFn: computed(() => props.isItemDisabledFn ?? (() => false)),
 	initialViewType: props.calendarType,
 });
 

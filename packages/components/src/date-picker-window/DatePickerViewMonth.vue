@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Day, DisplayedMonth } from './types';
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 import DatePickerItem from './DatePickerItem.vue';
 
 const props = withDefaults(defineProps<{
@@ -14,12 +14,10 @@ const props = withDefaults(defineProps<{
 
 defineEmits<{ daySelected: [day: Day]; }>();
 
-const orderedWeekDaysNames = ref<string[]>(props.weekDaysNames);
-watch(() => props.weekDaysNames, () => {
-	for(let i = 0; i < props.firstDayOfWeek; i++) {
-		orderedWeekDaysNames.value.push(orderedWeekDaysNames.value.shift() as string);
-	}
-});
+const orderedWeekDaysNames = computed<string[]>(() => [
+	...props.weekDaysNames.slice(props.firstDayOfWeek),
+	...props.weekDaysNames.slice(0, props.firstDayOfWeek),
+]);
 
 </script>
 

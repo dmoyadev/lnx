@@ -119,7 +119,7 @@ export function useCalendar({
 
 			// Check if the last day displayed is the last day of the month. If so,
 			// we need to add the first day of the next month to the extra week.
-			if (lastDay.number === daysInMonth.value) {
+			if (lastDay.number === nDays) {
 				lastDay = {
 					number: 0,
 					month: month === 11 ? 0 : (month + 1),
@@ -146,8 +146,7 @@ export function useCalendar({
 	}
 
 	const firstDayOfMonth = computed<number>(() => {
-		const day = (new Date(currentYear.value, currentMonth.value).getDay()) - firstDayOfWeek.value;
-		return day < 0 ? 6 : day;
+		return (new Date(currentYear.value, currentMonth.value).getDay() - firstDayOfWeek.value + 7) % 7;
 	});
 	const daysInMonth = computed<number>(() => 32 - (new Date(currentYear.value, currentMonth.value, 32).getDate()));
 	const weeksInMonth = computed<number>(() => Math.ceil((firstDayOfMonth.value + daysInMonth.value) / 7));
@@ -164,8 +163,7 @@ export function useCalendar({
 	const nextYear = computed<number>(() => currentMonth.value === 11 ? currentYear.value + 1 : currentYear.value);
 	const nextMonth = computed<number>(() => currentMonth.value === 11 ? 0 : currentMonth.value + 1);
 	const nextFirstDayOfMonth = computed<number>(() => {
-		const day = (new Date(nextYear.value, nextMonth.value).getDay()) - firstDayOfWeek.value;
-		return day < 0 ? 6 : day;
+		return (new Date(nextYear.value, nextMonth.value).getDay() - firstDayOfWeek.value + 7) % 7;
 	});
 	const nextDaysInMonth = computed<number>(() => 32 - (new Date(nextYear.value, nextMonth.value, 32).getDate()));
 	const nextWeeksInMonth = computed<number>(() => Math.ceil((nextFirstDayOfMonth.value + nextDaysInMonth.value) / 7));
@@ -180,7 +178,6 @@ export function useCalendar({
 	});
 
 	const displayedMonths = computed<DisplayedMonth[]>(() => {
-		console.log('displayedMonths!');
 		const months: DisplayedMonth[] = [];
 
 		months.push({
@@ -230,13 +227,10 @@ export function useCalendar({
 			for(let i = 0; i < 12; i++) {
 				const nextMonth: Month = {
 					number: i,
-					year: currentYear.value,
+					year: currentYear.value + 1,
 				};
 				nextMonth.isDisabled = !!isItemDisabledFn.value ? isItemDisabledFn.value(nextMonth) : false;
-				months.push({
-					number: i,
-					year: currentYear.value + 1,
-				});
+				months.push(nextMonth);
 			}
 			year[currentYear.value + 1] = months;
 		}
