@@ -1,9 +1,14 @@
-import { ref } from 'vue';
+import { MaybeRefOrGetter, ref, toValue } from 'vue';
 
-export function useListOptionsFocus(optionNumber: number) {
+export function useListOptionsFocus(optionCount: MaybeRefOrGetter<number>) {
 	const focusedOptionIndex = ref<number | null>(null);
 
 	function focusOption(direction: 1 | -1) {
+		const optionNumber = toValue(optionCount);
+		if (!optionNumber) {
+			return;
+		}
+
 		if (focusedOptionIndex.value == null) {
 			focusedOptionIndex.value = 0;
 			return;

@@ -175,8 +175,8 @@ async function showOptionsList() {
 	await $dropdown.value!.calculatePosition();
 }
 
-const { focusedOptionIndex, focusOption } = useListOptionsFocus(filteredOptions.value.length);
-watch(focusedOptionIndex, (_, newValue) => {
+const { focusedOptionIndex, focusOption } = useListOptionsFocus(() => filteredOptions.value.length);
+watch(focusedOptionIndex, (newValue) => {
 	const listOptions = $list.value?.querySelectorAll('.list-option');
 	if (!listOptions?.length || newValue == null) {
 		return;
@@ -261,6 +261,7 @@ const dropdownOffsetY = computed(() => {
 
 		<template #content>
 			<ul
+				ref="$list"
 				class="list"
 				@keydown.up.prevent="focusOption(-1)"
 				@keydown.down.prevent="focusOption(1)"
@@ -295,7 +296,7 @@ const dropdownOffsetY = computed(() => {
 						</span>
 
 						<span
-							v-if="JSON.stringify(option) === JSON.stringify(modelValue)"
+							v-if="isSelected(option)"
 							class="selected-option-icon"
 						>
 							<LnxIcon
