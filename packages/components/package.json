@@ -28,7 +28,6 @@
 		"vue": "^3.5.0"
 	},
 	"dependencies": {
-		"floating-vue": "^5.4.0",
 		"iconify-icon": "^2.3.0"
 	}
 }

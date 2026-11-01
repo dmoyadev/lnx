@@ -1,5 +1,4 @@
 import './themes/base/index.scss';
-import 'floating-vue/dist/style.css';
 
 export * from './button';
 export * from './icon';

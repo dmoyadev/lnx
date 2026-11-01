@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue';
-import { Dropdown } from 'floating-vue';
+import { computed, Ref, ref, useAttrs, useTemplateRef } from 'vue';
+import { LnxDropdown } from '../dropdown';
+import { onClickOutside } from '../select/onClickOutside';
 import { CALENDAR_VIEW_TYPES, CalendarViewType, Item, LnxDatePickerWindow } from '../date-picker-window';
 import { DATE_FORMATS, formatDate } from './helpers';
 import { LnxInput } from '../input';
@@ -41,9 +42,30 @@ const slots = defineSlots<{
 }>();
 const slotNames = Object.keys(slots) as (keyof typeof slots)[];
 
+// class and style go to the dropdown; the rest goes to the input
+defineOptions({ inheritAttrs: false });
 const $attrs = useAttrs();
+const inputAttrs = computed(() => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { class: _class, style, ...rest } = $attrs;
+	return rest;
+});
 const isReadonly = computed(() => props.isLoading || !!('readonly' in $attrs && ($attrs.readonly || $attrs.readonly === '')));
 const isDisabled = computed(() => props.isLoading || !!('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
+
+const isOpen = ref(false);
+function open() {
+	if(isReadonly.value || isDisabled.value) { return; }
+	isOpen.value = true;
+}
+function close() {
+	isOpen.value = false;
+}
+const $calendar = useTemplateRef<HTMLElement>('$calendar');
+onClickOutside($calendar as Ref<HTMLElement>, close);
+
+// The helper and error messages are part of the handler, below the input
+const dropdownOffsetY = computed(() => 6 - (!!slots.helper ? 16 : 0) - (!!slots.error ? 16 : 0));
 
 const inputValue = computed(() => {
 	switch (props.calendarType) {
@@ -85,16 +107,16 @@ const inputValue = computed(() => {
 			if(props.isRange) {
 				let value = '';
 				if(start.value) {
-					value += start.value.getFullYear();
+					value += start.value.getUTCFullYear();
 				}
 				if(end.value) {
-					value += ` — ${end.value.getFullYear()}`;
+					value += ` — ${end.value.getUTCFullYear()}`;
 				}
 				return value;
 			}
 
 			if(modelValue.value) {
-				return modelValue.value.getFullYear();
+				return modelValue.value.getUTCFullYear();
 			}
 
 			return props.showFormat(modelValue.value);
@@ -107,37 +129,61 @@ const inputValue = computed(() => {
 </script>
 
 <template>
-	<Dropdown
-		:distance="6"
-		:disabled="isReadonly || isDisabled"
+	<LnxDropdown
+		:class="$attrs.class"
+		:style="$attrs.style"
+		:is-open="isOpen"
+		:offset-y="dropdownOffsetY"
+		fit-content
 	>
-		<LnxInput
-			v-bind="{ ...$attrs, ...props }"
-			type="text"
-			:model-value="inputValue"
+		<div
+			@click="open()"
+			@keydown.enter="open()"
+			@keydown.esc="close()"
 		>
-			<!-- Pass all slots to the input -->
-			<template
-				v-for="name in slotNames"
-				#[name]
+			<LnxInput
+				v-bind="inputAttrs"
+				type="text"
+				:model-value="inputValue"
+				:is-loading
+				:has-error
+				:custom-validity
 			>
-				<slot :name />
-			</template>
+				<!-- Pass all slots to the input -->
+				<template
+					v-for="name in slotNames"
+					#[name]
+				>
+					<slot :name />
+				</template>
 
-			<template #icon>
-				<LnxIcon icon="mdi:calendar" />
-			</template>
-		</LnxInput>
+				<template #icon>
+					<LnxIcon icon="mdi:calendar" />
+				</template>
+			</LnxInput>
+		</div>
 
-		<template #popper="{ hide }">
-			<LnxDatePickerWindow
-				v-bind="props"
-				v-model="modelValue"
-				v-model:start="start"
-				v-model:end="end"
-				@update:model-value="hide()"
-				@update:end="hide()"
-			/>
+		<template #content>
+			<div
+				ref="$calendar"
+				@keydown.esc="close()"
+			>
+				<LnxDatePickerWindow
+					v-model="modelValue"
+					v-model:start="start"
+					v-model:end="end"
+					:months-names
+					:week-days-names
+					:first-day-of-week
+					:today-text
+					:is-item-disabled-fn
+					:calendar-type
+					:is-range
+					:allow-deselect
+					@update:model-value="close()"
+					@update:end="close()"
+				/>
+			</div>
 		</template>
-	</Dropdown>
+	</LnxDropdown>
 </template>

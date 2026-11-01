@@ -20,7 +20,7 @@ export type DateFormat = ValueOf<typeof DATE_FORMATS>;
 // #endregion DateFormats
 
 /**
- * Parses a date with the DD/MM/YYYY format
+ * Formats a date read in UTC, since the date picker emits dates at 00:00 UTC
  * @param date
  * @param format
  * @param monthNames An array for the months names
@@ -36,23 +36,23 @@ export function formatDate(date: Date | string, format: DateFormat = DATE_FORMAT
 	}
 
 	const months = monthNames || [
-		'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-		'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic',
+		'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+		'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 	];
 
 	const weekdays = weekdayNames || [
-		'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado',
+		'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
 	];
 
-	const hours = String(date.getHours()).padStart(2, '0');
-	const minutes = String(date.getMinutes()).padStart(2, '0');
-	const seconds = String(date.getSeconds()).padStart(2, '0');
-	const weekday = weekdays[date.getDay()];
-	const dayShort = date.getDate();
-	const day = String(date.getDate()).padStart(2, '0');
-	const monthNumeric = String(date.getMonth() + 1).padStart(2, '0');
-	const month = months[date.getMonth()];
-	const year = date.getFullYear();
+	const hours = String(date.getUTCHours()).padStart(2, '0');
+	const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+	const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+	const weekday = weekdays[date.getUTCDay()];
+	const dayShort = date.getUTCDate();
+	const day = String(date.getUTCDate()).padStart(2, '0');
+	const monthNumeric = String(date.getUTCMonth() + 1).padStart(2, '0');
+	const month = months[date.getUTCMonth()];
+	const year = date.getUTCFullYear();
 
 	switch(format) {
 		case DATE_FORMATS.HOURS:
