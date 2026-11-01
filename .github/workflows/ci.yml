@@ -1,0 +1,28 @@
+# Checks types, lint and builds (library and docs) on every pull request and push to main
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check types and lint
+        run: pnpm check-typing
+      - name: Build library
+        run: pnpm build
+      - name: Build docs
+        run: pnpm docs:build
