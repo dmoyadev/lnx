@@ -7,9 +7,8 @@ interface DropdownPositionOptions {
 }
 
 export function useDropdownPosition($dropdown: Ref<HTMLElement>, $handler: Ref<HTMLElement>, options: DropdownPositionOptions = {}) {
-	const { offsetX = 0, offsetY = 0 } = options;
-
 	async function calculatePosition() {
+		const { offsetX = 0, offsetY = 0 } = options;
 		await nextTick();
 		if (!$dropdown.value || !$handler.value) {
 			return;

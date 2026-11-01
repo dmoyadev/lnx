@@ -15,10 +15,7 @@ defineSlots<{
 
 const $handler = useTemplateRef('$handler');
 const $dropdown = useTemplateRef('$dropdown');
-const { calculatePosition } = useDropdownPosition($dropdown as Ref<HTMLElement>, $handler as Ref<HTMLElement>, {
-	offsetX: props.offsetX,
-	offsetY: props.offsetY,
-});
+const { calculatePosition } = useDropdownPosition($dropdown as Ref<HTMLElement>, $handler as Ref<HTMLElement>, props);
 watch(() => props.isOpen, async () => await calculatePosition());
 
 defineExpose({ calculatePosition });

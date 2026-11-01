@@ -1,7 +1,5 @@
 import { computed, ref } from 'vue';
 import {
-	ComponentCSSVars,
-	ComponentEvent,
 	ComponentProp,
 	ComponentSlot,
 } from '../../../../.vitepress/components/types';
