@@ -196,10 +196,12 @@ function getIcon(): string {
 </template>
 
 <style scoped lang="scss">
+@use '../field';
+
 .file-uploader {
 	display: flex;
 	flex-direction: column;
-	gap: var(--lnx-spacing-1);
+	gap: var(--lnx-control-gap);
 	width: 100%;
 
 	--file-uploader-height: 64px;
@@ -208,52 +210,17 @@ function getIcon(): string {
 		position: relative;
 		display: flex;
 		flex-direction: column;
+		gap: var(--lnx-control-gap);
 		width: 100%;
 
 		&:has(input:disabled) {
 			opacity: .5;
 		}
 
-		&:focus,
-		&:focus-within {
-			.box {
-				border: 1px dashed var(--lnx-color-primary);
-			}
+		&:focus-within .box {
+			border-color: var(--lnx-color-primary);
 		}
 
-		&.has-error {
-			@keyframes shake {
-				0% {
-					transform: translateX(0);
-				}
-				25% {
-					transform: translateX(0.5rem);
-				}
-				75% {
-					transform: translateX(-0.5rem);
-				}
-				100% {
-					transform: translateX(0);
-				}
-			}
-
-			.label {
-				color: var(--lnx-color-danger);
-			}
-
-			&:not(:has(:disabled)):focus-within input {
-				border-color: var(--lnx-color-primary);
-			}
-
-			.box {
-				border-color: var(--lnx-color-danger);
-				animation: shake 0.2s ease-in-out 0s 2;
-			}
-		}
-
-		.label {
-			font-size: var(--lnx-font-size-small);
-		}
 
 		input {
 			position: absolute;
@@ -274,10 +241,12 @@ function getIcon(): string {
 			display: flex;
 			align-items: center;
 			width: 100%;
-			padding: 20px;
+			padding: 0 var(--lnx-spacing-5);
 			height: var(--file-uploader-height);
-			border: 1px dashed var(--lnx-color-gray-5);
-			border-radius: var(--lnx-radius-2);
+			border: var(--lnx-control-border);
+			border-style: dashed;
+			border-radius: var(--lnx-control-radius);
+			transition: border-color .15s;
 
 			.box-text {
 				margin: 0;
@@ -291,19 +260,16 @@ function getIcon(): string {
 			}
 
 			&.is-dragover {
-				padding: 21px;
-				border: 1px dashed var(--lnx-color-primary-light);
+				border-color: var(--lnx-color-primary-light);
 
-				.box-text {
-					span:not(.label) {
-						font-weight: bold;
-					}
-
-					.icon {
-						color: var(--panda-color-primary-5);
-					}
+				.box-text span:not(.label) {
+					font-weight: bold;
 				}
 			}
+		}
+
+		&.has-error .box {
+			@include field.control-error;
 		}
 	}
 
@@ -329,24 +295,6 @@ function getIcon(): string {
 				font-size: var(--lnx-font-size-small);
 			}
 		}
-	}
-
-	.error {
-		color: var(--lnx-color-danger);
-		font-size: var(--lnx-font-size-small);
-		line-height: var(--lnx-font-size-small);
-		display: flex;
-		align-items: center;
-		gap: 4px;
-	}
-
-	.helper {
-		color: var(--lnx-color-primary);
-		font-size: var(--lnx-font-size-small);
-		line-height: var(--lnx-font-size-small);
-		display: flex;
-		align-items: center;
-		gap: 4px;
 	}
 }
 </style>
