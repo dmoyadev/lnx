@@ -350,54 +350,51 @@ const dropdownOffsetY = computed(() => {
 .select {
 	position: relative;
 
-	&:has(.input-content) {
-		.input {
-			::placeholder {
-				color: transparent;
-			}
-		}
+	&:has(.input-content) :deep(input::placeholder) {
+		color: transparent;
 	}
 
+	// Sits over the input box: below the label when there is one
 	.input-content {
 		position: absolute;
-		inset: 0;
-		top: 24px;
-		padding: 0 28px 0 8px;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: var(--lnx-control-height-medium);
+		line-height: var(--lnx-control-height-medium); // Centers it vertically; flex would break the ellipsis
+		padding: 0 calc(var(--lnx-control-padding-x) + 1.4em + var(--lnx-spacing-1)) 0 var(--lnx-control-padding-x);
 		overflow: hidden;
-		max-width: calc(100% - 36px);
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		pointer-events: none;
+	}
+
+	&:has(.label) .input-content {
+		top: calc(var(--lnx-font-size-small) * var(--lnx-line-height-body) + var(--lnx-control-gap));
 	}
 }
 
 .list {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: var(--lnx-spacing-1);
 	margin: 0;
+	padding: var(--lnx-spacing-1);
 
 	.list-option {
 		display: flex;
 		justify-content: space-between;
-		gap: 4px;
-		padding: 8px;
-		margin: 0 6px;
-
-		&:first-child {
-			margin-top: 6px;
-		}
-
-		&:last-child {
-			margin-bottom: 6px;
-		}
+		align-items: center;
+		gap: var(--lnx-spacing-1);
+		min-height: calc(var(--lnx-control-height-medium) - 2 * var(--lnx-spacing-1));
+		padding: 0 var(--lnx-spacing-2);
 
 		&:hover:not(&.empty),
 		&:focus:not(&.empty),
 		&.selected:not(&.empty) {
 			cursor: pointer;
 			background: var(--lnx-color-gray-bg);
-			border-radius: var(--lnx-radius-2);
+			border-radius: var(--lnx-control-radius);
 		}
 
 		&.empty {

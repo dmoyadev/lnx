@@ -174,7 +174,7 @@ export function useComponent() {
 	const componentCSSVars = ref<Record<string, ComponentCSSVars>>({
 		'--lnx-select-list-color-bg': {
 			description: 'Background color of the options list dropdown',
-			value: 'var(--lnx-color-gray-9)',
+			value: 'var(--lnx-color-surface)',
 		},
 	});
 
