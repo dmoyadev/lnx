@@ -24,8 +24,11 @@
 			"(\\[(.*?)\\])": "[`[$2]`](https://lnx.dmoya.dev/components/$2)"
 		}
 	},
+	"peerDependencies": {
+		"vue": "^3.5.0"
+	},
 	"dependencies": {
-		"floating-vue": "^5.2.2",
+		"floating-vue": "^5.4.0",
 		"iconify-icon": "^2.3.0"
 	}
 }
