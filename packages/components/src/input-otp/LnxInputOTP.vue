@@ -152,38 +152,21 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+@use '../field';
+
 .input-otp {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: var(--lnx-spacing-1);
+	gap: var(--lnx-control-gap);
 
 	&:has(input:read-only),
 	&:has(input:disabled) {
 		opacity: .5;
 	}
 
-	&.has-error {
-		@keyframes shake {
-			0% { transform: translateX(0); }
-			25% { transform: translateX(0.5rem); }
-			75% { transform: translateX(-0.5rem); }
-			100% { transform: translateX(0); }
-		}
-
-		input,
-		input:invalid {
-			background: var(--lnx-color-danger-bg);
-			animation: shake 0.2s ease-in-out 0s 2;
-
-			&:focus {
-				background: var(--lnx-color-danger-bg-accent);
-			}
-		}
-	}
-
-	label {
-		font-size: var(--lnx-font-size-small);
+	&.has-error .digits input {
+		@include field.control-error;
 	}
 
 	.digits {
@@ -191,43 +174,21 @@ onMounted(() => {
 		gap: var(--lnx-spacing-2);
 
 		input {
-			width: 40px;
-			height: 40px;
+			@include field.control;
+			width: var(--lnx-control-height-medium);
+			padding: 0;
 			text-align: center;
 			font-family: var(--lnx-font-family-mono), monospace;
 			font-size: var(--lnx-font-size-bigger);
-			border-radius: var(--lnx-radius-2);
-			background: var(--lnx-color-gray-bg);
 
 			&::-webkit-inner-spin-button {
 				display: none;
 			}
-
-			&:focus {
-				background: var(--lnx-color-gray-bg-accent);
-				outline: none;
-				box-shadow: var(--lnx-elevation-2);
-			}
 		}
 	}
 
+	.helper,
 	.error {
-		color: var(--lnx-color-danger);
-		font-size: var(--lnx-font-size-small);
-		line-height: var(--lnx-font-size-small);
-		display: flex;
-		align-items: center;
-		gap: 4px;
-		text-align: center;
-	}
-
-	.helper {
-		color: var(--lnx-color-primary);
-		font-size: var(--lnx-font-size-small);
-		line-height: var(--lnx-font-size-small);
-		display: flex;
-		align-items: center;
-		gap: 4px;
 		text-align: center;
 	}
 }
