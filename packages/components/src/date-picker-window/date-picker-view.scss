@@ -4,7 +4,7 @@
 	height: 245px;
 	border-collapse: separate;
 	border-spacing: var(--lnx-spacing-1);
-	padding: 0 8px;
+	padding: 0 var(--lnx-spacing-2);
 	color: var(--lnx-color-text);
 
 	tr, th { border: none; }

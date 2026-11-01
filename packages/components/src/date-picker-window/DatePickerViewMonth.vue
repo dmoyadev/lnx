@@ -57,6 +57,6 @@ const orderedWeekDaysNames = computed<string[]>(() => [
 @use "./date-picker-view";
 
 .is-not-current-view {
-	color: var(--lnx-color-gray-5);
+	color: var(--lnx-color-text-muted);
 }
 </style>

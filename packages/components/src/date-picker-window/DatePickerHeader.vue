@@ -100,10 +100,10 @@ defineEmits<{
 	max-height: 50px;
 	display: flex;
 	align-items: center;
-	padding: 8px;
-	border-bottom: 1px solid var(--lnx-color-gray-2);
-	font-weight: var(--lnx-font-regular);
-	font-size: var(--lnx-font-size-body-1);
+	padding: var(--lnx-spacing-2);
+	border-bottom: 1px solid var(--lnx-color-divider);
+	font-weight: var(--lnx-font-weight-regular);
+	font-size: var(--lnx-font-size-body);
 	color: var(--lnx-color-text);
 
 	.month-changers {
@@ -114,7 +114,7 @@ defineEmits<{
 		span {
 			display: flex;
 			align-items: center;
-			gap: 4px;
+			gap: var(--lnx-spacing-1);
 			margin: 0 auto;
 
 			.change-view-type:hover {

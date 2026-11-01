@@ -239,7 +239,8 @@ function selectYear(year: Year) {
 .date-picker-window {
 	display: flex;
 	min-width: 280px;
-	background: var(--lnx-date-picker-window-color-bg, var(--lnx-color-gray-9));
+	background: var(--lnx-date-picker-window-color-bg, var(--lnx-color-surface));
+	color: var(--lnx-color-text);
 
 	.view {
 		display: flex;
@@ -247,14 +248,14 @@ function selectYear(year: Year) {
 		align-items: center;
 		width: 280px;
 		max-width: 280px;
-		padding: 8px;
+		padding: var(--lnx-spacing-2);
 
 		.btn-today {
 			width: 100%;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			border-top: 1px solid var(--lnx-color-gray-4);
+			border-top: 1px solid var(--lnx-color-divider);
 		}
 	}
 }
