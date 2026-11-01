@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs, watch } from 'vue';
+import { computed, ref, useAttrs, watchPostEffect } from 'vue';
 import { UploadedFile } from './types';
 import { LnxIcon } from '../icon';
 import { BUTTON_MODES, BUTTON_SIZES, BUTTON_VARIANTS, LnxButton } from '../button';
@@ -42,8 +42,9 @@ const isDisabled = computed(() =>  props.isLoading || props.isUploading || !!('d
 
 const $input = ref<HTMLInputElement>();
 defineExpose({ $input }); // Components outside this one can see and use this ref
-watch(() => props.hasError, (value) => {
-	$input.value?.setCustomValidity((value && props.customValidity) ? props.customValidity : '');
+// Post effect: runs once the input exists and again when hasError or customValidity change
+watchPostEffect(() => {
+	$input.value?.setCustomValidity((props.hasError && props.customValidity) ? props.customValidity : '');
 });
 
 const isDragging = ref(false);
