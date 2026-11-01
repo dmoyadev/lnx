@@ -121,7 +121,8 @@ function closeModal() {
 
 <style scoped lang="scss">
 .modal {
-	background: var(--lnx-color-bg);
+	background: var(--lnx-color-surface);
+	color: var(--lnx-color-text);
 	min-width: 200px;
 	max-width: 95dvw;
 	min-height: 200px;
@@ -131,8 +132,8 @@ function closeModal() {
 	flex-direction: column;
 	gap: var(--lnx-spacing-2);
 	padding: 0 var(--lnx-spacing-4);
-	border-radius: var(--lnx-radius-3);
-	border: 1px solid var(--lnx-color-gray-5);
+	border-radius: var(--lnx-surface-radius);
+	border: 1px solid var(--lnx-color-border);
 
 	&::backdrop {
 		background: rgba(0, 0, 0, 0.5);
@@ -145,7 +146,7 @@ function closeModal() {
 	header {
 		position: sticky;
 		top: 0;
-		background: var(--lnx-color-bg);
+		background: var(--lnx-color-surface);
 		padding: var(--lnx-spacing-4) 0;
 		display: flex;
 		justify-content: space-between;
@@ -160,7 +161,7 @@ function closeModal() {
 
 		.btn-close {
 			margin-left: auto;
-			margin-right: calc(0 - var(--lnx-spacing-2));
+			margin-right: calc(-1 * var(--lnx-spacing-2));
 			color: var(--lnx-color-text);
 		}
 	}
@@ -168,8 +169,8 @@ function closeModal() {
 	footer {
 		position: sticky;
 		bottom: 0;
-		background: var(--lnx-color-bg);
-		border-top: 1px solid var(--lnx-color-gray-2);
+		background: var(--lnx-color-surface);
+		border-top: 1px solid var(--lnx-color-divider);
 		padding: var(--lnx-spacing-4) 0;
 		display: flex;
 		justify-content: flex-end;
