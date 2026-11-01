@@ -8,3 +8,7 @@ onlyBuiltDependencies:
 overrides:
   # VitePress 1.x asks for Vite 5 (end of life, with advisories); it works on Vite 7, which is still maintained
   vitepress>vite: ^7.3.7
+
+peerDependencyRules:
+  allowedVersions:
+    vitepress>vite: '7'
