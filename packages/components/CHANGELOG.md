@@ -5,6 +5,37 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.9.0](https://github.com/dmoyadev/lnx/compare/v0.8.0...v0.9.0)
+
+<small>📅 Released on: 2 November 2026</small>
+
+- ⚠️ [`[button]`](https://lnx.dmoya.dev/components/button) Remove the size prop and BUTTON_SIZES in favour of the control variables [`871ca6c`](https://github.com/dmoyadev/lnx/commit/871ca6cdc185e2906b2819dae1707ae5defdce7b) <small>Daniel Moya</small>
+- ⚠️ [`[date-picker]`](https://lnx.dmoya.dev/components/date-picker) Remove the size prop in favour of the control variables [`b16dc76`](https://github.com/dmoyadev/lnx/commit/b16dc760590eccd92869f861c1e40d83dd60e8bc) <small>Daniel Moya</small>
+- ⚠️ [`[select]`](https://lnx.dmoya.dev/components/select) Remove the size prop in favour of the control variables [`98f2df4`](https://github.com/dmoyadev/lnx/commit/98f2df45efe18a0d00caa08997f8e4521eea5317) <small>Daniel Moya</small>
+- ⚠️ [`[input]`](https://lnx.dmoya.dev/components/input) Remove the size prop in favour of the control variables [`7d7ce9c`](https://github.com/dmoyadev/lnx/commit/7d7ce9cf43660af0055f0ce078e108fdd428a34d) <small>Daniel Moya</small>
+- ⚠️ [`[themes]`](https://lnx.dmoya.dev/components/themes) Replace the size scale with control variables that can be overridden anywhere [`976660b`](https://github.com/dmoyadev/lnx/commit/976660ba68d089b341ce1408873db66962c7f57e) <small>Daniel Moya</small>
+- 📝 [`[docs]`](https://lnx.dmoya.dev/components/docs) Fix broken sidebar links and showcase bugs, fill theme pages and follow the selected theme [`f4849b1`](https://github.com/dmoyadev/lnx/commit/f4849b10a8272e185331fd4a0d481cad06e395a7) <small>Daniel Moya</small>
+- 🎨 [`[sandbox]`](https://lnx.dmoya.dev/components/sandbox) Show every component variant in a labelled grid with quick navigation [`b05052b`](https://github.com/dmoyadev/lnx/commit/b05052b5452fc92f53ebd81cae38ea56b164e9cb) <small>Daniel Moya</small>
+- ⬆️ [`[deps]`](https://lnx.dmoya.dev/components/deps) Upgrade @types/node to 26 and refresh transitive dependencies [`ce8be7b`](https://github.com/dmoyadev/lnx/commit/ce8be7bba9ef9c21ff69538896ec4aa90f327f29) <small>Daniel Moya</small>
+- 👷 [`[ci]`](https://lnx.dmoya.dev/components/ci) Run on Node 26 to match the supported engines [`672a729`](https://github.com/dmoyadev/lnx/commit/672a7290441943c797aef620f212dda7acbc06fc) <small>Daniel Moya</small>
+- ✨ [`[input-otp]`](https://lnx.dmoya.dev/components/input-otp) Scale digits with the control height and allow overriding their size [`edc248d`](https://github.com/dmoyadev/lnx/commit/edc248df88d5171e6d43059a4ca6e26f7eddd462) <small>Daniel Moya</small>
+- 🎨 [`[file-uploader]`](https://lnx.dmoya.dev/components/file-uploader) Size the remove button with the control variables [`2ffee35`](https://github.com/dmoyadev/lnx/commit/2ffee355f5431fc0e450f7982bf7aa8bf9928cec) <small>Daniel Moya</small>
+- 🎨 [`[date-picker-window]`](https://lnx.dmoya.dev/components/date-picker-window) Size header buttons with the control variables [`da51f7d`](https://github.com/dmoyadev/lnx/commit/da51f7dabc6d334d709136996f6717b091f3980e) <small>Daniel Moya</small>
+- 🐛 [`[button]`](https://lnx.dmoya.dev/components/button) Stop flex layouts from squeezing the button and cutting its text [`6f8fc7e`](https://github.com/dmoyadev/lnx/commit/6f8fc7e84fd427f6370aba0ea346074115f22bfa) <small>Daniel Moya</small>
+- 🎨 [`[dropdown]`](https://lnx.dmoya.dev/components/dropdown) Fill the container width like the input does [`2bd6dd1`](https://github.com/dmoyadev/lnx/commit/2bd6dd189faecc28fcae45bd95b6cef0b44b41a8) <small>Daniel Moya</small>
+- ✨ [`[date-picker]`](https://lnx.dmoya.dev/components/date-picker) Add small, medium and large sizes matching the buttons [`bb2f260`](https://github.com/dmoyadev/lnx/commit/bb2f260a020cf1e17aa9d47eb2266b67a5c0cf9a) <small>Daniel Moya</small>
+- ✨ [`[select]`](https://lnx.dmoya.dev/components/select) Add small, medium and large sizes matching the buttons [`953ffac`](https://github.com/dmoyadev/lnx/commit/953ffac28ae9741300eb8c7b24690869c4084b0b) <small>Daniel Moya</small>
+- ✨ [`[input]`](https://lnx.dmoya.dev/components/input) Add small, medium and large sizes matching the buttons [`e39dcfc`](https://github.com/dmoyadev/lnx/commit/e39dcfcde01506558b17d3a815aae829392fdc11) <small>Daniel Moya</small>
+- 🎨 [`[modal]`](https://lnx.dmoya.dev/components/modal) Use the surface tokens and fix the close button offset [`5350fc6`](https://github.com/dmoyadev/lnx/commit/5350fc6e7170a06f600979aa9ad1f2d709c5c5b8) <small>Daniel Moya</small>
+- 🎨 [`[date-picker-window]`](https://lnx.dmoya.dev/components/date-picker-window) Follow light and dark mode and fix undefined tokens [`cf6e584`](https://github.com/dmoyadev/lnx/commit/cf6e5842968be1cf317f78d7c3a7d05650c2defc) <small>Daniel Moya</small>
+- 🎨 [`[dropdown]`](https://lnx.dmoya.dev/components/dropdown) Follow light and dark mode with the surface tokens [`4012f24`](https://github.com/dmoyadev/lnx/commit/4012f24ecd461fbe04f838b4ae6b05ba161728d9) <small>Daniel Moya</small>
+- 🎨 [`[file-uploader]`](https://lnx.dmoya.dev/components/file-uploader) Use the shared field styles and drop unused rules [`f3013e0`](https://github.com/dmoyadev/lnx/commit/f3013e09dbe3f03d3297953ccf0f87444b345a41) <small>Daniel Moya</small>
+- 🎨 [`[input-otp]`](https://lnx.dmoya.dev/components/input-otp) Use the shared control box, focus and error styles [`7498d23`](https://github.com/dmoyadev/lnx/commit/7498d2371cd970857a73e876004eb8eedd5e60e0) <small>Daniel Moya</small>
+- 🎨 [`[select]`](https://lnx.dmoya.dev/components/select) Align selected content and options with the shared control size [`bd07d2b`](https://github.com/dmoyadev/lnx/commit/bd07d2b130214baac00dd5d9a4cb02603e83ff1b) <small>Daniel Moya</small>
+- 🎨 [`[input]`](https://lnx.dmoya.dev/components/input) Match button height and use the shared field styles [`c26988f`](https://github.com/dmoyadev/lnx/commit/c26988f22934fc01256c1610eaeba49b0e7a3475) <small>Daniel Moya</small>
+- 🎨 [`[button]`](https://lnx.dmoya.dev/components/button) Use the shared control sizes, radius and border [`dcb2cd0`](https://github.com/dmoyadev/lnx/commit/dcb2cd01a5c11e2d0bd1d77584b3e70cc29120a8) <small>Daniel Moya</small>
+- 🎨 [`[themes]`](https://lnx.dmoya.dev/components/themes) Add shared control, surface and field styles for one visual system [`5797934`](https://github.com/dmoyadev/lnx/commit/57979346e92213b1256fd04e57fa246e7a182297) <small>Daniel Moya</small>
+
 ## [v0.8.0](https://github.com/dmoyadev/lnx/compare/v0.7.11...v0.8.0)
 
 <small>📅 Released on: 1 November 2026</small>
