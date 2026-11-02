@@ -175,7 +175,8 @@ onMounted(() => {
 
 		input {
 			@include field.control;
-			width: var(--lnx-control-height-medium);
+			width: var(--lnx-input-otp-digit-size, calc(var(--lnx-control-height) * 1.5));
+			height: var(--lnx-input-otp-digit-size, calc(var(--lnx-control-height) * 1.5));
 			padding: 0;
 			text-align: center;
 			font-family: var(--lnx-font-family-mono), monospace;
