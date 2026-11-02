@@ -4,7 +4,6 @@ import {
 	LnxButton,
 	BUTTON_VARIANTS,
 	BUTTON_MODES,
-	BUTTON_SIZES,
 	LnxInput,
 	LnxIcon,
 	LnxInputOTP,
@@ -191,26 +190,19 @@ function toggleDarkMode() {
 				class="variant-container"
 			>
 				<span class="variant">{{ m }}</span>
-				<template
-					v-for="s in BUTTON_SIZES"
-					:key="s"
+				<LnxButton
+					:variant="v"
+					:mode="m"
 				>
-					<LnxButton
-						:variant="v"
-						:mode="m"
-						:size="s"
-					>
-						normal
-					</LnxButton>
-					<LnxButton
-						:variant="v"
-						:mode="m"
-						:size="s"
-						disabled
-					>
-						disabled
-					</LnxButton>
-				</template>
+					normal
+				</LnxButton>
+				<LnxButton
+					:variant="v"
+					:mode="m"
+					disabled
+				>
+					disabled
+				</LnxButton>
 			</div>
 		</div>
 	</template>

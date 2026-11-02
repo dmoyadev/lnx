@@ -22,15 +22,6 @@ export const BUTTON_MODES = {
 export type ButtonMode = ValueOf<typeof BUTTON_MODES>;
 // #endregion ButtonMode
 
-// #region ButtonSize
-export const BUTTON_SIZES = {
-	SMALL: 'small',
-	MEDIUM: 'medium',
-	LARGE: 'large',
-} as const;
-export type ButtonSize = ValueOf<typeof BUTTON_SIZES>;
-// #endregion ButtonSize
-
 // #region ButtonShape
 export const BUTTON_SHAPES = {
 	NORMAL: 'normal',

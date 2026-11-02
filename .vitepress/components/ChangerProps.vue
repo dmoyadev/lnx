@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ComponentProp } from './types';
-import { BUTTON_MODES, BUTTON_SIZES, LnxButton } from '../../packages/components/src';
+import { BUTTON_MODES, LnxButton } from '../../packages/components/src';
 import { LnxIcon } from '../../packages/components/src/icon';
 
 defineProps<{
@@ -189,7 +189,6 @@ function canShowAllVariations(prop: ComponentProp): boolean {
 			<LnxButton
 				v-if="!prop.hideAllVariationsButton && canShowAllVariations(prop)"
 				:mode="BUTTON_MODES.CLEAR"
-				:size="BUTTON_SIZES.SMALL"
 				class="btn-variations"
 				@click="showcasedProp = showcasedProp === name ? '' : name"
 			>

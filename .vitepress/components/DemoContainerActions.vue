@@ -2,7 +2,6 @@
 import {
 	BUTTON_MODES,
 	BUTTON_SHAPES,
-	BUTTON_SIZES,
 	BUTTON_VARIANTS,
 	LnxButton,
 } from '../../packages/components/src';
@@ -18,7 +17,6 @@ const showCode = defineModel<boolean>('showCode', { default: false });
 	<aside>
 		<LnxButton
 			:variant="BUTTON_VARIANTS.PRIMARY"
-			:size="BUTTON_SIZES.SMALL"
 			:mode="BUTTON_MODES.OUTLINE"
 			@click="showCode = !showCode"
 		>
@@ -30,7 +28,6 @@ const showCode = defineModel<boolean>('showCode', { default: false });
 
 		<LnxButton
 			:variant="BUTTON_VARIANTS.PRIMARY"
-			:size="BUTTON_SIZES.SMALL"
 			:shape="BUTTON_SHAPES.ICON"
 			:mode="BUTTON_MODES.OUTLINE"
 			@click="isDark = !isDark"
@@ -40,7 +37,6 @@ const showCode = defineModel<boolean>('showCode', { default: false });
 
 		<LnxButton
 			:variant="BUTTON_VARIANTS.PRIMARY"
-			:size="BUTTON_SIZES.SMALL"
 			:shape="BUTTON_SHAPES.ICON"
 			:mode="BUTTON_MODES.OUTLINE"
 			@click="$emit('reset')"

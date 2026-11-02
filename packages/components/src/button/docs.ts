@@ -7,7 +7,7 @@ import {
 } from '../../../../.vitepress/components/types';
 import { useProps } from '../../../../.vitepress/components/useProps';
 import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
-import { BUTTON_MODES, BUTTON_SHAPES, BUTTON_SIZES, BUTTON_VARIANTS } from './types';
+import { BUTTON_MODES, BUTTON_SHAPES, BUTTON_VARIANTS } from './types';
 
 export function useComponent() {
 	const componentProps = ref<Record<string, ComponentProp>>({
@@ -26,14 +26,6 @@ export function useComponent() {
 			options: Object.values(BUTTON_MODES),
 			defaultValue: 'BUTTON_MODES.SOLID',
 			value: BUTTON_MODES.SOLID,
-		},
-		size: {
-			description: 'Modifies spacing and font sizing',
-			controlType: 'select',
-			type: 'ButtonSize',
-			options: Object.values(BUTTON_SIZES),
-			defaultValue: 'BUTTON_SIZES.MEDIUM',
-			value: BUTTON_SIZES.MEDIUM,
 		},
 		shape: {
 			description: 'Reimagines how it\'s built',

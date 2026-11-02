@@ -4,13 +4,11 @@ import { computed, ref, useAttrs } from 'vue';
 import type {
 	ButtonVariant,
 	ButtonMode,
-	ButtonSize,
 	ButtonShape,
 } from './types';
 import {
 	BUTTON_VARIANTS,
 	BUTTON_MODES,
-	BUTTON_SIZES,
 	BUTTON_SHAPES,
 } from './types';
 import { LnxIcon } from '../icon';
@@ -18,7 +16,6 @@ import { LnxIcon } from '../icon';
 const props = withDefaults(defineProps<{
 	variant?: ButtonVariant; /* Applies different palette of colors */
 	mode?: ButtonMode; /* Display mode. Recommended for changing the importance */
-	size?: ButtonSize; /* Modifies spacing and font sizing */
 	shape?: ButtonShape; /* Reimagines how it\'s built */
 	href?: string; /* Converts the button in an anchor tag with the given URL */
 	to?: string | object; /* Converts the button in a router-link with the given route. If `href` is set, this is ignored. */
@@ -27,7 +24,6 @@ const props = withDefaults(defineProps<{
 }>(), {
 	variant: BUTTON_VARIANTS.PRIMARY,
 	mode: BUTTON_MODES.SOLID,
-	size: BUTTON_SIZES.MEDIUM,
 	shape: BUTTON_SHAPES.NORMAL,
 	href: undefined,
 	to: undefined,
@@ -93,7 +89,6 @@ function createRippleEffect(event: MouseEvent) {
 		:class="{
 			[`button-variant-${variant}`]: true,
 			[`button-mode-${mode}`]: true,
-			[`button-size-${size}`]: true,
 			[`button-shape-${shape}`]: true,
 			'is-block': isBlock,
 			'is-disabled': isDisabled,
@@ -125,14 +120,14 @@ button,
 a,
 router-link {
 	--lnx-button-content-gap: var(--lnx-spacing-2); /* Separation between elements inside the button */
-	--lnx-button-border: 1px solid;
+	--lnx-button-border: var(--lnx-control-border-width) solid;
 	--lnx-button-border-color: var(--lnx-color-border);
 	--lnx-button-border-radius: var(--lnx-control-radius);
 	--lnx-button-box-shadow: var(--lnx-elevation-2);
 	--lnx-button-background: var(--lnx-color-bg);
 	--lnx-button-color: var(--lnx-color-text); /* Text color */
-	--lnx-button-padding: var(--lnx-spacing-1) var(--lnx-control-padding-x);
-	--lnx-button-size: var(--lnx-control-height-medium);
+	--lnx-button-padding: 0 var(--lnx-control-padding-x);
+	--lnx-button-size: var(--lnx-control-height);
 
 	position: relative; /* Required for the ripple effect */
 	overflow: hidden; /* Required for the ripple effect */
@@ -152,6 +147,7 @@ router-link {
 
 	min-height: var(--lnx-button-size);
 	padding: var(--lnx-button-padding);
+	font-size: var(--lnx-control-font-size);
 
 	&:hover:not(.is-disabled):not(.button-mode-clear, .button-mode-link) {
 		box-shadow: var(--lnx-button-box-shadow);
@@ -280,24 +276,6 @@ router-link {
 					--lnx-button-color: var(--lnx-color-info);
 				}
 			}
-		}
-	}
-
-	&.button-size- {
-		&small {
-			--lnx-button-size: var(--lnx-control-height-small);
-			--lnx-button-padding: 0 var(--lnx-spacing-2);
-			font-size: var(--lnx-font-size-small);
-		}
-
-		&medium {
-			--lnx-button-size: var(--lnx-control-height-medium);
-			--lnx-button-padding: var(--lnx-spacing-1) var(--lnx-control-padding-x);
-		}
-
-		&large {
-			--lnx-button-size: var(--lnx-control-height-large);
-			--lnx-button-padding: var(--lnx-spacing-2) var(--lnx-spacing-5);
 		}
 	}
 
