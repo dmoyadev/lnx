@@ -2,7 +2,7 @@
 import { computed, ref, useAttrs, watchPostEffect } from 'vue';
 import { UploadedFile } from './types';
 import { LnxIcon } from '../icon';
-import { BUTTON_MODES, BUTTON_SIZES, BUTTON_VARIANTS, LnxButton } from '../button';
+import { BUTTON_MODES, BUTTON_VARIANTS, LnxButton } from '../button';
 
 const props = defineProps<{
 	files?: UploadedFile[]; /* Files uploaded */
@@ -147,7 +147,6 @@ function getIcon(): string {
 					class="btn-clear"
 					:mode="BUTTON_MODES.CLEAR"
 					:variant="BUTTON_VARIANTS.GRAYSCALE"
-					:size="BUTTON_SIZES.SMALL"
 					@click="$emit('delete', file)"
 				>
 					<LnxIcon icon="mdi:times" />
