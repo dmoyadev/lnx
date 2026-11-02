@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
+import { getContrast } from './contrast';
 
 /* The token file as text (`import tokens from './tokens/colors.scss?raw'`), so the preview can't drift from the code */
 const props = defineProps<{ source: string }>();
@@ -63,15 +64,6 @@ function toRgb(color: string) {
 	return computedColor.startsWith('rgb') && alpha === 1 ? [r, g, b] : undefined;
 }
 
-/* WCAG relative luminance */
-function getLuminance(rgb: number[]) {
-	const [r, g, b] = rgb.map(channel => {
-		const c = channel / 255;
-		return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-	});
-	return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
 onMounted(() => {
 	const styles = getComputedStyle(root.value!);
 	const background = toRgb('var(--lnx-color-bg)');
@@ -80,8 +72,7 @@ onMounted(() => {
 
 		const color = token.kind === 'color' && background && toRgb(`var(${token.name})`);
 		if(color) {
-			const [lighter, darker] = [getLuminance(color), getLuminance(background)].sort((a, b) => b - a);
-			contrast.value[token.name] = `${((lighter + 0.05) / (darker + 0.05)).toFixed(1)}:1`;
+			contrast.value[token.name] = `${getContrast(color, background).toFixed(1)}:1`;
 		}
 	}
 });

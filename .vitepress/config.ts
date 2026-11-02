@@ -162,7 +162,13 @@ export default defineConfig({
 				text: 'Themes',
 				collapsed: false,
 				base: '/themes',
-				items: await getDocFiles('../packages/components/src/themes'),
+				items: [
+					...await getDocFiles('../packages/components/src/themes'),
+					{
+						text: 'Theme builder',
+						link: '/builder',
+					},
+				],
 			},
 			{
 				text: 'Components',

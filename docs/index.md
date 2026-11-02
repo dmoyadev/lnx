@@ -10,8 +10,8 @@ hero:
       text: Get Started
       link: /get-started
     - theme: alt
-      text: Know-Hows
-      link: /know-hows
+      text: Build your theme
+      link: /themes/builder
 
 features:
   - icon: 🔘
