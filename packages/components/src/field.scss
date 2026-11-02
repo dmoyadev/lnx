@@ -8,27 +8,15 @@
 	100% { transform: translateX(0); }
 }
 
-// Field sizes, the same scale as buttons. The class goes on the field root and everything inside reads the variables
-.size-small {
-	--lnx-field-height: var(--lnx-control-height-small);
-	--lnx-field-padding-x: var(--lnx-spacing-2);
-	--lnx-field-font-size: var(--lnx-font-size-small);
-}
-
-.size-large {
-	--lnx-field-height: var(--lnx-control-height-large);
-	--lnx-field-padding-x: var(--lnx-spacing-4);
-}
-
-// The box of a single-line control: same height, border and radius as a button of the same size
+// The box of a single-line control: same height, border and radius as a button
 @mixin control {
-	height: var(--lnx-field-height, var(--lnx-control-height-medium));
-	padding: 0 var(--lnx-field-padding-x, var(--lnx-control-padding-x));
-	border: var(--lnx-control-border);
+	height: var(--lnx-control-height);
+	padding: 0 var(--lnx-control-padding-x);
+	border: var(--lnx-control-border-width) solid var(--lnx-color-border);
 	border-radius: var(--lnx-control-radius);
 	background: transparent;
 	color: var(--lnx-color-text);
-	font-size: var(--lnx-field-font-size, var(--lnx-font-size-body));
+	font-size: var(--lnx-control-font-size);
 	transition: border-color .15s;
 
 	&::placeholder {

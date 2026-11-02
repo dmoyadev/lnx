@@ -1,11 +1,13 @@
 :root {
-	/* Shared by buttons and form fields so they line up when placed side by side */
-	--lnx-control-height-small: 28px;
-	--lnx-control-height-medium: 40px;
-	--lnx-control-height-large: 52px;
-	--lnx-control-padding-x: var(--lnx-spacing-3);
+	/*
+	 * Size of buttons and form fields, shared so they line up side by side.
+	 * Override them on :root to resize the whole app, or on any element (style or class) to resize only what is inside it.
+	 */
+	--lnx-control-height: 28px;
+	--lnx-control-padding-x: var(--lnx-spacing-2);
+	--lnx-control-font-size: var(--lnx-font-size-small);
 	--lnx-control-radius: var(--lnx-radius-2);
-	--lnx-control-border: 1px solid var(--lnx-color-border);
+	--lnx-control-border-width: 1px;
 	--lnx-control-gap: var(--lnx-spacing-1); /* Between the label, the control and its messages */
 
 	/* Floating panels: dropdowns, calendars, modals */
