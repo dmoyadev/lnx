@@ -59,3 +59,5 @@ Modals are used to display content in a layer above the main application, often 
         </template>
     </LnxModal>
 </DemoContainer>
+
+<!--@api-->

@@ -6,7 +6,7 @@ import {
 } from '../../../../.vitepress/components/types';
 import { useProps } from '../../../../.vitepress/components/useProps';
 import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
-import { CALENDAR_VIEW_TYPES } from '../date-picker-window';
+import { CALENDAR_VIEW_TYPES } from '../date-picker-window/types';
 
 export function useComponent() {
 	const componentProps = ref<Record<string, ComponentProp>>({

@@ -66,6 +66,8 @@ A drop zone to pick or drag and drop files, showing the uploaded ones in a list 
     </LnxFileUploader>
 </DemoContainer>
 
+<!--@api-->
+
 ## Types
 ### UploadedFile
 <<< ./types.ts#UploadedFile

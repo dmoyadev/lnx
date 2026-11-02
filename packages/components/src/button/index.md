@@ -45,6 +45,8 @@ A button lets the user perform an action with a tap or a click, like starting a 
     </LnxButton>
 </DemoContainer>
 
+<!--@api-->
+
 ## Types
 ### ButtonVariant
 <<< ./types.ts#ButtonVariant

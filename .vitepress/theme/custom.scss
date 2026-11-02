@@ -17,6 +17,11 @@
 	--vp-home-hero-name-background: linear-gradient(120deg, color-mix(in srgb, var(--lnx-color-primary) 60%, var(--lnx-color-primary-dark)), var(--lnx-color-primary));
 }
 
+/* Component API tables: keep prop, event and slot names on one line */
+.lnx-api td:first-child code {
+	white-space: nowrap;
+}
+
 .vp-doc p,
 .vp-doc span {
 	line-height: 1.4em;

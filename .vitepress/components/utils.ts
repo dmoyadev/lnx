@@ -3,7 +3,7 @@ import { ComponentEvent, ComponentProp, ComponentSlot } from './types';
 const TAB = '    ';
 const NEWLINE = '\n';
 
-function toDashCase(str: string) {
+export function toDashCase(str: string) {
 	return str.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`);
 }
 

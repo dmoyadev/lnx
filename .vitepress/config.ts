@@ -1,6 +1,9 @@
 import { defineConfig } from 'vitepress';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
 import pkg from '../package.json';
+import { componentApiPlugin, loadComponentDocs } from './componentApi';
+
+const componentDocs = await loadComponentDocs(new URL('../packages/components/src', import.meta.url).pathname);
 
 async function getDocFiles(docsPath: string, excludedFolders: string[] = []): Promise<{ text: string, link: string }[]> {
 	const fs = await import('fs');
@@ -60,6 +63,7 @@ export default defineConfig({
 		lineNumbers: true,
 		config(md) {
 			md.use(groupIconMdPlugin);
+			md.use(componentApiPlugin, componentDocs);
 		},
 	},
 
@@ -103,6 +107,10 @@ export default defineConfig({
 						text: 'Components Changelog',
 						link: 'components/CHANGELOG.md',
 					},
+					{
+						text: 'Migration guide',
+						link: '/migration',
+					},
 				],
 			},
 
@@ -127,6 +135,10 @@ export default defineConfig({
 					{
 						text: 'Get started',
 						link: '/get-started',
+					},
+					{
+						text: 'Migration guide',
+						link: '/migration',
 					},
 					{
 						text: 'Know-Hows',

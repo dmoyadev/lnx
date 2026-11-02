@@ -36,3 +36,5 @@ This component is used to create a dropdown under an element.
         </template>
     </LnxDropdown>
 </DemoContainer>
+
+<!--@api-->

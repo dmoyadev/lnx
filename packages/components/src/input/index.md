@@ -52,3 +52,5 @@ An input component that allows users to enter and edit text.
         </LnxInput>
     </form>
 </DemoContainer>
+
+<!--@api-->

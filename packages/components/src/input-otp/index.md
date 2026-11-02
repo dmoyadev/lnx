@@ -47,3 +47,5 @@ A one-time password (OTP) input component that allows users to enter a multi-dig
         </template>
     </LnxInputOTP>
 </DemoContainer>
+
+<!--@api-->

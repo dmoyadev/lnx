@@ -45,6 +45,8 @@ const {
     </Lnx<<ComponentName>>>
 </DemoContainer>
 
+<!--@api-->
+
 ## Types
 ```ts
 

@@ -52,6 +52,8 @@ The date picker window can be used as a standalone component to select dates or 
 Selected dates are emitted at 00:00 UTC (for example, `2026-11-05T00:00:00.000Z`), and the dates you pass in are read in UTC, so every user sees the same day whatever their timezone. To set a value, use a date at 00:00 UTC such as `new Date('2026-11-05')` or `new Date(Date.UTC(2026, 10, 5))`. Avoid `new Date()` or `new Date(2026, 10, 5)`: they are local times, and in some timezones they fall on another day in UTC.
 :::
 
+<!--@api-->
+
 ## Types
 
 ### Item
