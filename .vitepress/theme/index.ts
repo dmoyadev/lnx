@@ -3,6 +3,7 @@ import DefaultTheme from 'vitepress/theme';
 import ThemeSwitcher from '../components/ThemeSwitcher.vue';
 import DemoContainer from '../components/DemoContainer.vue';
 import ComponentChanger from '../components/ComponentChanger.vue';
+import TokenPreview from '../components/TokenPreview.vue';
 
 import 'virtual:group-icons.css';
 import '../../packages/components/src/themes/base/index.scss';
@@ -15,5 +16,6 @@ export default {
 		app.component('DemoContainer', DemoContainer);
 		app.component('ThemeSwitcher', ThemeSwitcher);
 		app.component('ComponentChanger', ComponentChanger);
+		app.component('TokenPreview', TokenPreview);
 	},
 } satisfies Theme;
