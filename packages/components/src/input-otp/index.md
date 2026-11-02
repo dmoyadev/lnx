@@ -5,6 +5,7 @@ category: Forms
 <script setup lang="ts">
 import { LnxInputOTP } from '.';
 import { useComponent } from './docs.js';
+import { ref } from 'vue';
 
 const {
     componentProps,
@@ -21,6 +22,10 @@ const {
 function handleSubmit() {
     alert('Submitted!');
 }
+
+const code = ref('');
+const pin = ref('');
+const wrongCode = ref('123456');
 </script>
 
 # InputOTP
@@ -51,5 +56,38 @@ A one-time password (OTP) input component that allows users to enter a multi-dig
         </template>
     </LnxInputOTP>
 </DemoContainer>
+
+## When to use
+- For one-time codes sent by email or SMS, and short PINs.
+- Not for passwords or for numbers of any length: use an [Input](/components/input/).
+
+## Examples
+
+### Verification code
+Six digits by default. The user can type them or paste the whole code.
+
+```vue example
+<LnxInputOTP v-model="code">
+  Verification code
+  <template #helper>We sent it to your email</template>
+</LnxInputOTP>
+```
+
+### PIN
+Change the number of digits with `length`.
+
+```vue example
+<LnxInputOTP v-model="pin" :length="4">
+  PIN
+</LnxInputOTP>
+```
+
+### Error
+```vue example
+<LnxInputOTP v-model="wrongCode" has-error>
+  Verification code
+  <template #error>The code is wrong or has expired</template>
+</LnxInputOTP>
+```
 
 <!--@api-->

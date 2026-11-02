@@ -18,6 +18,10 @@ const {
 const date = ref();
 const start = ref();
 const end = ref();
+
+const day = ref<Date>();
+const rangeStart = ref<Date>();
+const rangeEnd = ref<Date>();
 </script>
 
 # DatePickerWindow
@@ -55,6 +59,22 @@ The date picker window can be used as a standalone component to select dates or 
 ::: info Dates and timezones
 Selected dates are emitted at 00:00 UTC (for example, `2026-11-05T00:00:00.000Z`), and the dates you pass in are read in UTC, so every user sees the same day whatever their timezone. To set a value, use a date at 00:00 UTC such as `new Date('2026-11-05')` or `new Date(Date.UTC(2026, 10, 5))`. Avoid `new Date()` or `new Date(2026, 10, 5)`: they are local times, and in some timezones they fall on another day in UTC.
 :::
+
+## When to use
+- When the calendar should always be visible: a booking page, a filter panel or a dashboard.
+- For a date field in a form, use a [DatePicker](/components/date-picker/): it shows the calendar only while picking.
+
+## Examples
+
+### Single date
+```vue example
+<LnxDatePickerWindow v-model="day" />
+```
+
+### Date range
+```vue example
+<LnxDatePickerWindow v-model:start="rangeStart" v-model:end="rangeEnd" is-range />
+```
 
 <!--@api-->
 

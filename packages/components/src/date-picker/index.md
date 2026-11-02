@@ -6,6 +6,7 @@ category: Forms
 import { ref } from 'vue';
 import { LnxDatePicker } from '.';
 import { useComponent } from './docs.js';
+import type { Item } from '../date-picker-window';
 
 const {
     componentProps,
@@ -21,6 +22,17 @@ const {
 const date = ref();
 const start = ref();
 const end = ref();
+
+const deliveryDate = ref<Date>();
+const tripStart = ref<Date>();
+const tripEnd = ref<Date>();
+const billingMonth = ref<Date>();
+const appointment = ref<Date>();
+
+const startOfToday = new Date(new Date().toDateString());
+function isPastDay(item: Item) {
+    return 'weekDay' in item && new Date(item.year, item.month, item.number) < startOfToday;
+}
 </script>
 
 # DatePicker
@@ -69,6 +81,54 @@ The date picker component allows users to select dates or date ranges. It trigge
 ::: info Dates and timezones
 Selected dates are emitted at 00:00 UTC (for example, `2026-11-05T00:00:00.000Z`), and the dates you pass in are read in UTC, so every user sees the same day whatever their timezone. To set a value, use a date at 00:00 UTC such as `new Date('2026-11-05')` or `new Date(Date.UTC(2026, 10, 5))`. Avoid `new Date()` or `new Date(2026, 10, 5)`: they are local times, and in some timezones they fall on another day in UTC.
 :::
+
+## When to use
+- For a date field in a form: the calendar opens below the field and closes once a date is picked.
+- When the calendar should stay open on the page, like a filter in a sidebar, use a [DatePickerWindow](/components/date-picker-window/).
+
+## Examples
+
+### Single date
+```vue example
+<LnxDatePicker v-model="deliveryDate" placeholder="Pick a date">
+  Delivery date
+</LnxDatePicker>
+```
+
+### Date range
+With `is-range`, bind `v-model:start` and `v-model:end` instead of `v-model`.
+
+```vue example
+<LnxDatePicker v-model:start="tripStart" v-model:end="tripEnd" is-range>
+  Trip dates
+</LnxDatePicker>
+```
+
+### Months
+`calendar-type` picks months or years instead of days.
+
+```vue example
+<LnxDatePicker v-model="billingMonth" calendar-type="month">
+  Billing month
+</LnxDatePicker>
+```
+
+### Disabled dates
+`is-item-disabled-fn` gets every day, month or year the calendar shows and returns `true` for the ones that can't be picked.
+
+```vue example
+<LnxDatePicker v-model="appointment" :is-item-disabled-fn="isPastDay">
+  Appointment
+</LnxDatePicker>
+```
+
+```ts
+const startOfToday = new Date(new Date().toDateString());
+function isPastDay(item: Item) {
+  /* Only days have a `weekDay`; months start at 0, like in `Date` */
+  return 'weekDay' in item && new Date(item.year, item.month, item.number) < startOfToday;
+}
+```
 
 <!--@api-->
 

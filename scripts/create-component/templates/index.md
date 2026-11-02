@@ -50,6 +50,16 @@ const {
     </Lnx<<ComponentName>>>
 </DemoContainer>
 
+## When to use
+- 
+
+## Examples
+
+### Basic
+```vue example
+<Lnx<<ComponentName>> />
+```
+
 <!--@api-->
 
 ## Types

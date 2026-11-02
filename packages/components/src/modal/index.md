@@ -64,4 +64,43 @@ Modals are used to display content in a layer above the main application, often 
     </LnxModal>
 </DemoContainer>
 
+## When to use
+- To interrupt the user for a decision they must take before going on, like confirming a deletion.
+- For short tasks that don't need their own page.
+- Not for information that can wait: show it on the page instead.
+
+## Examples
+
+### Confirmation
+The default slot holds the element that opens the modal, and gets `open()` and `close()`. The `actions` slot gets `close()` too.
+
+```vue example
+<LnxModal title="Delete project?">
+  <template #default="{ open }">
+    <LnxButton variant="danger" @click="open()">Delete project</LnxButton>
+  </template>
+  <template #content>
+    The project and all its files will be deleted. This can't be undone.
+  </template>
+  <template #actions="{ close }">
+    <LnxButton variant="grayscale" mode="clear" @click="close()">Cancel</LnxButton>
+    <LnxButton variant="danger" @click="close()">Delete</LnxButton>
+  </template>
+</LnxModal>
+```
+
+### Closing from the overlay
+By default the modal only closes from its buttons or with <kbd>Esc</kbd>. `allow-close-on-overlay-click` also closes it when the user clicks outside.
+
+```vue example
+<LnxModal title="What's new" allow-close-on-overlay-click>
+  <template #default="{ open }">
+    <LnxButton mode="outline" @click="open()">See what's new</LnxButton>
+  </template>
+  <template #content>
+    Buttons and fields now share the same size variables.
+  </template>
+</LnxModal>
+```
+
 <!--@api-->

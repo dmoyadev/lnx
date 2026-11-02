@@ -69,6 +69,15 @@ export default defineConfig({
 		config(md) {
 			md.use(groupIconMdPlugin);
 			md.use(componentApiPlugin, componentDocs);
+
+			/* ```vue example fences also render their markup live above the code, with the components and refs the page's script defines */
+			const fence = md.renderer.rules.fence!;
+			md.renderer.rules.fence = (tokens, index, ...rest) => {
+				const code = fence(tokens, index, ...rest);
+				return /\bexample\b/.test(tokens[index].info)
+					? `<div class="lnx-example"><div class="lnx-example-preview vp-raw">${tokens[index].content}</div>${code}</div>`
+					: code;
+			};
 		},
 	},
 

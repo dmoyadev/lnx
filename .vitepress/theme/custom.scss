@@ -17,6 +17,27 @@
 	--vp-home-hero-name-background: linear-gradient(120deg, color-mix(in srgb, var(--lnx-color-primary) 60%, var(--lnx-color-primary-dark)), var(--lnx-color-primary));
 }
 
+/* Live examples: the rendered markup on top of its code */
+.lnx-example {
+	margin: 16px 0;
+	border: 1px solid var(--vp-c-divider);
+	border-radius: 8px;
+	overflow: hidden;
+
+	.lnx-example-preview {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 12px;
+		padding: 24px;
+	}
+
+	div[class*='language-'] {
+		margin: 0;
+		border-radius: 0;
+	}
+}
+
 /* Component API tables: keep prop, event and slot names on one line */
 .lnx-api td:first-child code {
 	white-space: nowrap;

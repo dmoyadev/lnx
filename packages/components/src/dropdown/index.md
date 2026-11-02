@@ -7,6 +7,7 @@ import { ref } from 'vue';
 import { LnxDropdown } from '.';
 import { LnxInput } from '../input';
 import { useComponent } from './docs.js';
+import { LnxButton } from '../button';
 
 const {
     componentProps,
@@ -17,6 +18,8 @@ const {
 } = useComponent();
 
 const showDropdown = ref(false);
+
+const isMenuOpen = ref(false);
 </script>
 
 # Dropdown
@@ -40,5 +43,31 @@ This component is used to create a dropdown under an element.
         </template>
     </LnxDropdown>
 </DemoContainer>
+
+## When to use
+- For a panel anchored to an element: a menu of actions, filters or a small form.
+- To pick a value from a list, use a [Select](/components/select/), which already includes a dropdown with search.
+- For content that needs the user's full attention, use a [Modal](/components/modal/).
+
+## Examples
+
+### Menu of actions
+The dropdown doesn't open or close by itself: set `is-open` from your state, and close it when an option is picked or the user clicks outside. `fit-content` lets the panel be wider than the button.
+
+```vue example
+<LnxDropdown :is-open="isMenuOpen" fit-content>
+  <LnxButton mode="outline" @click="isMenuOpen = !isMenuOpen">
+    Options
+  </LnxButton>
+  <template #content>
+    <LnxButton mode="clear" variant="grayscale" is-block @click="isMenuOpen = false">
+      Rename
+    </LnxButton>
+    <LnxButton mode="clear" variant="danger" is-block @click="isMenuOpen = false">
+      Delete
+    </LnxButton>
+  </template>
+</LnxDropdown>
+```
 
 <!--@api-->
