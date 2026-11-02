@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BUTTON_MODES, BUTTON_SHAPES, BUTTON_SIZES, BUTTON_VARIANTS, LnxButton } from '../button';
+import { BUTTON_MODES, BUTTON_SHAPES, BUTTON_VARIANTS, LnxButton } from '../button';
 import { LnxIcon } from '../icon';
 import { CALENDAR_VIEW_TYPES, CalendarViewType, DisplayedMonth } from './types';
 
@@ -23,7 +23,6 @@ defineEmits<{
 			<LnxButton
 				:variant="BUTTON_VARIANTS.GRAYSCALE"
 				:mode="BUTTON_MODES.CLEAR"
-				:size="BUTTON_SIZES.SMALL"
 				:shape="BUTTON_SHAPES.ICON"
 				class="month-button"
 				@click="$emit('changeBig', -1)"
@@ -33,7 +32,6 @@ defineEmits<{
 			<LnxButton
 				:variant="BUTTON_VARIANTS.GRAYSCALE"
 				:mode="BUTTON_MODES.CLEAR"
-				:size="BUTTON_SIZES.SMALL"
 				:shape="BUTTON_SHAPES.ICON"
 				class="month-button"
 				@click="$emit('changeSmall', -1)"
@@ -72,7 +70,6 @@ defineEmits<{
 			<LnxButton
 				:variant="BUTTON_VARIANTS.GRAYSCALE"
 				:mode="BUTTON_MODES.CLEAR"
-				:size="BUTTON_SIZES.SMALL"
 				:shape="BUTTON_SHAPES.ICON"
 				class="month-button"
 				@click="$emit('changeBig', 1)"
@@ -82,7 +79,6 @@ defineEmits<{
 			<LnxButton
 				:variant="BUTTON_VARIANTS.GRAYSCALE"
 				:mode="BUTTON_MODES.CLEAR"
-				:size="BUTTON_SIZES.SMALL"
 				:shape="BUTTON_SHAPES.ICON"
 				class="month-button"
 				@click="$emit('changeSmall', 1)"
