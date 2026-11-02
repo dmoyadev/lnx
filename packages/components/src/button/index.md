@@ -1,3 +1,7 @@
+---
+category: Elements
+---
+
 <script setup lang="ts">
 import { LnxButton } from '.';
 import { useComponent } from './docs.js';

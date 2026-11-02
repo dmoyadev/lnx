@@ -1,3 +1,7 @@
+---
+category: Forms
+---
+
 <script setup lang="ts">
 import { LnxInputOTP } from '.';
 import { useComponent } from './docs.js';

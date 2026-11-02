@@ -1,3 +1,7 @@
+---
+category: Overlays
+---
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import { LnxDropdown } from '.';

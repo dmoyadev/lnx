@@ -4,13 +4,14 @@ import pkg from '../package.json';
 import { componentApiPlugin, loadComponentDocs } from './componentApi';
 
 const componentDocs = await loadComponentDocs(new URL('../packages/components/src', import.meta.url).pathname);
+const componentPages = await getDocFiles('../packages/components/src', ['themes']);
 
-async function getDocFiles(docsPath: string, excludedFolders: string[] = []): Promise<{ text: string, link: string }[]> {
+async function getDocFiles(docsPath: string, excludedFolders: string[] = []): Promise<{ text: string, link: string, category?: string }[]> {
 	const fs = await import('fs');
 	const path = await import('path');
 
 	const folderPath = path.resolve(__dirname, docsPath);
-	const docs: { text: string, link: string }[] = [];
+	const docs: { text: string, link: string, category?: string }[] = [];
 
 	function walk(dir: string) {
 		const files = fs.readdirSync(dir);
@@ -27,12 +28,16 @@ async function getDocFiles(docsPath: string, excludedFolders: string[] = []): Pr
 					.replace(folderPath, '')
 					.replace(/\.md$/, '')
 					.replace(/index$/, '');
+				const content = fs.readFileSync(filePath, 'utf8');
 				/* Use the page title (first `# ` heading) so the sidebar reads like the page */
-				const title = fs.readFileSync(filePath, 'utf8').match(/^# (.+)$/m)?.[1];
+				const title = content.match(/^# (.+)$/m)?.[1];
+				/* Sidebar group, from the `category` of the page frontmatter */
+				const frontmatter = content.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? '';
 
 				docs.push({
 					text: title ?? fileLink,
 					link: fileLink,
+					category: frontmatter.match(/^category: (.+)$/m)?.[1],
 				});
 			}
 		});
@@ -85,10 +90,8 @@ export default defineConfig({
 
 		search: { provider: 'local' },
 
-		docFooter: {
-			next: false,
-			prev: false,
-		},
+		/* Show the H3s too, so the API tables and types are one click away */
+		outline: [2, 3],
 
 		nav: [
 			{
@@ -156,7 +159,11 @@ export default defineConfig({
 				text: 'Components',
 				collapsed: false,
 				base: '/components',
-				items: await getDocFiles('../packages/components/src', ['themes']),
+				items: Object.entries(Object.groupBy(componentPages, page => page.category ?? 'Other'))
+					.map(([category, items]) => ({
+						text: category,
+						items,
+					})),
 			},
 		],
 

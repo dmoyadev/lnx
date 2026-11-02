@@ -1,3 +1,7 @@
+---
+category: Elements
+---
+
 <script setup lang="ts">
 import { LnxIcon } from '.';
 import { useComponent } from './docs.js';

@@ -1,3 +1,7 @@
+---
+category: Forms
+---
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import { LnxDatePickerWindow } from '.';

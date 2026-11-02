@@ -1,3 +1,7 @@
+---
+category: Overlays
+---
+
 <script setup lang="ts">
 import { LnxModal } from '.';
 import { useComponent } from './docs.js';

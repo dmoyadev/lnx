@@ -1,3 +1,8 @@
+---
+# Sidebar group: Elements, Forms or Overlays
+category: Other
+---
+
 <script setup lang="ts">
 import { Lnx<<ComponentName>> } from '.';
 import { useComponent } from './docs.js';
