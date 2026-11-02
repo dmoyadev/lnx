@@ -2,7 +2,6 @@ import { computed, ref } from 'vue';
 import { ComponentEvent, ComponentProp, ComponentSlot } from '../../../../.vitepress/components/types';
 import { useProps } from '../../../../.vitepress/components/useProps';
 import { getDemoCode, resetComponent } from '../../../../.vitepress/components/utils';
-import { BUTTON_SIZES } from '../button';
 
 export function useComponent() {
 	const componentProps = ref<Record<string, ComponentProp>>({
@@ -12,14 +11,6 @@ export function useComponent() {
 			type: 'string | number',
 			defaultValue: 'undefined',
 			value: undefined,
-		},
-		size: {
-			description: 'Height, spacing and font size. Same scale as buttons, so they line up side by side',
-			controlType: 'select',
-			type: 'ButtonSize',
-			options: Object.values(BUTTON_SIZES),
-			defaultValue: 'BUTTON_SIZES.MEDIUM',
-			value: BUTTON_SIZES.MEDIUM,
 		},
 		isClearable: {
 			description: 'Indicates if a button should render to quickly clear the input',

@@ -1,18 +1,14 @@
 <script lang="ts" setup>
 import { computed, ref, useAttrs, watchPostEffect } from 'vue';
 import { LnxIcon } from '../icon';
-import { LnxButton, BUTTON_MODES, BUTTON_SHAPES, BUTTON_SIZES, ButtonSize } from '../button';
+import { LnxButton, BUTTON_MODES, BUTTON_SHAPES } from '../button';
 
 const props = withDefaults(defineProps<{
-	size?: ButtonSize; /* Height, spacing and font size. Same scale as buttons, so they line up side by side */
 	isClearable?: boolean; /* Indicates if a button should render to quickly clear the input */
 	isLoading?: boolean; /* When loading, it is disabled and shows different content */
 	hasError?: boolean; /* Indicates if it should show the error slot */
 	customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
-}>(), {
-	size: BUTTON_SIZES.MEDIUM,
-	customValidity: undefined,
-});
+}>(), { customValidity: undefined });
 
 defineSlots<{
 	default(): unknown; /* The label of the input */
@@ -51,7 +47,7 @@ const showPassword = ref(false);
 <template>
 	<div
 		class="input"
-		:class="[`size-${size}`, $attrs.class]"
+		:class="$attrs.class"
 		:style="$attrs.style"
 	>
 		<label
@@ -98,7 +94,6 @@ const showPassword = ref(false);
 							&& !isDisabled
 						"
 						:mode="BUTTON_MODES.CLEAR"
-						:size="BUTTON_SIZES.SMALL"
 						:shape="BUTTON_SHAPES.ICON"
 						type="button"
 						class="btn-icon"
@@ -135,7 +130,6 @@ const showPassword = ref(false);
 							v-if="inputType === 'password'"
 							:mode="BUTTON_MODES.CLEAR"
 							:shape="BUTTON_SHAPES.ICON"
-							:size="BUTTON_SIZES.SMALL"
 							:disabled="isDisabled || isLoading"
 							type="button"
 							class="btn-icon"
@@ -217,11 +211,11 @@ const showPassword = ref(false);
 
 			// Leave room for the icon so the text never runs under it
 			&:has(.icon) input {
-				padding-right: calc(var(--lnx-field-padding-x, var(--lnx-control-padding-x)) + 1.4em + var(--lnx-spacing-1));
+				padding-right: calc(var(--lnx-control-padding-x) + 1.4em + var(--lnx-spacing-1));
 			}
 
 			&:has(.btn-icon) input {
-				padding-right: calc(var(--lnx-field-padding-x, var(--lnx-control-padding-x)) + var(--lnx-control-height-small) + var(--lnx-spacing-1));
+				padding-right: calc(var(--lnx-control-padding-x) + var(--lnx-control-height) + var(--lnx-spacing-1));
 			}
 
 			.icon {
@@ -230,7 +224,7 @@ const showPassword = ref(false);
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
-				right: var(--lnx-field-padding-x, var(--lnx-control-padding-x));
+				right: var(--lnx-control-padding-x);
 			}
 		}
 	}
