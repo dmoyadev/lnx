@@ -25,7 +25,7 @@ const users = [
     { id: 2, name: 'Grace Hopper', role: 'Admiral' },
     { id: 3, name: 'Alan Turing', role: 'Mathematician' },
 ];
-const assignee = ref();
+const assignee = ref(users[0]);
 const reviewer = ref();
 
 const ALL_CITIES = ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Zaragoza'];

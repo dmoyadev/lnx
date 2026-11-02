@@ -235,13 +235,13 @@ const dropdownOffsetY = computed(() => {
 			<LnxInput
 				v-bind="inputAttrs"
 				ref="$input"
-				v-model="searchQuery"
+				:model-value="inputValue"
 				:is-loading
 				:has-error
 				:custom-validity
 				:placeholder="showOptions ? searchPlaceholderText : $attrs.placeholder"
-				:value="inputValue"
 				type="text"
+				@update:model-value="searchQuery = String($event ?? '')"
 				@keydown.up.prevent="focusOption(-1)"
 				@keydown.down.prevent="focusOption(1)"
 			>
