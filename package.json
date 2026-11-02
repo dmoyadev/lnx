@@ -45,8 +45,8 @@
     "vue-tsc": "3.3.14"
   },
   "engines": {
-    "node": ">=22.7.0",
-    "pnpm": ">=9.4.0",
+    "node": ">=26.4.0",
+    "pnpm": ">=10.34.9",
     "npm": "please-use-pnpm",
     "yarn": "please-use-pnpm"
   }
