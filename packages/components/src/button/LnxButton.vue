@@ -11,7 +11,6 @@ import {
 	BUTTON_MODES,
 	BUTTON_SHAPES,
 } from './types';
-import { LnxIcon } from '../icon';
 
 const props = withDefaults(defineProps<{
 	variant?: ButtonVariant; /* Applies different palette of colors */
@@ -97,12 +96,10 @@ function createRippleEffect(event: MouseEvent) {
 		@click="createRippleEffect($event)"
 	>
 		<span
-			v-if="isLoading"
+			v-if="isLoading && $slots.loading"
 			class="loading-content"
 		>
-			<slot name="loading">
-				<LnxIcon icon="line-md:loading-loop" />
-			</slot>
+			<slot name="loading" />
 		</span>
 
 		<slot name="prefix" />
@@ -307,7 +304,14 @@ router-link {
 	}
 
 	&.is-loading {
-		position: relative;
+		/* Only opacity is animated, so the layout never moves */
+		opacity: 1;
+		animation: loading-pulse 1.2s ease-in-out infinite;
+
+		@media (prefers-reduced-motion: reduce) {
+			opacity: 0.5;
+			animation: none;
+		}
 
 		.loading-content {
 			position: absolute;
@@ -315,11 +319,23 @@ router-link {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			color: var(--lnx-button-color);
 		}
 
-		> *:not(.loading-content) {
-			opacity: 0;
+		/* The custom loading content covers the regular one, which keeps its space so the size doesn't change */
+		&:has(.loading-content) {
+			color: transparent; /* Bare text in the default slot isn't an element, so it can't be hidden below */
+
+			> *:not(.loading-content) {
+				visibility: hidden;
+			}
 		}
+	}
+}
+
+@keyframes loading-pulse {
+	50% {
+		opacity: 0.5;
 	}
 }
 

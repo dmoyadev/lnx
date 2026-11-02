@@ -93,7 +93,7 @@ Use the `prefix` or `suffix` slots. A button with only an icon needs an `aria-la
 ```
 
 ### Loading
-While the action runs, `is-loading` disables the button and shows a spinner, or the content of the `loading` slot.
+While the action runs, `is-loading` disables the button and makes it pulse, keeping its size. The `loading` slot, if given, replaces the content meanwhile.
 
 ```vue example
 <LnxButton is-loading>Saving</LnxButton>
