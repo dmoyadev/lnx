@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import {
 	LnxButton,
 	BUTTON_VARIANTS,
@@ -14,8 +14,24 @@ import {
 	LnxSelect,
 	LnxFileUploader,
 } from 'lnxjs-components/src';
+import VariantGrid from './VariantGrid.vue';
 
-const show = ref('');
+const COMPONENTS = {
+	'button': 'LnxButton',
+	'input': 'LnxInput',
+	'input-otp': 'LnxInputOTP',
+	'modal': 'LnxModal',
+	'date-picker': 'LnxDatePicker',
+	'date-picker-window': 'LnxDatePickerWindow',
+	'select': 'LnxSelect',
+	'file-uploader': 'LnxFileUploader',
+};
+
+// Empty means "all"; kept in the URL hash so a reload stays on the same component
+const show = ref(location.hash.slice(1));
+watch(show, value => history.replaceState(null, '', value ? `#${value}` : location.pathname));
+const isShown = (id: string) => !show.value || show.value === id;
+
 const inputModel = ref('');
 const inputOTPModel = ref<string>('');
 const datePickerWindowModel = ref<Date>();
@@ -27,73 +43,11 @@ const datePickerEndModel = ref<Date>();
 const selectModel = ref();
 const fileUploaderModel = ref();
 
-const selectOptions: { id:number, label: string, value: unknown }[] = [
-	{
-		id: 1,
-		label: 'Option 1',
-		value: 1, 
-	},
-	{
-		id: 2,
-		label: 'Option 2a sasdf asdf asdf asf asf asdfasf asf asf asdf as fasf asfas fasdfs',
-		value: 2, 
-	},
-	{
-		id: 3,
-		label: 'Option 3',
-		value: 3, 
-	},
-	{
-		id: 4,
-		label: 'Option 4',
-		value: 4,
-	},
-	{
-		id: 5,
-		label: 'Option 5',
-		value: 5,
-	},
-	{
-		id: 6,
-		label: 'Option 6',
-		value: 6,
-	},
-	{
-		id: 7,
-		label: 'Option 7',
-		value: 7,
-	},
-	{
-		id: 8,
-		label: 'Option 8',
-		value: 8,
-	},
-	{
-		id: 9,
-		label: 'Option 9',
-		value: 9,
-	},
-	{
-		id: 10,
-		label: 'Option 10',
-		value: 10,
-	},
-	{
-		id: 11,
-		label: 'Option 11',
-		value: 11,
-	},
-	{
-		id: 12,
-		label: 'Option 12',
-		value: 12,
-	},
-	{
-		id: 13,
-		label: 'Option 13',
-		value: 13,
-	},
-];
+const selectOptions: { id:number, label: string, value: unknown }[] = Array.from({ length: 13 }, (_, i) => ({
+	id: i + 1,
+	label: i === 1 ? 'Option 2a sasdf asdf asdf asf asf asdfasf asf asf asdf as fasf asfas fasdfs' : `Option ${i + 1}`,
+	value: i + 1,
+}));
 const asyncSelectOptions = ref();
 const loadingSelectOptions = ref(false);
 async function getAsyncOptions() {
@@ -106,7 +60,8 @@ async function getAsyncOptions() {
 		}, 1000);
 	});
 }
-const booleanVariants = [true, false];
+const bool = [false, true] as const;
+const calendarTypes = Object.values(CALENDAR_VIEW_TYPES);
 
 function toggleDarkMode() {
 	document.documentElement.classList.toggle('dark');
@@ -114,221 +69,134 @@ function toggleDarkMode() {
 </script>
 
 <template>
-	<LnxButton
-		:mode="BUTTON_MODES.OUTLINE"
-		@click="toggleDarkMode"
-	>
-		🌚
-	</LnxButton>
-
-	<LnxButton
-		class="btn-toggle"
-		@click="show === 'button' ? show = '' : show = 'button'"
-	>
-		LnxButton
-	</LnxButton>
-
-	<LnxButton
-		class="btn-toggle"
-		@click="show === 'input' ? show = '' : show = 'input'"
-	>
-		LnxInput
-	</LnxButton>
-
-	<LnxButton
-		class="btn-toggle"
-		@click="show === 'input-otp' ? show = '' : show = 'input-otp'"
-	>
-		LnxInputOTP
-	</LnxButton>
-
-	<LnxButton
-		class="btn-toggle"
-		@click="show === 'modal' ? show = '' : show = 'modal'"
-	>
-		LnxModal
-	</LnxButton>
-
-	<LnxButton
-		class="btn-toggle"
-		@click="show === 'date-picker' ? show = '' : show = 'date-picker'"
-	>
-		LnxDatePicker
-	</LnxButton>
-
-	<LnxButton
-		class="btn-toggle"
-		@click="show === 'date-picker-window' ? show = '' : show = 'date-picker-window'"
-	>
-		LnxDatePickerWindow
-	</LnxButton>
-
-	<LnxButton
-		class="btn-toggle"
-		@click="show === 'select' ? show = '' : show = 'select'"
-	>
-		LnxSelect
-	</LnxButton>
-
-	<LnxButton
-		class="btn-toggle"
-		@click="show === 'file-uploader' ? show = '' : show = 'file-uploader'"
-	>
-		LnxFileUploader
-	</LnxButton>
-
-	<template v-if="show === 'button'">
-		<div
-			v-for="v in BUTTON_VARIANTS"
-			:key="v"
-			class="variant-container"
-		>
-			<span class="variant">{{ v }}</span>
-			<div
-				v-for="m in BUTTON_MODES"
-				:key="m"
-				class="variant-container"
+	<header class="header">
+		<nav class="nav">
+			<LnxButton
+				:mode="!show ? BUTTON_MODES.SOLID : BUTTON_MODES.CLEAR"
+				@click="show = ''"
 			>
-				<span class="variant">{{ m }}</span>
+				All
+			</LnxButton>
+			<LnxButton
+				v-for="(name, id) in COMPONENTS"
+				:key="id"
+				:mode="show === id ? BUTTON_MODES.SOLID : BUTTON_MODES.CLEAR"
+				@click="show = id"
+			>
+				{{ name }}
+			</LnxButton>
+		</nav>
+
+		<LnxButton
+			:mode="BUTTON_MODES.OUTLINE"
+			aria-label="Toggle dark mode"
+			@click="toggleDarkMode"
+		>
+			🌚
+		</LnxButton>
+	</header>
+
+	<main class="main">
+		<section v-if="isShown('button')">
+			<h2>LnxButton</h2>
+			<VariantGrid
+				v-slot="{ variant, mode }"
+				:axes="{ variant: Object.values(BUTTON_VARIANTS), mode: Object.values(BUTTON_MODES) }"
+				style="--cell-min: 200px"
+			>
 				<LnxButton
-					:variant="v"
-					:mode="m"
+					:variant
+					:mode
 				>
 					normal
 				</LnxButton>
 				<LnxButton
-					:variant="v"
-					:mode="m"
+					:variant
+					:mode
 					disabled
 				>
 					disabled
 				</LnxButton>
-			</div>
-		</div>
-	</template>
+			</VariantGrid>
+		</section>
 
-	<template v-if="show === 'input'">
-		<form>
-			<div
-				v-for="t in ['text', 'number', 'password']"
-				:key="t"
-				class="variant-container"
-			>
-				<span class="variant">{{ t }}</span>
-				<div
-					v-for="isLoading in booleanVariants"
-					:key="String(isLoading)"
-					class="variant-container"
+		<section v-if="isShown('input')">
+			<h2>LnxInput</h2>
+			<form>
+				<VariantGrid
+					v-slot="{ type, loading, error, clearable, icon }"
+					:axes="{ type: ['text', 'number', 'password'], loading: bool, error: bool, clearable: bool, icon: bool }"
 				>
-					<span class="variant">{{ !isLoading ? 'Loading' : 'Not loading' }}</span>
-					<div
-						v-for="hasError in booleanVariants"
-						:key="String(hasError)"
-						class="variant-container"
+					<LnxInput
+						v-model="inputModel"
+						:type
+						:is-loading="loading"
+						:has-error="error"
+						:is-clearable="clearable"
+						placeholder="placeholder"
 					>
-						<span class="variant">{{ !hasError ? 'Has Error' : 'No error' }}</span>
-						<div
-							v-for="isClearable in booleanVariants"
-							:key="String(isClearable)"
-							class="variant-container"
+						This is the label
+
+						<template
+							v-if="icon"
+							#icon
 						>
-							<span class="variant">{{ !isClearable ? 'Is clearable' : 'It is not clearable' }}</span>
-							<LnxInput
-								v-model="inputModel"
-								:type="t"
-								:is-loading="!isLoading"
-								:has-error="!hasError"
-								:is-clearable="!isClearable"
-								placeholder="placeholder"
-							>
-								This is the label
+							<LnxIcon icon="mdi:magnify" />
+						</template>
 
-								<template #helper>
-									This is a helper
-								</template>
+						<template #helper>
+							This is a helper
+						</template>
 
-								<template #error>
-									This is an error
-								</template>
-							</LnxInput>
+						<template #error>
+							This is an error
+						</template>
+					</LnxInput>
+				</VariantGrid>
+			</form>
+		</section>
 
-							<LnxInput
-								v-model="inputModel"
-								:type="t"
-								:is-loading="!isLoading"
-								:has-error="!hasError"
-								:is-clearable="!isClearable"
-								placeholder="placeholder"
-							>
-								This is the label
-
-								<template #icon>
-									<LnxIcon icon="mdi:magnify" />
-								</template>
-
-								<template #helper>
-									This is a helper
-								</template>
-
-								<template #error>
-									This is an error
-								</template>
-							</LnxInput>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</template>
-
-	<template v-if="show === 'input-otp'">
-		<form>
-			<div
-				v-for="hasError in booleanVariants"
-				:key="String(hasError)"
-				class="variant-container"
-			>
-				<span class="variant">{{ !hasError ? 'Has Error' : 'No error' }}</span>
-				<LnxInputOTP
-					v-model="inputOTPModel"
-					:has-error="!hasError"
+		<section v-if="isShown('input-otp')">
+			<h2>LnxInputOTP</h2>
+			<form>
+				<VariantGrid
+					v-slot="{ error }"
+					:axes="{ error: bool }"
+					style="--cell-min: 340px"
 				>
-					Introduce the code
+					<LnxInputOTP
+						v-model="inputOTPModel"
+						:has-error="error"
+					>
+						Introduce the code
 
-					<template #helper>
-						This is a helper
-					</template>
+						<template #helper>
+							This is a helper
+						</template>
 
-					<template #error>
-						This is an error
-					</template>
-				</LnxInputOTP>
-			</div>
-		</form>
-	</template>
+						<template #error>
+							This is an error
+						</template>
+					</LnxInputOTP>
+				</VariantGrid>
+			</form>
+		</section>
 
-	<template v-if="show === 'modal'">
-		<div
-			v-for="hideCloseButton in booleanVariants"
-			:key="String(hideCloseButton)"
-			class="variant-container"
-		>
-			<span class="variant">{{ !hideCloseButton ? 'Show close button on corner' : 'Don\'t Show close button on corner' }}</span>
-			<div
-				v-for="allowCloseOnOverlayClick in booleanVariants"
-				:key="String(allowCloseOnOverlayClick)"
-				class="variant-container"
+		<section v-if="isShown('modal')">
+			<h2>LnxModal</h2>
+			<VariantGrid
+				v-slot="{ closeButton, closeOnOverlayClick }"
+				:axes="{ closeButton: bool, closeOnOverlayClick: bool }"
+				style="--cell-min: 340px"
 			>
-				<span class="variant">{{ allowCloseOnOverlayClick ? 'Allow close on overlay click' : 'Don\'t allow close on overlay click' }}</span>
-
 				<LnxModal
 					title="This is the title"
-					:allow-close-on-overlay-click
-					:hide-close-button
+					:allow-close-on-overlay-click="closeOnOverlayClick"
+					:hide-close-button="!closeButton"
 				>
 					<template #default="{ open }">
 						<LnxButton @click="open()">
-							Open dialog
+							Simple
 						</LnxButton>
 					</template>
 
@@ -347,12 +215,12 @@ function toggleDarkMode() {
 
 				<LnxModal
 					title="This is the title"
-					:allow-close-on-overlay-click
-					:hide-close-button
+					:allow-close-on-overlay-click="closeOnOverlayClick"
+					:hide-close-button="!closeButton"
 				>
 					<template #default="{ open }">
 						<LnxButton @click="open()">
-							Open dialog with actions
+							With actions
 						</LnxButton>
 					</template>
 
@@ -388,12 +256,12 @@ function toggleDarkMode() {
 
 				<LnxModal
 					title="This is the title"
-					:allow-close-on-overlay-click
-					:hide-close-button
+					:allow-close-on-overlay-click="closeOnOverlayClick"
+					:hide-close-button="!closeButton"
 				>
 					<template #default="{ open }">
 						<LnxButton @click="open()">
-							Open extra-long dialog
+							Extra-long
 						</LnxButton>
 					</template>
 
@@ -416,43 +284,13 @@ function toggleDarkMode() {
 						<LnxDatePicker>
 							Select a value
 						</LnxDatePicker>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a ligula tristique enim luctus maximus. Fusce at dolor nisi. Vivamus rhoncus nisl id mauris consectetur lobortis. Duis suscipit sapien sit amet purus varius mollis. Morbi tincidunt eleifend tristique. Sed egestas ultrices rutrum. In hac habitasse platea dictumst. Aenean eget purus eget nulla finibus lacinia. Donec porttitor eros tincidunt, accumsan libero et, gravida orci. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed id augue ullamcorper, pretium erat vel, rhoncus justo.
 
-						Nullam aliquam imperdiet enim, id iaculis arcu pretium in. Vestibulum volutpat semper luctus. Sed eget magna nisi. Fusce tellus leo, dictum et aliquam non, fermentum eu lorem. Nullam non eros ac metus lobortis tincidunt eu vel felis. Praesent sodales tincidunt congue. In vitae augue quam. Etiam in dui ut nunc pellentesque pharetra a sed quam. Pellentesque ut justo eget ante aliquam ultrices. Maecenas tempor neque ut metus pellentesque scelerisque. Nam sed cursus ipsum. Integer vel dictum odio, sit amet dictum enim.
-
-						Sed auctor metus faucibus enim venenatis, non ultrices felis imperdiet. Vestibulum tincidunt eros vel risus ultricies, non fringilla elit sagittis. Nam dignissim maximus eros, vel tincidunt eros sodales vel. Nam volutpat diam eu urna semper aliquam. Phasellus in turpis nisl. Suspendisse condimentum ante non dolor faucibus, a iaculis quam venenatis. Etiam at nunc nec leo scelerisque tempor. Morbi semper mauris id neque vehicula, ut tempor nunc tincidunt. Aliquam erat volutpat.
-
-						Etiam interdum est non augue malesuada, vel tristique justo fermentum. Praesent ac neque metus. Cras fringilla lorem at ultrices iaculis. Suspendisse congue nisi id risus vehicula porttitor ac ut ante. Sed hendrerit ante eu tellus elementum, vitae semper enim tempus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus sed enim tincidunt, faucibus felis ut, dignissim nulla. Quisque ultricies, eros in sollicitudin finibus, lectus lorem tincidunt orci, sed cursus mauris mi ut sem. Praesent gravida rhoncus fermentum. Proin vel mollis neque, in gravida lacus. Aenean a scelerisque mi. Sed egestas quam at augue malesuada ullamcorper nec eu nibh. Ut accumsan at felis a efficitur. Vestibulum dignissim sollicitudin nisi, a aliquet magna efficitur id. Nam vulputate eget sapien et consectetur. Cras non rhoncus arcu.
-
-						Donec velit turpis, hendrerit ac arcu vitae, vestibulum convallis mauris. Mauris vitae ante sed ex rutrum vulputate. Aenean consectetur molestie dapibus. Sed auctor vestibulum tortor, sed tincidunt quam laoreet ac. Nunc facilisis lorem est, non ornare ipsum semper sit amet. Proin suscipit enim mi, eget blandit arcu posuere sit amet. In a mauris facilisis, tincidunt risus nec, tempor ligula. Sed vulputate imperdiet tempor. Phasellus maximus sem nibh, eget vulputate mauris euismod vitae. Integer pharetra magna ac quam suscipit, eget consequat felis ornare. Nam pulvinar rhoncus urna sed tempor. Integer lobortis blandit cursus.
-
-						Etiam mi neque, egestas sit amet vulputate vitae, ultricies eget risus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur a justo non diam malesuada rutrum convallis in metus. Donec tincidunt, elit id commodo elementum, quam tellus varius dui, ac sagittis leo diam vel enim. Donec lacinia lacus sed tincidunt pharetra. Aenean quis enim arcu. Aenean viverra ultricies nunc, non fringilla nibh feugiat eu. Fusce ac nibh condimentum, iaculis orci a, pretium nisi. Nullam felis lorem, tempor at tortor ut, ultricies tincidunt est. Aenean molestie lacinia tortor, ut pulvinar ante vulputate id. Morbi at sem eros. Ut vestibulum ante leo. Mauris tristique sodales tellus, at posuere elit accumsan vel. Aenean cursus est quis diam ornare, id sagittis odio venenatis. Cras vitae nisl in odio efficitur viverra.
-
-						Aliquam efficitur imperdiet nisi, id molestie massa pulvinar eu. Proin a elit consectetur, semper massa id, euismod augue. Nulla et suscipit est. Maecenas elementum quis massa eu dictum. Sed non magna tincidunt, hendrerit diam ut, volutpat est. Morbi et neque euismod odio vestibulum consequat. Mauris commodo aliquam varius. Etiam sit amet consectetur tellus. Ut pharetra risus ut tempor egestas. Cras maximus tortor id sapien ultricies, vel mattis eros tristique. Praesent non suscipit magna. Duis aliquam sem a metus vehicula, id varius urna vestibulum. Integer placerat porta tortor, sit amet scelerisque diam iaculis sit amet.
-
-						In suscipit odio non tempus dapibus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse lacinia fringilla placerat. Nam vel sem velit. Integer non fringilla leo. Fusce urna nisl, ultricies vitae elit quis, elementum hendrerit velit. Maecenas nunc mi, pretium at elit eu, ullamcorper blandit turpis. Duis scelerisque volutpat porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-						Curabitur pharetra nulla ac volutpat aliquet. Suspendisse vulputate, urna iaculis semper lacinia, justo nibh egestas ante, non hendrerit sapien sapien vitae dolor. Integer lobortis erat non mauris hendrerit, id facilisis dolor pretium. Donec pharetra maximus blandit. Sed lacinia ultrices dui non condimentum. Donec sollicitudin hendrerit scelerisque. Maecenas vitae gravida est, eget faucibus arcu. Curabitur eget gravida velit. Duis sed lorem dapibus, fermentum justo sed, faucibus elit. Maecenas congue dictum tortor, sed cursus mauris laoreet a.
-
-						Vivamus feugiat risus nec aliquam hendrerit. Cras nec mattis nunc. Sed sagittis lacus ut purus ornare tristique. Mauris ac nulla et nibh vulputate porttitor. Curabitur fermentum ac urna non interdum. Proin mattis dui est, a auctor nisl feugiat sit amet. Etiam odio nisl, iaculis sed sollicitudin non, aliquet placerat diam. Maecenas ornare justo id placerat interdum. Nullam nibh erat, vulputate non commodo ut, ultrices sed nunc. Nullam sapien dolor, tempor non nisi sit amet, aliquam cursus augue. Mauris lobortis, enim vel convallis sodales, libero mi iaculis ipsum, sit amet aliquam lectus sem vitae leo. Maecenas posuere sollicitudin mauris, vel cursus dolor gravida nec.
-
-						Vivamus tempus dapibus laoreet. Morbi ullamcorper mollis efficitur. Curabitur sed velit a lorem finibus imperdiet accumsan quis lacus. Maecenas lacinia id sapien et mattis. Fusce sit amet sem nulla. Sed odio erat, venenatis quis dui sodales, vulputate elementum odio. Aliquam sed sem odio. Aliquam quis diam viverra, molestie libero ut, finibus tellus. Ut hendrerit orci nec ante iaculis, nec pellentesque felis elementum. Proin lacus felis, molestie ac neque ac, aliquet accumsan tellus. Suspendisse vitae ex velit. Curabitur id felis at sem accumsan fringilla at vel libero.
-
-						Aenean placerat ex non lectus cursus auctor. Praesent consectetur dignissim consectetur. Donec fringilla urna est, sit amet laoreet arcu varius vel. Integer id ex leo. Donec laoreet odio in metus elementum vehicula. Donec vel purus sed dolor ornare ullamcorper vitae egestas erat. Quisque condimentum faucibus diam id interdum. Nullam ornare ullamcorper iaculis. Donec ultricies congue ex a aliquam. Praesent faucibus pharetra lacus et porttitor.
-
-						Etiam mi neque, egestas sit amet vulputate vitae, ultricies eget risus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur a justo non diam malesuada rutrum convallis in metus. Donec tincidunt, elit id commodo elementum, quam tellus varius dui, ac sagittis leo diam vel enim. Donec lacinia lacus sed tincidunt pharetra. Aenean quis enim arcu. Aenean viverra ultricies nunc, non fringilla nibh feugiat eu. Fusce ac nibh condimentum, iaculis orci a, pretium nisi. Nullam felis lorem, tempor at tortor ut, ultricies tincidunt est. Aenean molestie lacinia tortor, ut pulvinar ante vulputate id. Morbi at sem eros. Ut vestibulum ante leo. Mauris tristique sodales tellus, at posuere elit accumsan vel. Aenean cursus est quis diam ornare, id sagittis odio venenatis. Cras vitae nisl in odio efficitur viverra.
-
-						Aliquam efficitur imperdiet nisi, id molestie massa pulvinar eu. Proin a elit consectetur, semper massa id, euismod augue. Nulla et suscipit est. Maecenas elementum quis massa eu dictum. Sed non magna tincidunt, hendrerit diam ut, volutpat est. Morbi et neque euismod odio vestibulum consequat. Mauris commodo aliquam varius. Etiam sit amet consectetur tellus. Ut pharetra risus ut tempor egestas. Cras maximus tortor id sapien ultricies, vel mattis eros tristique. Praesent non suscipit magna. Duis aliquam sem a metus vehicula, id varius urna vestibulum. Integer placerat porta tortor, sit amet scelerisque diam iaculis sit amet.
-
-						In suscipit odio non tempus dapibus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse lacinia fringilla placerat. Nam vel sem velit. Integer non fringilla leo. Fusce urna nisl, ultricies vitae elit quis, elementum hendrerit velit. Maecenas nunc mi, pretium at elit eu, ullamcorper blandit turpis. Duis scelerisque volutpat porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-						Curabitur pharetra nulla ac volutpat aliquet. Suspendisse vulputate, urna iaculis semper lacinia, justo nibh egestas ante, non hendrerit sapien sapien vitae dolor. Integer lobortis erat non mauris hendrerit, id facilisis dolor pretium. Donec pharetra maximus blandit. Sed lacinia ultrices dui non condimentum. Donec sollicitudin hendrerit scelerisque. Maecenas vitae gravida est, eget faucibus arcu. Curabitur eget gravida velit. Duis sed lorem dapibus, fermentum justo sed, faucibus elit. Maecenas congue dictum tortor, sed cursus mauris laoreet a.
-
-						Vivamus feugiat risus nec aliquam hendrerit. Cras nec mattis nunc. Sed sagittis lacus ut purus ornare tristique. Mauris ac nulla et nibh vulputate porttitor. Curabitur fermentum ac urna non interdum. Proin mattis dui est, a auctor nisl feugiat sit amet. Etiam odio nisl, iaculis sed sollicitudin non, aliquet placerat diam. Maecenas ornare justo id placerat interdum. Nullam nibh erat, vulputate non commodo ut, ultrices sed nunc. Nullam sapien dolor, tempor non nisi sit amet, aliquam cursus augue. Mauris lobortis, enim vel convallis sodales, libero mi iaculis ipsum, sit amet aliquam lectus sem vitae leo. Maecenas posuere sollicitudin mauris, vel cursus dolor gravida nec.
-
-						Vivamus tempus dapibus laoreet. Morbi ullamcorper mollis efficitur. Curabitur sed velit a lorem finibus imperdiet accumsan quis lacus. Maecenas lacinia id sapien et mattis. Fusce sit amet sem nulla. Sed odio erat, venenatis quis dui sodales, vulputate elementum odio. Aliquam sed sem odio. Aliquam quis diam viverra, molestie libero ut, finibus tellus. Ut hendrerit orci nec ante iaculis, nec pellentesque felis elementum. Proin lacus felis, molestie ac neque ac, aliquet accumsan tellus. Suspendisse vitae ex velit. Curabitur id felis at sem accumsan fringilla at vel libero.
-
-						Aenean placerat ex non lectus cursus auctor. Praesent consectetur dignissim consectetur. Donec fringilla urna est, sit amet laoreet arcu varius vel. Integer id ex leo. Donec laoreet odio in metus elementum vehicula. Donec vel purus sed dolor ornare ullamcorper vitae egestas erat. Quisque condimentum faucibus diam id interdum. Nullam ornare ullamcorper iaculis. Donec ultricies congue ex a aliquam. Praesent faucibus pharetra lacus et porttitor.
+						<p
+							v-for="i in 20"
+							:key="i"
+						>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a ligula tristique enim luctus maximus. Fusce at dolor nisi. Vivamus rhoncus nisl id mauris consectetur lobortis. Duis suscipit sapien sit amet purus varius mollis. Morbi tincidunt eleifend tristique. Sed egestas ultrices rutrum. In hac habitasse platea dictumst. Aenean eget purus eget nulla finibus lacinia. Donec porttitor eros tincidunt, accumsan libero et, gravida orci.
+						</p>
 					</template>
 
 					<template #actions="{ close }">
@@ -472,323 +310,279 @@ function toggleDarkMode() {
 						</LnxButton>
 					</template>
 				</LnxModal>
-			</div>
-		</div>
-	</template>
+			</VariantGrid>
+		</section>
 
-	<template v-if="show === 'date-picker'">
-		<form>
-			<br>
-			selected single: {{ datePickerModel }}
-			<br>
-			selected start: {{ datePickerStartModel }}
-			<br>
-			selected end: {{ datePickerEndModel }}
-			<br>
-			<div
-				v-for="isRange in booleanVariants"
-				:key="String(isRange)"
-				class="variant-container"
-			>
-				<span class="variant">{{ isRange ? 'Range' : 'Single' }}</span>
-				<div
-					v-for="allowDeselect in booleanVariants"
-					:key="String(allowDeselect)"
-					class="variant-container"
+		<section v-if="isShown('date-picker')">
+			<h2>LnxDatePicker</h2>
+			<pre class="state">single: {{ datePickerModel }}&#10;start:  {{ datePickerStartModel }}&#10;end:    {{ datePickerEndModel }}</pre>
+			<form>
+				<VariantGrid
+					v-slot="{ calendarType, range, allowDeselect }"
+					:axes="{ calendarType: calendarTypes, range: bool, allowDeselect: bool }"
 				>
-					<span class="variant">{{ allowDeselect ? 'Allow Deselect' : 'Don\'t allow deselect' }}</span>
-					<div
-						v-for="calendarType in CALENDAR_VIEW_TYPES"
-						:key="String(calendarType)"
-						class="variant-container"
-					>
-						<span class="variant">{{ calendarType }}</span>
-
-						<LnxDatePicker
-							v-model="datePickerWindowModel"
-							v-model:start="datePickerWindowStartModel"
-							v-model:end="datePickerWindowEndModel"
-							:calendar-type
-							:is-range
-							:allow-deselect
-							:is-item-disabled-fn="(item) => item?.number % 2 === 0"
-						>
-							This is the label
-
-							<template #helper>
-								This is a helper
-							</template>
-
-							<template #error>
-								This is an error
-							</template>
-						</LnxDatePicker>
-					</div>
-				</div>
-			</div>
-		</form>
-	</template>
-
-	<template v-if="show === 'date-picker-window'">
-		<br>
-		selected single: {{ datePickerModel }}
-		<br>
-		selected start: {{ datePickerStartModel }}
-		<br>
-		selected end: {{ datePickerEndModel }}
-		<br>
-		<div
-			v-for="isRange in booleanVariants"
-			:key="String(isRange)"
-			class="variant-container"
-		>
-			<span class="variant">{{ isRange ? 'Range' : 'Single' }}</span>
-			<div
-				v-for="allowDeselect in booleanVariants"
-				:key="String(allowDeselect)"
-				class="variant-container"
-			>
-				<span class="variant">{{ allowDeselect ? 'Allow Deselect' : 'Don\'t allow deselect' }}</span>
-				<div
-					v-for="calendarType in CALENDAR_VIEW_TYPES"
-					:key="String(calendarType)"
-					class="variant-container"
-				>
-					<span class="variant">{{ calendarType }}</span>
-
-					<LnxDatePickerWindow
+					<LnxDatePicker
 						v-model="datePickerModel"
 						v-model:start="datePickerStartModel"
 						v-model:end="datePickerEndModel"
 						:calendar-type
-						:is-range
+						:is-range="range"
 						:allow-deselect
 						:is-item-disabled-fn="(item) => item?.number % 2 === 0"
-					/>
-				</div>
-			</div>
-		</div>
-	</template>
-
-	<template v-if="show === 'select'">
-		<br>
-		selected: {{ selectModel }}
-		<br>
-		<form>
-			<div class="variant-container">
-				<span class="variant">Basic</span>
-
-				<LnxSelect
-					v-model="selectModel"
-					placeholder="placeholder"
-					label-property="label"
-					:options="selectOptions"
-				>
-					This is the label
-
-					<template #option="{ option }">
-						<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
-					</template>
-				</LnxSelect>
-
-				<LnxSelect
-					v-model="selectModel"
-					placeholder="placeholder"
-					label-property="label"
-					:options="selectOptions"
-				>
-					This is the label
-
-					<template #helper>
-						This is a helper
-					</template>
-
-					<template #option="{ option }">
-						<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
-					</template>
-				</LnxSelect>
-
-				<LnxSelect
-					v-model="selectModel"
-					placeholder="placeholder"
-					label-property="label"
-					has-error
-					:options="selectOptions"
-				>
-					This is the label
-
-					<template #error>
-						This is an error
-					</template>
-
-					<template #option="{ option }">
-						<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
-					</template>
-				</LnxSelect>
-
-				<LnxSelect
-					v-model="selectModel"
-					placeholder="placeholder"
-					label-property="label"
-					has-error
-					:options="selectOptions"
-				>
-					This is the label
-
-					<template #helper>
-						This is a helper
-					</template>
-
-					<template #error>
-						This is an error
-					</template>
-
-					<template #option="{ option }">
-						<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
-					</template>
-				</LnxSelect>
-			</div>
-
-			<div class="variant-container">
-				<span class="variant">With a convert function</span>
-				<LnxSelect
-					v-model.convert="selectModel"
-					placeholder="placeholder"
-					:options="selectOptions"
-					label-property="label"
-					:convert-fn="(value) => ({ ...value, newProperty: 'cool!' })"
-				>
-					With a label property
-				</LnxSelect>
-
-				<LnxSelect
-					v-model.convert="selectModel"
-					placeholder="placeholder"
-					:options="selectOptions"
-					:convert-fn="(value) => value.label + ' (converted)'"
-				>
-					With a custom convert function
-				</LnxSelect>
-			</div>
-
-			<div class="variant-container">
-				<span class="variant">With a custom option</span>
-				<LnxSelect
-					v-model="selectModel"
-					placeholder="placeholder"
-					:options="selectOptions"
-				>
-					This is the label
-
-					<template #optionInput="{ value }">
-						<span style="display: flex; align-items: center; gap: 4px;">
-							<LnxIcon icon="mdi:star" />
-							<span style="color: var(--lnx-color-primary)">{{ value }} (custom option) as d f a s d f a s d f asf asdf as df</span>
-						</span>
-					</template>
-				</LnxSelect>
-			</div>
-
-			<div class="variant-container">
-				<span class="variant">Async options</span>
-				<LnxSelect
-					v-model="selectModel"
-					placeholder="placeholder"
-					:options="asyncSelectOptions"
-					label-property="label"
-					:loading-options="loadingSelectOptions"
-					are-options-async
-					@query="getAsyncOptions"
-				>
-					This is the label
-
-					<template #notFound>
-						<small>Start writing to see suggestions</small>
-					</template>
-				</LnxSelect>
-			</div>
-		</form>
-	</template>
-
-	<template v-if="show === 'file-uploader'">
-		<form>
-			<div
-				v-for="isLoading in booleanVariants"
-				:key="String(isLoading)"
-				class="variant-container"
-			>
-				<span class="variant">{{ !isLoading ? 'Loading' : 'Not loading' }}</span>
-				<div
-					v-for="hasError in booleanVariants"
-					:key="String(hasError)"
-					class="variant-container"
-				>
-					<span class="variant">{{ !hasError ? 'Has Error' : 'No error' }}</span>
-					<div
-						v-for="multiple in booleanVariants"
-						:key="String(multiple)"
-						class="variant-container"
 					>
-						<span class="variant">{{ multiple ? 'Multiple' : 'Single' }}</span>
-						<LnxFileUploader
-							v-model="fileUploaderModel"
-							:is-loading="!isLoading"
-							:has-error="!hasError"
-							:multiple
-						>
-							This is the label
+						This is the label
 
-							<template #helper>
-								This is a helper
-							</template>
+						<template #helper>
+							This is a helper
+						</template>
 
-							<template #error>
-								This is an error
-							</template>
-						</LnxFileUploader>
-					</div>
+						<template #error>
+							This is an error
+						</template>
+					</LnxDatePicker>
+				</VariantGrid>
+			</form>
+		</section>
+
+		<section v-if="isShown('date-picker-window')">
+			<h2>LnxDatePickerWindow</h2>
+			<pre class="state">single: {{ datePickerWindowModel }}&#10;start:  {{ datePickerWindowStartModel }}&#10;end:    {{ datePickerWindowEndModel }}</pre>
+			<VariantGrid
+				v-slot="{ calendarType, range, allowDeselect }"
+				:axes="{ calendarType: calendarTypes, range: bool, allowDeselect: bool }"
+				style="--cell-min: 320px"
+			>
+				<LnxDatePickerWindow
+					v-model="datePickerWindowModel"
+					v-model:start="datePickerWindowStartModel"
+					v-model:end="datePickerWindowEndModel"
+					:calendar-type
+					:is-range="range"
+					:allow-deselect
+					:is-item-disabled-fn="(item) => item?.number % 2 === 0"
+				/>
+			</VariantGrid>
+		</section>
+
+		<section v-if="isShown('select')">
+			<h2>LnxSelect</h2>
+			<pre class="state">selected: {{ selectModel }}</pre>
+			<form class="grid">
+				<div
+					class="cell"
+					data-label="custom option slot"
+				>
+					<LnxSelect
+						v-model="selectModel"
+						placeholder="placeholder"
+						label-property="label"
+						:options="selectOptions"
+					>
+						This is the label
+
+						<template #option="{ option }">
+							<span style="color: var(--lnx-color-primary)">{{ option.label }} (custom option)</span>
+						</template>
+					</LnxSelect>
 				</div>
-			</div>
-		</form>
-	</template>
+
+				<div
+					class="cell"
+					data-label="helper"
+				>
+					<LnxSelect
+						v-model="selectModel"
+						placeholder="placeholder"
+						label-property="label"
+						:options="selectOptions"
+					>
+						This is the label
+
+						<template #helper>
+							This is a helper
+						</template>
+					</LnxSelect>
+				</div>
+
+				<div
+					class="cell"
+					data-label="error"
+				>
+					<LnxSelect
+						v-model="selectModel"
+						placeholder="placeholder"
+						label-property="label"
+						has-error
+						:options="selectOptions"
+					>
+						This is the label
+
+						<template #error>
+							This is an error
+						</template>
+					</LnxSelect>
+				</div>
+
+				<div
+					class="cell"
+					data-label="helper · error"
+				>
+					<LnxSelect
+						v-model="selectModel"
+						placeholder="placeholder"
+						label-property="label"
+						has-error
+						:options="selectOptions"
+					>
+						This is the label
+
+						<template #helper>
+							This is a helper
+						</template>
+
+						<template #error>
+							This is an error
+						</template>
+					</LnxSelect>
+				</div>
+
+				<div
+					class="cell"
+					data-label="convert · label property"
+				>
+					<LnxSelect
+						v-model.convert="selectModel"
+						placeholder="placeholder"
+						:options="selectOptions"
+						label-property="label"
+						:convert-fn="(value) => ({ ...value, newProperty: 'cool!' })"
+					>
+						With a label property
+					</LnxSelect>
+				</div>
+
+				<div
+					class="cell"
+					data-label="convert · custom function"
+				>
+					<LnxSelect
+						v-model.convert="selectModel"
+						placeholder="placeholder"
+						:options="selectOptions"
+						:convert-fn="(value) => value.label + ' (converted)'"
+					>
+						With a custom convert function
+					</LnxSelect>
+				</div>
+
+				<div
+					class="cell"
+					data-label="custom input slot"
+				>
+					<LnxSelect
+						v-model="selectModel"
+						placeholder="placeholder"
+						:options="selectOptions"
+					>
+						This is the label
+
+						<template #optionInput="{ value }">
+							<span style="display: flex; align-items: center; gap: 4px;">
+								<LnxIcon icon="mdi:star" />
+								<span style="color: var(--lnx-color-primary)">{{ value }} (custom option) as d f a s d f a s d f asf asdf as df</span>
+							</span>
+						</template>
+					</LnxSelect>
+				</div>
+
+				<div
+					class="cell"
+					data-label="async options"
+				>
+					<LnxSelect
+						v-model="selectModel"
+						placeholder="placeholder"
+						:options="asyncSelectOptions"
+						label-property="label"
+						:loading-options="loadingSelectOptions"
+						are-options-async
+						@query="getAsyncOptions"
+					>
+						This is the label
+
+						<template #notFound>
+							<small>Start writing to see suggestions</small>
+						</template>
+					</LnxSelect>
+				</div>
+			</form>
+		</section>
+
+		<section v-if="isShown('file-uploader')">
+			<h2>LnxFileUploader</h2>
+			<form>
+				<VariantGrid
+					v-slot="{ multiple, loading, error }"
+					:axes="{ multiple: bool, loading: bool, error: bool }"
+					style="--cell-min: 320px"
+				>
+					<LnxFileUploader
+						v-model="fileUploaderModel"
+						:is-loading="loading"
+						:has-error="error"
+						:multiple
+					>
+						This is the label
+
+						<template #helper>
+							This is a helper
+						</template>
+
+						<template #error>
+							This is an error
+						</template>
+					</LnxFileUploader>
+				</VariantGrid>
+			</form>
+		</section>
+	</main>
 </template>
 
 <style scoped>
-:global(html.dark) {
-	background-color: var(--lnx-color-bg);
-	color: var(--lnx-color-text);
-	--lnx-select-list-color-bg: var(--lnx-color-gray-9);
-}
-:global(html:not(.dark)) {
-	--lnx-select-list-color-bg: var(--lnx-color-gray-0);
-}
-
-:global(body) {
-	margin: 8px 16px;
-}
-
-.btn-toggle {
-	margin: 8px;
-}
-
-.variant-container {
-	margin: 12px 0;
-	padding: 12px 4px 4px;
-	border: 1px solid var(--lnx-color-text);
+.header {
+	position: sticky;
+	top: 0;
+	z-index: 10;
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 8px 16px;
+	background-color: var(--lnx-color-bg);
+	border-bottom: 1px solid var(--sandbox-border);
+}
+
+.nav {
+	display: flex;
 	flex-wrap: wrap;
 	gap: 4px;
-	position: relative;
+}
 
-	.variant {
-		padding: 2px 4px;
-		background: var(--lnx-color-bg);
-		position: absolute;
-		left: 4px;
-		top: -10px;
-		text-transform: uppercase;
-		font-size: 12px;
-	}
+.main {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	padding: 16px 16px 64px;
+}
+
+h2 {
+	margin: 0 0 12px;
+	font-size: 18px;
+}
+
+.state {
+	margin: 0 0 12px;
+	font-size: 12px;
+	opacity: .7;
 }
 </style>

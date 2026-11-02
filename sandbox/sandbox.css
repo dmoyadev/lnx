@@ -1,0 +1,43 @@
+html {
+	--lnx-select-list-color-bg: var(--lnx-color-gray-0);
+	--sandbox-border: color-mix(in srgb, var(--lnx-color-text) 15%, transparent);
+	background-color: var(--lnx-color-bg);
+	color: var(--lnx-color-text);
+	font-family: system-ui, sans-serif;
+}
+
+html.dark {
+	--lnx-select-list-color-bg: var(--lnx-color-gray-9);
+}
+
+body {
+	margin: 0;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(var(--cell-min, 260px), 1fr));
+	gap: 12px;
+}
+
+.cell {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 32px 12px 12px;
+	border: 1px solid var(--sandbox-border);
+	border-radius: 8px;
+
+	&::before {
+		content: attr(data-label);
+		position: absolute;
+		top: 10px;
+		left: 12px;
+		font-size: 11px;
+		text-transform: uppercase;
+		letter-spacing: .04em;
+		opacity: .6;
+	}
+}
