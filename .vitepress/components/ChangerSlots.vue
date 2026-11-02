@@ -64,6 +64,7 @@ defineModel<string>('showcasedProp', { default: '' });
 <style scoped lang="scss">
 .slot {
 	display: flex;
+	flex-wrap: wrap; /* Controls drop below the description on narrow screens */
 	align-items: flex-start;
 	gap: 20px;
 	padding: 10px;
@@ -81,7 +82,7 @@ defineModel<string>('showcasedProp', { default: '' });
 	}
 
 	.slot-data {
-		flex: 1;
+		flex: 1 1 200px;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;

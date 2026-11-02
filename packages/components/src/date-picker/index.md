@@ -21,7 +21,7 @@ const end = ref();
 
 # DatePicker
 
-The date picker component allows users to select dates or date ranges. It triggers a dropdown containing the [DatePickerWindow](/components/date-picker-window) when interacting with the input field.
+The date picker component allows users to select dates or date ranges. It triggers a dropdown containing the [DatePickerWindow](/components/date-picker-window/) when interacting with the input field.
 
 <DemoContainer 
     v-slot="{ addEmit, variation, showcasedProp}"
@@ -38,7 +38,7 @@ The date picker component allows users to select dates or date ranges. It trigge
         v-model:start="start"
         v-model:end="end"
         :placeholder="showcasedProp === 'Placeholder' ? variation : componentOptions['Placeholder'].value"
-        :readonly="showcasedProp === 'Make it readonly' ? variation : componentOptions['Make it readonly'].value"
+        :readonly="showcasedProp === 'Makeitreadonly' ? variation : componentOptions['Make it readonly'].value"
         :disabled="showcasedProp === 'Makeitdisabled' ? variation : componentOptions['Make it disabled'].value || undefined"
         @click="addEmit('click', $event)"
     >

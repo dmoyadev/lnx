@@ -17,7 +17,7 @@ const {
 
 # Select
 
-[comment]: # (Description of the component)
+A select field that lets users pick one option from a list, with a search box to filter them and support for options loaded asynchronously.
 
 <DemoContainer 
     v-slot="{ addEmit, variation, showcasedProp}"
@@ -32,7 +32,7 @@ const {
     <LnxSelect
         v-bind="{ ...props, ...{ [showcasedProp]: variation } }"
         :placeholder="showcasedProp === 'Placeholder' ? variation : componentOptions['Placeholder'].value"
-        :disabled="showcasedProp === 'Make it disabled' ? variation : componentOptions['Make it disabled'].value"
+        :disabled="showcasedProp === 'Makeitdisabled' ? variation : componentOptions['Make it disabled'].value"
         @update:modelValue="addEmit('update:modelValue', $event)"
         @query="addEmit('query', $event)"
         @select="addEmit('select', $event)"

@@ -19,7 +19,7 @@
 1. Modify the code you need
 2. Run one of these:
    ```bash
-   $ release:patch # creates a path version 
-   $ release:minor # creates a minor version
-   $ release:major # creates a major version
+   $ pnpm release:patch # creates a patch version
+   $ pnpm release:minor # creates a minor version
+   $ pnpm release:major # creates a major version
    ```

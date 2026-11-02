@@ -33,9 +33,9 @@ function deleteFile(file: UploadedFile) {
 }
 </script>
 
-# FileUpload
+# FileUploader
 
-[comment]: # (Description of the component)
+A drop zone to pick or drag and drop files, showing the uploaded ones in a list with a loading state while they upload.
 
 <DemoContainer 
     v-slot="{ addEmit, variation, showcasedProp}"

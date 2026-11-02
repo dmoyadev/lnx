@@ -30,7 +30,7 @@ function addEmittedEvent(name: string, data?: unknown) {
 
 const possibleVariations = ref<unknown[]>([true]);
 watch(showcasedProp, (newVal) => {
-	const affectedProp = props.value[newVal] || options.value[newVal];
+	const affectedProp = props.value?.[newVal] || options.value?.[newVal];
 
 	if (affectedProp?.controlType === 'select' || affectedProp?.controlType === 'options') {
 		if(Array.isArray(affectedProp.options)) {
@@ -128,7 +128,8 @@ section {
 		position: sticky;
 		gap: 8px;
 		padding: 16px 0;
-		z-index: 100000;
+		/* Above the page content, below VitePress' local nav (20) and mobile sidebar (60) */
+		z-index: 10;
 		background: var(--vp-c-bg);
 		top: 65px;
 
@@ -136,10 +137,10 @@ section {
 			top: 48px;
 		}
 
-		@media (max-width: 640px) {
-			width: 100vw;
-			padding: 0 16px;
-			transform: translateX(-25px);
+		/* Bleed to the screen edges so content scrolling underneath doesn't peek out, keeping the text aligned */
+		@media (max-width: 767px) {
+			margin-inline: -24px;
+			padding: 8px 24px;
 		}
 
 		h2 {

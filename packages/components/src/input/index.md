@@ -18,7 +18,7 @@ function handleSubmit() {
 }
 </script>
 
-# Icon
+# Input
 
 An input component that allows users to enter and edit text.
 
@@ -34,10 +34,10 @@ An input component that allows users to enter and edit text.
     <form @submit.prevent="handleSubmit()">
         <LnxInput
             v-bind="{ ...props, ...{ [showcasedProp]: variation } }"
-            :type="showcasedProp === 'Input type' ? variation : componentOptions['Input type'].value"
+            :type="showcasedProp === 'Inputtype' ? variation : componentOptions['Input type'].value"
             :placeholder="showcasedProp === 'Placeholder' ? variation : componentOptions['Placeholder'].value"
-            :readonly="showcasedProp === 'Make it readonly' ? variation : componentOptions['Make it readonly'].value"
-            :disabled="showcasedProp === 'Make it disabled' ? variation : componentOptions['Make it disabled'].value"
+            :readonly="showcasedProp === 'Makeitreadonly' ? variation : componentOptions['Make it readonly'].value"
+            :disabled="showcasedProp === 'Makeitdisabled' ? variation : componentOptions['Make it disabled'].value"
             @update:modelValue="addEmit('update:modelValue', $event)"
             @input="addEmit('input', $event.target.value)"
             @change="addEmit('change', $event.target.value)"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { LnxIcon } from '../../packages/components/src/icon';
 
 defineProps<{ screenMenu?: boolean }>();
@@ -18,11 +18,18 @@ const Themes = {
 } as const;
 
 const selectedTheme = ref<typeof Themes[keyof typeof Themes]>(Themes.BOBCAT);
+onMounted(() => {
+	/* The `head` script in config.ts already applied the saved theme */
+	selectedTheme.value = Object.values(Themes).find(t => t.name === document.documentElement.dataset.theme) ?? Themes.BOBCAT;
+});
 watch(selectedTheme, (newTheme) => {
-	if(import.meta.env.SSR) { return; }
-	const html = document?.querySelector('html');
-	html?.setAttribute('data-theme', newTheme.name);
-}, { immediate: true });
+	document.documentElement.dataset.theme = newTheme.name;
+	try {
+		localStorage.setItem('lnx-theme', newTheme.name);
+	} catch {
+		/* Storage blocked: the theme just won't be remembered */
+	}
+});
 </script>
 
 <template>
@@ -30,6 +37,7 @@ watch(selectedTheme, (newTheme) => {
 		<label
 			v-for="theme in Themes"
 			:key="theme.name"
+			:title="`${theme.name} theme`"
 		>
 			<LnxIcon
 				:icon="theme.icon"
@@ -40,6 +48,7 @@ watch(selectedTheme, (newTheme) => {
 				type="radio"
 				name="theme"
 				:value="theme"
+				:aria-label="`${theme.name} theme`"
 			>
 		</label>
 	</section>

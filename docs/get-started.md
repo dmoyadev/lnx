@@ -62,7 +62,7 @@
    import App from './App.vue'
    
    import 'lnxjs-components/dist/base.css';
-   import 'custom-theme.css'; // [!code ++]
+   import './custom-theme.scss'; // [!code ++]
    
    createApp(App).mount('#app')
    ```

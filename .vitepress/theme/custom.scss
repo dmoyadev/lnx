@@ -1,6 +1,20 @@
+/* VitePress follows the selected Lnx theme (ThemeSwitcher) instead of its default indigo */
 :root {
+	--vp-c-brand-1: var(--lnx-color-primary);
+	--vp-c-brand-2: var(--lnx-color-primary-light);
+	--vp-c-brand-3: var(--lnx-color-primary);
+	--vp-c-brand-soft: color-mix(in srgb, var(--lnx-color-primary) 16%, transparent);
+
+	/* Dark text on the brand color keeps contrast with both the light blue and the orange themes */
+	--vp-button-brand-bg: var(--lnx-color-primary);
+	--vp-button-brand-hover-bg: var(--lnx-color-primary-light);
+	--vp-button-brand-active-bg: var(--lnx-color-primary-light);
+	--vp-button-brand-text: var(--lnx-color-primary-accent);
+	--vp-button-brand-hover-text: var(--lnx-color-primary-accent);
+	--vp-button-brand-active-text: var(--lnx-color-primary-accent);
+
 	--vp-home-hero-name-color: transparent;
-	--vp-home-hero-name-background: -webkit-linear-gradient(120deg, #2b85a9, #7fc1dc);
+	--vp-home-hero-name-background: linear-gradient(120deg, color-mix(in srgb, var(--lnx-color-primary) 60%, var(--lnx-color-primary-dark)), var(--lnx-color-primary));
 }
 
 .vp-doc p,

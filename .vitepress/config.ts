@@ -19,23 +19,16 @@ async function getDocFiles(docsPath: string, excludedFolders: string[] = []): Pr
 			if (fileStat.isDirectory() && !excludedFolders.includes(file)) {
 				walk(filePath);
 			} else if (fileStat.isFile() && file.endsWith('.md')) {
+				/* Keep the trailing slash of index pages so links match the real URL (`/components/button/`) */
 				const fileLink = filePath
 					.replace(folderPath, '')
 					.replace(/\.md$/, '')
-					.replace(/\/index$/, '')
-					.replace(/\/$/, '');
-				const fileText = fileLink.split('/').pop() ?? '';
-
-				/* PascalCase the text */
-				const pascalCaseFileText = fileText
-					.split('-')
-					.map(part => part.charAt(0).toUpperCase() + part.slice(1))
-					.join('');
-				/* If the text contains uppercase letters, use it as is, otherwise use the pascalCase version */
-				const finalFileText = /[A-Z]/.test(fileText) ? fileText : pascalCaseFileText;
+					.replace(/index$/, '');
+				/* Use the page title (first `# ` heading) so the sidebar reads like the page */
+				const title = fs.readFileSync(filePath, 'utf8').match(/^# (.+)$/m)?.[1];
 
 				docs.push({
-					text: finalFileText,
+					text: title ?? fileLink,
 					link: fileLink,
 				});
 			}
@@ -76,10 +69,17 @@ export default defineConfig({
 
 	appearance: 'force-dark',
 
-	ignoreDeadLinks: true,
+	ignoreDeadLinks: 'localhostLinks',
+
+	head: [
+		/* Set the theme before the first paint so pages don't flash unstyled; ThemeSwitcher keeps it in sync */
+		['script', {}, 'document.documentElement.dataset.theme = (() => { try { return localStorage.getItem(\'lnx-theme\'); } catch { return null; } })() || \'bobcat\';'],
+	],
 
 	themeConfig: {
 		externalLinkIcon: true,
+
+		search: { provider: 'local' },
 
 		docFooter: {
 			next: false,
@@ -123,28 +123,27 @@ export default defineConfig({
 			{
 				text: 'Reference',
 				collapsed: false,
-				base: 'docs/',
 				items: [
 					{
 						text: 'Get started',
-						link: 'get-started',
+						link: '/get-started',
 					},
 					{
 						text: 'Know-Hows',
-						link: 'know-hows',
+						link: '/know-hows',
 					},
 				],
 			},
 			{
 				text: 'Themes',
 				collapsed: false,
-				base: 'themes/',
+				base: '/themes',
 				items: await getDocFiles('../packages/components/src/themes'),
 			},
 			{
 				text: 'Components',
 				collapsed: false,
-				base: 'components/',
+				base: '/components',
 				items: await getDocFiles('../packages/components/src', ['themes']),
 			},
 		],
