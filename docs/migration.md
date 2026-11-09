@@ -2,6 +2,24 @@
 
 What to change in your code when a version renames or removes something. Each section only lists breaking changes: the [changelog](/components/CHANGELOG) has everything else.
 
+## From 0.9 to 0.10
+
+### `LnxButton` no longer submits forms by default
+A `LnxButton` that renders a `<button>` now gets `type="button"`, so clicking it inside a `<form>` no longer submits the form. Add `type="submit"` to the buttons that should:
+
+::: code-group
+```vue [Before (0.9)]
+<form @submit.prevent="save">
+  <LnxButton>Save</LnxButton>
+</form>
+```
+```vue [After (0.10)]
+<form @submit.prevent="save">
+  <LnxButton type="submit">Save</LnxButton>
+</form>
+```
+:::
+
 ## From 0.8 to 0.9
 
 Buttons and form fields now share one set of [size variables](/get-started#sizing), so they always line up side by side. Sizes are no longer props.

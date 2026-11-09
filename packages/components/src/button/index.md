@@ -99,6 +99,16 @@ While the action runs, `is-loading` disables the button and makes it pulse, keep
 <LnxButton is-loading>Saving</LnxButton>
 ```
 
+### In a form
+A button is `type="button"` by default, so it never submits a form by accident. Set `type="submit"` on the one that should.
+
+```vue example
+<form @submit.prevent>
+  <LnxButton type="submit">Send</LnxButton>
+  <LnxButton mode="clear">Clear</LnxButton>
+</form>
+```
+
 ### As a link
 With `href` it renders an `<a>`, and with `to` a `router-link`.
 

@@ -36,6 +36,9 @@ defineSlots<{
 }>();
 
 const $attrs = useAttrs();
+const tag = computed(() => props.href ? 'a' : (props.to ? 'router-link' : 'button'));
+// A <button> inside a form submits it unless told otherwise: only an explicit type="submit" should
+const type = computed(() => tag.value === 'button' ? ($attrs.type as string | undefined) ?? 'button' : $attrs.type);
 const isDisabled = computed(() => props.isLoading || ('disabled' in $attrs && ($attrs.disabled || $attrs.disabled === '')));
 
 /* Ripple effect */
@@ -78,9 +81,10 @@ function createRippleEffect(event: MouseEvent) {
 
 <template>
 	<component
-		:is="href ? 'a' : (to ? 'router-link' : 'button')"
+		:is="tag"
 		ref="$button"
 		v-bind="$attrs"
+		:type
 		:href="href"
 		:to="!!href ? undefined : to"
 		:disabled="isDisabled"
