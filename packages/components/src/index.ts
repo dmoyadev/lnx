@@ -16,3 +16,4 @@ export * from './dropdown';
 export * from './skeleton';
 export * from './confirm';
 export * from './shortcuts';
+export * from './toaster';

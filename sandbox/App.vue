@@ -19,6 +19,9 @@ import {
 	LnxShortcutsSheet,
 	useShortcut,
 	shortcutTitle,
+	toast,
+	dismiss,
+	toasts,
 } from 'lnxjs-components/src';
 import VariantGrid from './VariantGrid.vue';
 
@@ -31,6 +34,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'toaster': 'toast',
 	'shortcuts': 'useShortcut',
 	'confirm': 'useConfirm',
 	'skeleton': 'LnxSkeleton',
@@ -110,6 +114,15 @@ useShortcut('mod+enter', () => shortcutLog.value.push('save'), { description: 'S
 useShortcut('mod+s', () => shortcutLog.value.push('save (s)'), { description: 'Save' });
 useShortcut('g i', () => shortcutLog.value.push('go to incidents'), { description: 'Go to incidents' });
 useShortcut('escape', () => { shortcutLog.value.push('cancel edit'); isEditingShortcut.value = false; }, { description: 'Cancel', enabled: () => isEditingShortcut.value });
+
+const toastReceipts = ref(3);
+async function failingUndo() {
+	throw new Error('the server said no');
+}
+function toastSave() {
+	toastReceipts.value++;
+	toast(`Receipt saved. You have ${toastReceipts.value}`, { undo: () => { toastReceipts.value--; } });
+}
 </script>
 
 <template>
@@ -740,6 +753,20 @@ useShortcut('escape', () => { shortcutLog.value.push('cancel edit'); isEditingSh
 			</div>
 			<pre class="state">log: {{ shortcutLog.join(', ') }}</pre>
 			<LnxShortcutsSheet :rows="[{ description: 'Undo the last action', combos: ['mod+z'] }]" />
+		</section>
+		<section v-if="isShown('toaster')">
+			<h2>toast</h2>
+			<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+				<LnxButton @click="toastSave()">Save (undo)</LnxButton>
+				<LnxButton variant="danger" @click="toast('Could not save: the network is down', { variant: 'danger' })">Danger</LnxButton>
+				<LnxButton variant="success" @click="toast('Sent to the 12 members of the board, who will receive it by email in a few minutes', { variant: 'success' })">Success (long)</LnxButton>
+				<LnxButton variant="warning" @click="toast('Quota almost full', { variant: 'warning' })">Warning</LnxButton>
+				<LnxButton variant="info" @click="toast('Copied', { variant: 'info', duration: 2000 })">Info 2s</LnxButton>
+				<LnxButton mode="outline" @click="toast('Fixed: closes only by hand', { duration: Infinity })">Infinity</LnxButton>
+				<LnxButton mode="outline" @click="toast('Undo will fail', { undo: failingUndo })">Failing undo</LnxButton>
+				<LnxButton mode="outline" @click="[...toasts].forEach(item => dismiss(item.id))">Dismiss all</LnxButton>
+			</div>
+			<pre class="state">receipts: {{ toastReceipts }}</pre>
 		</section>
 	</main>
 </template>
