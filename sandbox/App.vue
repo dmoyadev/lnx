@@ -24,6 +24,7 @@ import {
 	toasts,
 	LnxCheckbox,
 	LnxTextarea,
+	LnxRadioGroup,
 } from 'lnxjs-components/src';
 import VariantGrid from './VariantGrid.vue';
 
@@ -36,6 +37,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'radio-group': 'LnxRadioGroup',
 	'textarea': 'LnxTextarea',
 	'checkbox': 'LnxCheckbox',
 	'toaster': 'toast',
@@ -138,6 +140,13 @@ const checkboxAll = computed({
 });
 
 const textareaText = ref('');
+
+const radioCategory = ref('deed');
+const radioPeriod = ref('month');
+const radioStatuses = ref<string[]>(['open']);
+const radioProperties = [{ id: 1, name: 'Flat 1A' }, { id: 2, name: 'Flat 2B' }, { id: 3, name: 'Garage 7' }];
+const radioProperty = ref<{ id: number; name: string }>();
+const radioSubmitted = ref(false);
 </script>
 
 <template>
@@ -814,6 +823,21 @@ const textareaText = ref('');
 				<LnxTextarea v-model="textareaText" is-loading>Loading</LnxTextarea>
 				<LnxInput v-model="textareaText">Input, to compare</LnxInput>
 			</div>
+		</section>
+		<section v-if="isShown('radio-group')">
+			<h2>LnxRadioGroup</h2>
+			<form style="display: grid; gap: 20px; max-width: 420px" @submit.prevent="radioSubmitted = true">
+				<LnxRadioGroup v-model="radioCategory" name="category" :options="[{ value: 'deed', label: 'Deed', icon: 'lucide:scroll-text' }, { value: 'insurance', label: 'Insurance', icon: 'lucide:shield' }, { value: 'invoice', label: 'Invoice', icon: 'lucide:receipt' }, { value: 'minutes', label: 'Minutes of the board', icon: 'lucide:file-text' }, { value: 'other', label: 'Other', icon: 'lucide:file', disabled: true }]">
+					What kind of document?
+				</LnxRadioGroup>
+				<LnxRadioGroup v-model="radioPeriod" mode="segmented" :options="[{ value: 'month', label: 'Month' }, { value: 'quarter', label: 'Quarter' }, { value: 'year', label: 'Year' }]">Segmented</LnxRadioGroup>
+				<LnxRadioGroup v-model="radioPeriod" mode="segmented" is-block hide-legend :options="[{ value: 'month', label: 'Month' }, { value: 'quarter', label: 'Quarter' }, { value: 'year', label: 'Year' }]">Segmented block</LnxRadioGroup>
+				<LnxRadioGroup v-model="radioStatuses" multiple :options="[{ value: 'open', label: 'Open' }, { value: 'progress', label: 'In progress' }, { value: 'closed', label: 'Closed' }]">Multiple</LnxRadioGroup>
+				<LnxRadioGroup v-model="radioProperty" mode="list" required :options="radioProperties.map(p => ({ value: p, label: p.name }))">List of objects, required</LnxRadioGroup>
+				<LnxRadioGroup v-model="radioPeriod" disabled :options="[{ value: 'month', label: 'Month' }, { value: 'year', label: 'Year' }]">Disabled</LnxRadioGroup>
+				<LnxButton type="submit">Submit</LnxButton>
+			</form>
+			<pre class="state">{{ { radioCategory, radioPeriod, radioStatuses, radioProperty, radioSubmitted } }}</pre>
 		</section>
 	</main>
 </template>
