@@ -15,3 +15,4 @@ export * from './select';
 export * from './dropdown';
 export * from './skeleton';
 export * from './confirm';
+export * from './shortcuts';

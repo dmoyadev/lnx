@@ -15,6 +15,10 @@ import {
 	LnxFileUploader,
 	LnxSkeleton,
 	useConfirm,
+	LnxKbd,
+	LnxShortcutsSheet,
+	useShortcut,
+	shortcutTitle,
 } from 'lnxjs-components/src';
 import VariantGrid from './VariantGrid.vue';
 
@@ -27,6 +31,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'shortcuts': 'useShortcut',
 	'confirm': 'useConfirm',
 	'skeleton': 'LnxSkeleton',
 };
@@ -96,6 +101,15 @@ async function askThree() {
 	const answers = await Promise.all([1, 2, 3].map(n => confirm({ title: `Question ${n} of 3`, message: 'They are answered one after the other.' })));
 	confirmAnswers.value.push(`three: ${answers.join('/')}`);
 }
+
+const shortcutLog = ref<string[]>([]);
+const shortcutText = ref('');
+const isEditingShortcut = ref(false);
+useShortcut('n', () => shortcutLog.value.push('new'), { description: 'New receipt' });
+useShortcut('mod+enter', () => shortcutLog.value.push('save'), { description: 'Save' });
+useShortcut('mod+s', () => shortcutLog.value.push('save (s)'), { description: 'Save' });
+useShortcut('g i', () => shortcutLog.value.push('go to incidents'), { description: 'Go to incidents' });
+useShortcut('escape', () => { shortcutLog.value.push('cancel edit'); isEditingShortcut.value = false; }, { description: 'Cancel', enabled: () => isEditingShortcut.value });
 </script>
 
 <template>
@@ -711,6 +725,21 @@ async function askThree() {
 					Three at once
 				</LnxButton>
 			</div>
+		</section>
+		<section v-if="isShown('shortcuts')">
+			<h2>useShortcut</h2>
+			<p>Press <LnxKbd combo="n" /> for new, <LnxKbd combo="mod+enter" /> to save, <LnxKbd combo="g i" /> to go, <LnxKbd combo="?" /> for the sheet. Esc counts only while editing.</p>
+			<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+				<LnxButton :title="shortcutTitle('Save', 'mod+enter')" @click="shortcutLog.push('save (click)')">
+					Save <LnxKbd combo="mod+enter" />
+				</LnxButton>
+				<LnxButton mode="outline" @click="isEditingShortcut = !isEditingShortcut">
+					{{ isEditingShortcut ? 'Editing' : 'Not editing' }}
+				</LnxButton>
+				<LnxInput v-model="shortcutText" placeholder="Type n here: it's text" />
+			</div>
+			<pre class="state">log: {{ shortcutLog.join(', ') }}</pre>
+			<LnxShortcutsSheet :rows="[{ description: 'Undo the last action', combos: ['mod+z'] }]" />
 		</section>
 	</main>
 </template>
