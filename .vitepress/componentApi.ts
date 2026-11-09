@@ -52,9 +52,7 @@ function getTable(title: string, headers: string[], rows: unknown[][]) {
 function getApiMarkdown(docs: ComponentDocs, src: string) {
 	const attributes = Object.values(docs.componentOptions?.value ?? {}).filter(option => option.configurableOptionName);
 
-	return [
-		'<div class="lnx-api">',
-		'## API',
+	const tables = [
 		getTable('Props', ['Prop', 'Type', 'Description'], Object.entries(docs.componentProps.value).map(([name, prop]) => [
 			`\`${toDashCase(name)}\``,
 			formatType(prop.type, src),
@@ -79,8 +77,14 @@ function getApiMarkdown(docs: ComponentDocs, src: string) {
 			`\`${name}\``,
 			cssVar.description,
 		])),
-		'</div>',
-	].filter(Boolean).join('\n\n');
+	].filter(Boolean);
+
+	/* Components driven by a function, like the confirm host, have no API of their own */
+	if(!tables.length) {
+		return '';
+	}
+
+	return ['<div class="lnx-api">', '## API', ...tables, '</div>'].join('\n\n');
 }
 
 /* Reads the playground data of every component (its `docs.ts`), so the API is written once and shown twice */

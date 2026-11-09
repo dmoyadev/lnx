@@ -14,6 +14,7 @@ import {
 	LnxSelect,
 	LnxFileUploader,
 	LnxSkeleton,
+	useConfirm,
 } from 'lnxjs-components/src';
 import VariantGrid from './VariantGrid.vue';
 
@@ -26,6 +27,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'confirm': 'useConfirm',
 	'skeleton': 'LnxSkeleton',
 };
 
@@ -80,6 +82,20 @@ function toggleDarkMode() {
 }
 
 const skeletonLoading = ref(true);
+
+const confirm = useConfirm();
+const confirmAnswers = ref<string[]>([]);
+async function askDelete() {
+	const confirmed = await confirm({ title: 'Delete «Minutes 2026»?', message: "It can't be undone.", confirmText: 'Delete', variant: 'danger' });
+	confirmAnswers.value.push(`delete: ${confirmed}`);
+}
+async function askPublish() {
+	confirmAnswers.value.push(`publish: ${await confirm('Publish the minutes for all the members?')}`);
+}
+async function askThree() {
+	const answers = await Promise.all([1, 2, 3].map(n => confirm({ title: `Question ${n} of 3`, message: 'They are answered one after the other.' })));
+	confirmAnswers.value.push(`three: ${answers.join('/')}`);
+}
 </script>
 
 <template>
@@ -673,6 +689,27 @@ const skeletonLoading = ref(true);
 					<LnxButton class="lnx-skeleton" style="width: 120px; height: var(--lnx-control-height)">Hidden</LnxButton>
 					<LnxButton @click="skeletonLoading = !skeletonLoading">Toggle loading</LnxButton>
 				</div>
+			</div>
+		</section>
+		<section v-if="isShown('confirm')">
+			<h2>useConfirm</h2>
+			<pre class="state">answers: {{ confirmAnswers.join(', ') }}</pre>
+			<div style="display: flex; gap: 12px; flex-wrap: wrap">
+				<LnxButton
+					:variant="BUTTON_VARIANTS.DANGER"
+					@click="askDelete()"
+				>
+					Delete (danger)
+				</LnxButton>
+				<LnxButton @click="askPublish()">
+					Publish (text only)
+				</LnxButton>
+				<LnxButton
+					:mode="BUTTON_MODES.OUTLINE"
+					@click="askThree()"
+				>
+					Three at once
+				</LnxButton>
 			</div>
 		</section>
 	</main>
