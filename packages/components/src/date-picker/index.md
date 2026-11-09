@@ -28,6 +28,8 @@ const tripStart = ref<Date>();
 const tripEnd = ref<Date>();
 const billingMonth = ref<Date>();
 const appointment = ref<Date>();
+const dueDate = ref('');
+const visit = ref('');
 
 const startOfToday = new Date(new Date().toDateString());
 function isPastDay(item: Item) {
@@ -130,9 +132,31 @@ function isPastDay(item: Item) {
 }
 ```
 
+### Dates as text
+With `value-format="iso-date"`, the v-models hold `'YYYY-MM-DD'` texts (`''` when empty) instead of `Date`s, ready for a form or an API. The day picked is the day stored, whatever the timezone.
+
+```vue example
+<LnxDatePicker v-model="dueDate" value-format="iso-date">
+  Due date
+</LnxDatePicker>
+<p>v-model: {{ JSON.stringify(dueDate) }}</p>
+```
+
+### Limits
+`min` and `max` take a `Date` or a `'YYYY-MM-DD'` text. The days outside are disabled, but you can still browse to other months: a month or year is only disabled when all its days are out.
+
+```vue example
+<LnxDatePicker v-model="visit" value-format="iso-date" min="2026-11-05" max="2027-02-15">
+  Visit
+</LnxDatePicker>
+```
+
 <!--@api-->
 
 ## Types
+
+### DateValueFormat
+<<< ./helpers.ts#DateValueFormat
 
 ### CalendarViewType
 <<< ../date-picker-window/types.ts#CalendarViewTypes

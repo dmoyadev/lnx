@@ -55,3 +55,20 @@ export function isBeforeEnd(item: Item, isRange?: boolean, end?: MaybeRef<Date |
 	const date = toValue(end);
 	return !!isRange && !!date && compare(item, date) < 0;
 }
+
+/**
+ * Reads a date given as a Date or as text. A 'YYYY-MM-DD' text is that day at 00:00 UTC, like the selected dates
+ * @returns The date, or undefined when it is empty or not a valid date
+ */
+export function toDate(value?: Date | string | null): Date | undefined {
+	if(!value) { return undefined; }
+	const date = value instanceof Date ? value : new Date(/^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00Z` : value);
+	return isNaN(date.getTime()) ? undefined : date;
+}
+
+/* Whether an item falls entirely before `min` or after `max`: a month is only out when all its days are */
+export function isOutOfRange(item: Item, min?: Date | string, max?: Date | string): boolean {
+	const from = toDate(min);
+	const to = toDate(max);
+	return (!!from && compare(item, from) < 0) || (!!to && compare(item, to) > 0);
+}

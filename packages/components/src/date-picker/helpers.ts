@@ -1,6 +1,14 @@
 import { ValueOf } from '../helpers';
 import { getLnxConfig } from '../config';
 
+// #region DateValueFormat
+export const DATE_VALUE_FORMATS = {
+	DATE: 'date', // A Date at 00:00 UTC
+	ISO_DATE: 'iso-date', // A 'YYYY-MM-DD' text, or '' when empty
+} as const;
+export type DateValueFormat = ValueOf<typeof DATE_VALUE_FORMATS>;
+// #endregion DateValueFormat
+
 // #region DateFormats
 export const DATE_FORMATS = {
 	HOURS: 'hh:MM:ss',

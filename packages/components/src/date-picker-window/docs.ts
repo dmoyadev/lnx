@@ -67,10 +67,24 @@ export function useComponent() {
 			defaultValue: '"Today"',
 			value: 'Today',
 		},
-		isItemDisabledFn: {
-			description: 'A function that sets an item as disabled',
+		min: {
+			description: 'The first date that can be selected, as a `Date` or as `YYYY-MM-DD`. Days before it are disabled, and months and years only when all their days are',
 			controlType: 'none',
-			type: '(item: Item) => boolean',
+			type: 'Date | string',
+			defaultValue: 'undefined',
+			value: undefined,
+		},
+		max: {
+			description: 'The last date that can be selected, as a `Date` or as `YYYY-MM-DD`. Days after it are disabled, and months and years only when all their days are',
+			controlType: 'none',
+			type: 'Date | string',
+			defaultValue: 'undefined',
+			value: undefined,
+		},
+		isItemDisabledFn: {
+			description: 'A function that sets an item as disabled. It adds to `min` and `max`',
+			controlType: 'none',
+			type: '((item: Item) => boolean) | null',
 			defaultValue: '() => false',
 			value: () => false,
 		},

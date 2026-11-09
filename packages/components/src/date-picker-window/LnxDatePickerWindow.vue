@@ -14,6 +14,7 @@ import DatePickerViewMonth from './DatePickerViewMonth.vue';
 import DatePickerViewYear from './DatePickerViewYear.vue';
 import DatePickerViewDecade from './DatePickerViewDecade.vue';
 import { useLnxConfig } from '../config';
+import { isOutOfRange } from './helpers';
 
 const modelValue = defineModel<Date>();
 const start = defineModel<Date>('start');
@@ -24,7 +25,9 @@ const props = withDefaults(defineProps<{
 	weekDaysNames?: string[]; /* Names of week days to be shown in the header of the month, starting on Sunday. By default, from the `createLnx` locale */
 	firstDayOfWeek?: number; /* Day to be used as the start of the week, from 0 (Sunday) to 6. By default, from the `createLnx` locale, or Monday */
 	todayText?: string; /* Text for the "select today" button. By default, the `today` text of `createLnx` */
-	isItemDisabledFn?: (item: Item) => boolean; /* A function that sets an item as disabled */
+	isItemDisabledFn?: ((item: Item) => boolean) | null; /* A function that sets an item as disabled */
+	min?: Date | string; /* The first date that can be selected, as a Date or as 'YYYY-MM-DD'. Days before it are disabled, and months and years only when all their days are */
+	max?: Date | string; /* The last date that can be selected, as a Date or as 'YYYY-MM-DD'. Days after it are disabled, and months and years only when all their days are */
 	calendarType?: CalendarViewType; /* What is going to be the selection type of the calendar */
 	isRange?: boolean; /* If two dates in a range can be selected, or if it's a single date selection */
 	allowDeselect?: boolean; /* If clicking over a selected date will deselect it */
@@ -33,6 +36,8 @@ const props = withDefaults(defineProps<{
 	weekDaysNames: undefined,
 	firstDayOfWeek: undefined,
 	isItemDisabledFn: undefined,
+	min: undefined,
+	max: undefined,
 	calendarType: CALENDAR_VIEW_TYPES.DAY,
 	todayText: undefined,
 });
@@ -62,8 +67,17 @@ const {
 } = useCalendar({
 	firstDayOfWeek,
 	isRange: computed(() => props.isRange),
-	isItemDisabledFn: computed(() => props.isItemDisabledFn ?? (() => false)),
+	isItemDisabledFn: computed(() => isItemDisabled),
 	initialViewType: props.calendarType,
+});
+
+// An item is disabled when it is out of the limits or the function says so
+function isItemDisabled(item: Item) {
+	return isOutOfRange(item, props.min, props.max) || !!props.isItemDisabledFn?.(item);
+}
+const isTodayDisabled = computed(() => {
+	const now = new Date();
+	return isItemDisabled({ number: now.getDate(), month: now.getMonth(), year: now.getFullYear(), weekDay: now.getDay() });
 });
 
 function setRangeSelection(date: Date) {
@@ -235,6 +249,7 @@ function selectYear(year: Year) {
 				<LnxButton
 					:mode="BUTTON_MODES.CLEAR"
 					is-block
+					:disabled="isTodayDisabled"
 					@click="modelValue = setToday()"
 				>
 					{{ todayText }}

@@ -40,6 +40,9 @@ const datePickerWindowEndModel = ref<Date>();
 const datePickerModel = ref<Date>();
 const datePickerStartModel = ref<Date>();
 const datePickerEndModel = ref<Date>();
+const isoDateModel = ref('');
+const isoStartModel = ref('');
+const isoEndModel = ref('');
 const selectModel = ref();
 const emptyValuesOptions = [{ value: '', label: 'All' }, { value: 0, label: 'None' }, { value: 1, label: 'One' }];
 const emptyValuesModel = ref<string | number | null>('');
@@ -366,6 +369,38 @@ function toggleDarkMode() {
 					style="width: 150px"
 				>
 					In a 150px field
+				</LnxDatePicker>
+			</div>
+		</section>
+
+		<section v-if="isShown('date-picker')">
+			<h3>Text values and limits</h3>
+			<pre class="state">single: {{ JSON.stringify(isoDateModel) }}&#10;start:  {{ JSON.stringify(isoStartModel) }}&#10;end:    {{ JSON.stringify(isoEndModel) }}</pre>
+			<div style="display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap">
+				<LnxDatePicker
+					v-model="isoDateModel"
+					value-format="iso-date"
+					min="2026-11-05"
+					:max="new Date(Date.UTC(2027, 1, 15))"
+				>
+					From 5 Nov 2026 to 15 Feb 2027
+				</LnxDatePicker>
+				<LnxDatePicker
+					v-model:start="isoStartModel"
+					v-model:end="isoEndModel"
+					value-format="iso-date"
+					is-range
+					:is-item-disabled-fn="null"
+				>
+					Range as text
+				</LnxDatePicker>
+				<LnxDatePicker
+					v-model="isoDateModel"
+					value-format="iso-date"
+					calendar-type="month"
+					min="2026-11-05"
+				>
+					Months from November 2026
 				</LnxDatePicker>
 			</div>
 		</section>
