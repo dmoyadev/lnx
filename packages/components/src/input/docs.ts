@@ -101,6 +101,10 @@ export function useComponent() {
 			description: 'Message to be shown below the input to add extra context',
 			value: 'This is a helper message',
 		},
+		overlay: {
+			description: 'Content laid over the input box, whatever the label and messages around it. The select shows its selected option here',
+			value: '',
+		},
 	});
 
 	const componentEvents = ref<Record<string, ComponentEvent>>({

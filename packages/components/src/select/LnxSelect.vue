@@ -256,19 +256,21 @@ const dropdownOffsetY = computed(() => {
 				<template #icon>
 					<LnxIcon icon="mdi:chevron-down" />
 				</template>
-			</LnxInput>
 
-			<div
-				v-if="!!modelValue && !labelProperty && !!$slots.optionInput && !showOptions"
-				class="input-content"
-			>
-				<slot
-					name="optionInput"
-					:value="modelValue as U"
+				<template
+					v-if="!!modelValue && !labelProperty && !!$slots.optionInput && !showOptions"
+					#overlay
 				>
-					{{ modelValue }}
-				</slot>
-			</div>
+					<div class="input-content">
+						<slot
+							name="optionInput"
+							:value="modelValue as U"
+						>
+							{{ modelValue }}
+						</slot>
+					</div>
+				</template>
+			</LnxInput>
 		</div>
 
 		<template #content>
@@ -354,13 +356,10 @@ const dropdownOffsetY = computed(() => {
 		color: transparent;
 	}
 
-	// Sits over the input box: below the label when there is one
+	// Rendered inside the input box, so the label, messages and line height around it don't move it
 	.input-content {
 		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: var(--lnx-control-height);
+		inset: 0;
 		line-height: var(--lnx-control-height); // Centers it vertically; flex would break the ellipsis
 		padding: 0 calc(var(--lnx-control-padding-x) + 1.4em + var(--lnx-spacing-1)) 0 var(--lnx-control-padding-x);
 		font-size: var(--lnx-control-font-size);
@@ -368,10 +367,6 @@ const dropdownOffsetY = computed(() => {
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		pointer-events: none;
-	}
-
-	&:has(.label) .input-content {
-		top: calc(var(--lnx-font-size-small) * var(--lnx-line-height-body) + var(--lnx-control-gap));
 	}
 }
 

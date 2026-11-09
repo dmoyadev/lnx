@@ -15,6 +15,7 @@ defineSlots<{
 	helper(): unknown; /* The helper message of the input */
 	error(): unknown; /* The error message of the input */
 	icon(): unknown; /* The icon shown on the right side of the input */
+	overlay(): unknown; /* Content laid over the input box, like the selected option of a select */
 }>();
 
 const modelValue = defineModel<string | number>();
@@ -75,6 +76,9 @@ const showPassword = ref(false);
 					aria-label=""
 					@input="modelValue = ($event.target as HTMLInputElement).value"
 				>
+
+				<!-- @slot Content laid over the input box, whatever the label and messages around it -->
+				<slot name="overlay" />
 
 				<!-- Icon right -->
 				<span
