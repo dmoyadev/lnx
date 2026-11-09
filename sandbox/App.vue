@@ -13,6 +13,7 @@ import {
 	LnxDatePickerWindow,
 	LnxSelect,
 	LnxFileUploader,
+	LnxSkeleton,
 } from 'lnxjs-components/src';
 import VariantGrid from './VariantGrid.vue';
 
@@ -25,6 +26,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'skeleton': 'LnxSkeleton',
 };
 
 // Empty means "all"; kept in the URL hash so a reload stays on the same component
@@ -76,6 +78,8 @@ const calendarTypes = Object.values(CALENDAR_VIEW_TYPES);
 function toggleDarkMode() {
 	document.documentElement.classList.toggle('dark');
 }
+
+const skeletonLoading = ref(true);
 </script>
 
 <template>
@@ -646,6 +650,30 @@ function toggleDarkMode() {
 					</LnxFileUploader>
 				</VariantGrid>
 			</form>
+		</section>
+		<section v-if="isShown('skeleton')">
+			<h2>LnxSkeleton</h2>
+			<div class="grid" style="--cell-min: 260px">
+				<div :aria-busy="skeletonLoading" style="display: grid; gap: 12px">
+					<template v-if="skeletonLoading">
+						<LnxSkeleton variant="title" width="40%" />
+						<LnxSkeleton :lines="3" />
+						<LnxSkeleton variant="small" width="70%" />
+					</template>
+					<div v-else class="lnx-appear">
+						<h3>Loaded title</h3>
+						<p>The content that replaces the skeleton fades in.</p>
+					</div>
+				</div>
+				<div style="display: flex; gap: 12px; align-items: center">
+					<LnxSkeleton variant="circle" size="40px" />
+					<LnxSkeleton variant="rect" height="75px" />
+				</div>
+				<div style="display: flex; gap: 12px; align-items: center">
+					<LnxButton class="lnx-skeleton" style="width: 120px; height: var(--lnx-control-height)">Hidden</LnxButton>
+					<LnxButton @click="skeletonLoading = !skeletonLoading">Toggle loading</LnxButton>
+				</div>
+			</div>
 		</section>
 	</main>
 </template>
