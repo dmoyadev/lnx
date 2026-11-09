@@ -70,6 +70,32 @@
    > [!TIP]
    > You can check available css variables in each theme docs for global styles or in each component docs for component-specific styles
 
+## Language
+Without any setup, the components are in English and show dates as `dd-mm-yyyy`. To change that for the whole app, install `createLnx` in your entry file:
+
+::: code-group
+```ts [./main.ts]
+import { createApp } from 'vue'
+import { createLnx } from 'lnxjs-components';
+import App from './App.vue'
+
+createApp(App)
+  .use(createLnx({ // [!code ++]
+    locale: 'es', // [!code ++]
+    texts: { search: 'Buscar...', notFound: 'Sin resultados', today: 'Hoy', close: 'Cerrar' }, // [!code ++]
+  })) // [!code ++]
+  .mount('#app')
+```
+:::
+
+- `locale` gives the names of months and week days, the first day of the week and how dates are written in fields (`9/11/2026` in Spanish), all from the browser's `Intl`.
+- `texts` sets whatever `Intl` can't give: any text you leave out stays in English.
+- A prop set on a component, like `today-text` or `search-placeholder-text`, still wins over the global setting.
+
+These are all the texts and their defaults:
+
+<<< ../packages/components/src/config.ts#LnxTexts
+
 ## Sizing
 Buttons and form fields (input, select, date picker, OTP) share the same CSS variables, so they always line up when placed side by side. There are no size props: change these variables instead.
 

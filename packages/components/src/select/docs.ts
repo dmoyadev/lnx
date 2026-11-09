@@ -48,7 +48,7 @@ export function useComponent() {
 			value: 'label',
 		},
 		searchPlaceholderText: {
-			description: 'The placeholder text of the search input',
+			description: 'The placeholder text of the search input. By default, the `search` text of `createLnx`',
 			controlType: 'input',
 			type: 'string',
 			defaultValue: '"Search..."',

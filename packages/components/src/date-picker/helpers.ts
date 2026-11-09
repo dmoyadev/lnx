@@ -1,4 +1,5 @@
 import { ValueOf } from '../helpers';
+import { getLnxConfig } from '../config';
 
 // #region DateFormats
 export const DATE_FORMATS = {
@@ -23,8 +24,8 @@ export type DateFormat = ValueOf<typeof DATE_FORMATS>;
  * Formats a date read in UTC, since the date picker emits dates at 00:00 UTC
  * @param date
  * @param format
- * @param monthNames An array for the months names
- * @param weekdayNames An array for weekday names
+ * @param monthNames An array for the months names, by default the short names of the `createLnx` locale
+ * @param weekdayNames An array for weekday names, by default the long names of the `createLnx` locale
  *
  * @returns The date in the format DD/MM/YYYY
  */
@@ -35,14 +36,8 @@ export function formatDate(date: Date | string, format: DateFormat = DATE_FORMAT
 		date = new Date(date);
 	}
 
-	const months = monthNames || [
-		'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-		'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-	];
-
-	const weekdays = weekdayNames || [
-		'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
-	];
+	const months = monthNames || getLnxConfig().monthsShortNames;
+	const weekdays = weekdayNames || getLnxConfig().weekDaysLongNames;
 
 	const hours = String(date.getUTCHours()).padStart(2, '0');
 	const minutes = String(date.getUTCMinutes()).padStart(2, '0');

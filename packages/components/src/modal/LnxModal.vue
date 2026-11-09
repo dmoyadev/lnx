@@ -2,6 +2,9 @@
 import { nextTick, ref, useId, useTemplateRef, watch } from 'vue';
 import { BUTTON_MODES, BUTTON_SHAPES, BUTTON_VARIANTS, LnxButton } from '../button';
 import { LnxIcon } from '../icon';
+import { useLnxConfig } from '../config';
+
+const config = useLnxConfig();
 
 const props = withDefaults(defineProps<{
 	title?: string; /* Title of the modal */
@@ -93,7 +96,7 @@ function closeModal() {
 					<LnxButton
 						v-if="!hideCloseButton"
 						class="btn-close"
-						aria-label="Close"
+						:aria-label="config.texts.close"
 						:variant="BUTTON_VARIANTS.GRAYSCALE"
 						:mode="BUTTON_MODES.CLEAR"
 						:shape="BUTTON_SHAPES.ICON"

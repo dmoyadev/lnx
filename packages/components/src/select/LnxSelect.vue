@@ -6,6 +6,9 @@ import { isEmpty, normalizeString } from '../helpers';
 import { onClickOutside } from './onClickOutside';
 import { useListOptionsFocus } from './useListOptionsFocus';
 import { LnxDropdown } from '../dropdown';
+import { useLnxConfig } from '../config';
+
+const config = useLnxConfig();
 
 const [modelValue, modifiers] = defineModel<U, 'convert'>({
 	set(value: U) {
@@ -22,7 +25,7 @@ const props = withDefaults(
 		options?: T[]; /* The options to be shown in the select */
 		areOptionsAsync?: boolean; /* Indicates if the options are loaded asynchronously */
 		labelProperty?: string; /* The property of the option to be shown as a label */
-		searchPlaceholderText?: string; /* The placeholder text of the search input */
+		searchPlaceholderText?: string; /* The placeholder text of the search input. By default, the `search` text of `createLnx` */
 		convertFn?: (value: T) => T | U; /* Function to convert the v-model value to something */
 		isLoading?: boolean; /* When loading, it is disabled and shows different content */
 		hasError?: boolean; /* Indicates if it should show the error slot */
@@ -33,7 +36,7 @@ const props = withDefaults(
 		convertFn: undefined,
 		customValidity: undefined,
 		labelProperty: '',
-		searchPlaceholderText: 'Search...',
+		searchPlaceholderText: undefined,
 	},
 );
 
@@ -239,7 +242,7 @@ const dropdownOffsetY = computed(() => {
 				:is-loading
 				:has-error
 				:custom-validity
-				:placeholder="showOptions ? searchPlaceholderText : $attrs.placeholder"
+				:placeholder="showOptions ? (searchPlaceholderText ?? config.texts.search) : $attrs.placeholder"
 				type="text"
 				@update:model-value="searchQuery = String($event ?? '')"
 				@keydown.up.prevent="focusOption(-1)"
@@ -340,7 +343,7 @@ const dropdownOffsetY = computed(() => {
 					class="list-option empty"
 				>
 					<slot name="notFound">
-						<small class="list-option-label">Not found</small>
+						<small class="list-option-label">{{ config.texts.notFound }}</small>
 					</slot>
 				</li>
 			</ul>

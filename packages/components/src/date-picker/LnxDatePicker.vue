@@ -6,34 +6,43 @@ import { CALENDAR_VIEW_TYPES, CalendarViewType, Item, LnxDatePickerWindow } from
 import { DATE_FORMATS, formatDate } from './helpers';
 import { LnxInput } from '../input';
 import { LnxIcon } from '../icon';
+import { useLnxConfig } from '../config';
 
 const modelValue = defineModel<Date>();
 const start = defineModel<Date>('start');
 const end = defineModel<Date>('end');
 
 const props = withDefaults(defineProps<{
-	monthsNames?: string[]; /* Names of months to be shown */
-	weekDaysNames?: string[]; /* Names of week days to be shown in the header of the month */
-	firstDayOfWeek?: number; /* Day to be used as the start of the week */
-	todayText?: string; /* Text for the "select today" button */
+	monthsNames?: string[]; /* Names of months to be shown. By default, from the `createLnx` locale */
+	weekDaysNames?: string[]; /* Names of week days to be shown in the header of the month, starting on Sunday. By default, from the `createLnx` locale */
+	firstDayOfWeek?: number; /* Day to be used as the start of the week, from 0 (Sunday) to 6. By default, from the `createLnx` locale, or Monday */
+	todayText?: string; /* Text for the "select today" button. By default, the `today` text of `createLnx` */
 	isItemDisabledFn?: (item: Item) => boolean; /* A function that sets an item as disabled */
 	calendarType?: CalendarViewType; /* What is going to be the selection type of the calendar */
 	isRange?: boolean; /* If two dates in a range can be selected, or if it's a single date selection */
 	allowDeselect?: boolean; /* If clicking over a selected date will deselect it */
-	showFormat?: (date?: Date) => string; /* How the date should be shown in the input when selected */
+	showFormat?: (date?: Date) => string; /* How the date should be shown in the input when selected. By default, as the `createLnx` locale writes dates, or dd-mm-yyyy */
 	isLoading?: boolean; /* When loading, it is disabled and shows different content */
 	hasError?: boolean; /* Indicates if it should show the error slot */
 	customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
 }>(), {
-	monthsNames: () => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-	weekDaysNames: () => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-	firstDayOfWeek: 1,
+	monthsNames: undefined,
+	weekDaysNames: undefined,
+	firstDayOfWeek: undefined,
 	isItemDisabledFn: undefined,
 	calendarType: CALENDAR_VIEW_TYPES.DAY,
-	todayText: 'Today',
-	showFormat: (date?: Date) => (date ? formatDate(date, DATE_FORMATS.SHORT_NUMERIC) : '') as string,
+	todayText: undefined,
+	showFormat: undefined,
 	customValidity: undefined,
 });
+
+const config = useLnxConfig();
+const monthsNames = computed(() => props.monthsNames ?? config.monthsNames);
+function formatShown(date?: Date) {
+	if(props.showFormat) { return props.showFormat(date); }
+	if(!date) { return ''; }
+	return config.showFormat?.(date) ?? formatDate(date, DATE_FORMATS.SHORT_NUMERIC);
+}
 
 const slots = defineSlots<{
 	default(): unknown; /* The label of the input */
@@ -72,35 +81,35 @@ const inputValue = computed(() => {
 		case CALENDAR_VIEW_TYPES.DAY: {
 			if(props.isRange) {
 				let value = '';
-				if(props.showFormat(start.value)) {
-					value += props.showFormat(start.value);
+				if(formatShown(start.value)) {
+					value += formatShown(start.value);
 				}
-				if(props.showFormat(end.value)) {
-					value += ` — ${props.showFormat(end.value)}`;
+				if(formatShown(end.value)) {
+					value += ` — ${formatShown(end.value)}`;
 				}
 				return value;
 			}
 
-			return props.showFormat(modelValue.value);
+			return formatShown(modelValue.value);
 		}
 
 		case CALENDAR_VIEW_TYPES.MONTH: {
 			if(props.isRange) {
 				let value = '';
 				if(start.value) {
-					value += formatDate(start.value, DATE_FORMATS.MONTH_YEAR, props.monthsNames);
+					value += formatDate(start.value, DATE_FORMATS.MONTH_YEAR, monthsNames.value);
 				}
 				if(end.value) {
-					value += ` — ${formatDate(end.value, DATE_FORMATS.MONTH_YEAR, props.monthsNames)}`;
+					value += ` — ${formatDate(end.value, DATE_FORMATS.MONTH_YEAR, monthsNames.value)}`;
 				}
 				return value;
 			}
 
 			if(modelValue.value) {
-				return formatDate(modelValue.value, DATE_FORMATS.MONTH_YEAR, props.monthsNames);
+				return formatDate(modelValue.value, DATE_FORMATS.MONTH_YEAR, monthsNames.value);
 			}
 
-			return props.showFormat(modelValue.value);
+			return formatShown(modelValue.value);
 		}
 
 		case CALENDAR_VIEW_TYPES.YEAR: {
@@ -119,11 +128,11 @@ const inputValue = computed(() => {
 				return modelValue.value.getUTCFullYear();
 			}
 
-			return props.showFormat(modelValue.value);
+			return formatShown(modelValue.value);
 		}
 
 		default:
-			return props.showFormat(modelValue.value);
+			return formatShown(modelValue.value);
 	}
 });
 </script>

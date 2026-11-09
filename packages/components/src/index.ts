@@ -1,5 +1,8 @@
 import './themes/base/index.scss';
 
+export { createLnx, LNX_CONFIG_KEY, DEFAULT_TEXTS } from './config';
+export type { LnxOptions, LnxTexts } from './config';
+
 export * from './button';
 export * from './icon';
 export * from './date-picker';

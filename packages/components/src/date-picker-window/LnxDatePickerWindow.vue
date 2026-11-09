@@ -13,28 +13,35 @@ import { BUTTON_MODES, LnxButton } from '../button';
 import DatePickerViewMonth from './DatePickerViewMonth.vue';
 import DatePickerViewYear from './DatePickerViewYear.vue';
 import DatePickerViewDecade from './DatePickerViewDecade.vue';
+import { useLnxConfig } from '../config';
 
 const modelValue = defineModel<Date>();
 const start = defineModel<Date>('start');
 const end = defineModel<Date>('end');
 
 const props = withDefaults(defineProps<{
-	monthsNames?: string[]; /* Names of months to be shown */
-	weekDaysNames?: string[]; /* Names of week days to be shown in the header of the month */
-	firstDayOfWeek?: number; /* Day to be used as the start of the week */
-	todayText?: string; /* Text for the "select today" button */
+	monthsNames?: string[]; /* Names of months to be shown. By default, from the `createLnx` locale */
+	weekDaysNames?: string[]; /* Names of week days to be shown in the header of the month, starting on Sunday. By default, from the `createLnx` locale */
+	firstDayOfWeek?: number; /* Day to be used as the start of the week, from 0 (Sunday) to 6. By default, from the `createLnx` locale, or Monday */
+	todayText?: string; /* Text for the "select today" button. By default, the `today` text of `createLnx` */
 	isItemDisabledFn?: (item: Item) => boolean; /* A function that sets an item as disabled */
 	calendarType?: CalendarViewType; /* What is going to be the selection type of the calendar */
 	isRange?: boolean; /* If two dates in a range can be selected, or if it's a single date selection */
 	allowDeselect?: boolean; /* If clicking over a selected date will deselect it */
 }>(), {
-	monthsNames: () => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-	weekDaysNames: () => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-	firstDayOfWeek: 1,
+	monthsNames: undefined,
+	weekDaysNames: undefined,
+	firstDayOfWeek: undefined,
 	isItemDisabledFn: undefined,
 	calendarType: CALENDAR_VIEW_TYPES.DAY,
-	todayText: 'Today',
+	todayText: undefined,
 });
+
+const config = useLnxConfig();
+const monthsNames = computed(() => props.monthsNames ?? config.monthsNames);
+const weekDaysNames = computed(() => props.weekDaysNames ?? config.weekDaysNames);
+const firstDayOfWeek = computed(() => props.firstDayOfWeek ?? config.firstDayOfWeek);
+const todayText = computed(() => props.todayText ?? config.texts.today);
 
 const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
 
@@ -53,7 +60,7 @@ const {
 	changeSmall,
 	setToday,
 } = useCalendar({
-	firstDayOfWeek: computed(() => props.firstDayOfWeek),
+	firstDayOfWeek,
 	isRange: computed(() => props.isRange),
 	isItemDisabledFn: computed(() => props.isItemDisabledFn ?? (() => false)),
 	initialViewType: props.calendarType,
@@ -208,6 +215,7 @@ function selectYear(year: Year) {
 			<DatePickerViewYear
 				v-if="calendarViewType === CALENDAR_VIEW_TYPES.MONTH"
 				:displayed-year="item as Month[]"
+				:months-names
 				@month-selected="selectMonth($event)"
 			/>
 
@@ -215,6 +223,7 @@ function selectYear(year: Year) {
 			<DatePickerViewDecade
 				v-if="calendarViewType === CALENDAR_VIEW_TYPES.YEAR"
 				:displayed-decade="item as Year[]"
+				:months-names
 				@year-selected="selectYear($event)"
 			/>
 
