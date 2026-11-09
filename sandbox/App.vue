@@ -23,6 +23,7 @@ import {
 	dismiss,
 	toasts,
 	LnxCheckbox,
+	LnxTextarea,
 } from 'lnxjs-components/src';
 import VariantGrid from './VariantGrid.vue';
 
@@ -35,6 +36,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'textarea': 'LnxTextarea',
 	'checkbox': 'LnxCheckbox',
 	'toaster': 'toast',
 	'shortcuts': 'useShortcut',
@@ -135,6 +137,7 @@ const checkboxAll = computed({
 	set: (checked: boolean) => { checkboxList.value = checked ? ['email', 'sms', 'push'] : []; },
 });
 
+const textareaText = ref('');
 </script>
 
 <template>
@@ -797,6 +800,20 @@ const checkboxAll = computed({
 				<LnxButton type="submit">Submit</LnxButton>
 			</form>
 			<pre class="state">bool: {{ checkboxBool }}, list: {{ checkboxList }}, submitted: {{ checkboxSubmitted }}</pre>
+		</section>
+		<section v-if="isShown('textarea')">
+			<h2>LnxTextarea</h2>
+			<div style="display: grid; gap: 16px; max-width: 420px">
+				<LnxTextarea v-model="textareaText" placeholder="Plain">Plain</LnxTextarea>
+				<LnxTextarea v-model="textareaText" auto-grow rows="2" :max-rows="5" placeholder="Grows to 5 rows">Auto grow</LnxTextarea>
+				<LnxTextarea v-model="textareaText" maxlength="140" show-count>
+					Count
+					<template #helper>Shown in the list of minutes</template>
+				</LnxTextarea>
+				<LnxTextarea v-model="textareaText" has-error custom-validity="Tell us why">Error</LnxTextarea>
+				<LnxTextarea v-model="textareaText" is-loading>Loading</LnxTextarea>
+				<LnxInput v-model="textareaText">Input, to compare</LnxInput>
+			</div>
 		</section>
 	</main>
 </template>

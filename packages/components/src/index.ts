@@ -18,3 +18,4 @@ export * from './confirm';
 export * from './shortcuts';
 export * from './toaster';
 export * from './checkbox';
+export * from './textarea';
