@@ -41,6 +41,13 @@ const datePickerModel = ref<Date>();
 const datePickerStartModel = ref<Date>();
 const datePickerEndModel = ref<Date>();
 const selectModel = ref();
+const emptyValuesOptions = [{ value: '', label: 'All' }, { value: 0, label: 'None' }, { value: 1, label: 'One' }];
+const emptyValuesModel = ref<string | number | null>('');
+const bodyLineHeight = ref('');
+function toggleLineHeight() {
+	bodyLineHeight.value = bodyLineHeight.value === '1.5' ? 'normal' : '1.5';
+	document.body.style.lineHeight = bodyLineHeight.value;
+}
 const fileUploaderModel = ref();
 
 const selectOptions: { id:number, label: string, value: unknown }[] = Array.from({ length: 13 }, (_, i) => ({
@@ -514,6 +521,47 @@ function toggleDarkMode() {
 							<small>Start writing to see suggestions</small>
 						</template>
 					</LnxSelect>
+				</div>
+
+				<div
+					class="cell"
+					data-label="'' and 0 are values · next to an input"
+				>
+					<LnxSelect
+						v-model.convert="emptyValuesModel"
+						placeholder="placeholder"
+						:options="emptyValuesOptions"
+						:convert-fn="(option) => option.value"
+						style="flex: 1"
+					>
+						Filter
+
+						<template #option="{ option }">
+							{{ option.label }}
+						</template>
+
+						<template #optionInput="{ value }">
+							{{ emptyValuesOptions.find(option => option.value === value)?.label }}
+						</template>
+					</LnxSelect>
+					<LnxInput
+						placeholder="placeholder"
+						style="flex: 1"
+					>
+						Input
+					</LnxInput>
+					<LnxButton
+						:mode="BUTTON_MODES.OUTLINE"
+						@click="emptyValuesModel = emptyValuesModel === null ? '' : (emptyValuesModel === '' ? 0 : null)"
+					>
+						v-model: {{ JSON.stringify(emptyValuesModel) }}
+					</LnxButton>
+					<LnxButton
+						:mode="BUTTON_MODES.OUTLINE"
+						@click="toggleLineHeight()"
+					>
+						body line-height: {{ bodyLineHeight }}
+					</LnxButton>
 				</div>
 			</form>
 		</section>

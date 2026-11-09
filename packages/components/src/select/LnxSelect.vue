@@ -2,7 +2,7 @@
 import { LnxInput } from '../input';
 import { LnxIcon } from '../icon';
 import { computed, Ref, ref, useAttrs, useTemplateRef, watch } from 'vue';
-import { normalizeString } from '../helpers';
+import { isEmpty, normalizeString } from '../helpers';
 import { onClickOutside } from './onClickOutside';
 import { useListOptionsFocus } from './useListOptionsFocus';
 import { LnxDropdown } from '../dropdown';
@@ -116,7 +116,7 @@ const inputValue = computed<string>(() => {
 		return searchQuery.value;
 	}
 
-	if (!modelValue.value) {
+	if (isEmpty(modelValue.value)) {
 		return '';
 	}
 
@@ -128,7 +128,7 @@ const inputValue = computed<string>(() => {
 
 		// When there is a selected option and a label property
 		if (
-			typeof modelValue.value === 'object'
+			typeof modelValue.value === 'object' && modelValue.value !== null
 			&& typeof props.labelProperty === 'string'
 			&& props.labelProperty in modelValue.value
 		) {
@@ -145,7 +145,7 @@ const inputValue = computed<string>(() => {
 		console.warn('⚠️ [LnxSelect]: When using a non-string v-model value, a labelProperty or convertFn must be provided to show the selected value properly.');
 	}
 
-	return String(modelValue.value || '');
+	return String(modelValue.value);
 });
 
 const $input = useTemplateRef<HTMLInputElement>('$input');
@@ -258,7 +258,7 @@ const dropdownOffsetY = computed(() => {
 				</template>
 
 				<template
-					v-if="!!modelValue && !labelProperty && !!$slots.optionInput && !showOptions"
+					v-if="!isEmpty(modelValue) && !labelProperty && !!$slots.optionInput && !showOptions"
 					#overlay
 				>
 					<div class="input-content">

@@ -1,5 +1,10 @@
 export type ValueOf<T> = T[keyof T];
 
+/* Only null and undefined mean "no value": '' and 0 are values that can be chosen, like an "All" option */
+export function isEmpty(value: unknown): value is null | undefined {
+	return value === null || value === undefined;
+}
+
 export function normalizeString(str: string) {
 	return str
 		.normalize('NFD') // Normalize to decompose combined letters into a letter and diacritic
