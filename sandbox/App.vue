@@ -25,6 +25,7 @@ import {
 	LnxCheckbox,
 	LnxTextarea,
 	LnxRadioGroup,
+	LnxTabs,
 } from 'lnxjs-components/src';
 import VariantGrid from './VariantGrid.vue';
 
@@ -37,6 +38,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'tabs': 'LnxTabs',
 	'radio-group': 'LnxRadioGroup',
 	'textarea': 'LnxTextarea',
 	'checkbox': 'LnxCheckbox',
@@ -147,6 +149,15 @@ const radioStatuses = ref<string[]>(['open']);
 const radioProperties = [{ id: 1, name: 'Flat 1A' }, { id: 2, name: 'Flat 2B' }, { id: 3, name: 'Garage 7' }];
 const radioProperty = ref<{ id: number; name: string }>();
 const radioSubmitted = ref(false);
+const sandboxTab = ref('overview');
+const sandboxTabs = [
+	{ value: 'overview', label: 'Overview', icon: 'lucide:house' },
+	{ value: 'documents', label: 'Documents', badge: 12 },
+	{ value: 'archive', label: 'Archive', disabled: true },
+	{ value: 'tenants', label: 'Tenants' },
+];
+const sandboxFilter = ref('open');
+const sandboxFilters = ['All', 'Open', 'Closed', 'Draft', 'Archived', 'Deleted'].map(label => ({ value: label.toLowerCase(), label, badge: label.length }));
 </script>
 
 <template>
@@ -838,6 +849,18 @@ const radioSubmitted = ref(false);
 				<LnxButton type="submit">Submit</LnxButton>
 			</form>
 			<pre class="state">{{ { radioCategory, radioPeriod, radioStatuses, radioProperty, radioSubmitted } }}</pre>
+		</section>
+		<section v-if="isShown('tabs')">
+			<h2>LnxTabs</h2>
+			<LnxTabs v-model="sandboxTab" aria-label="Property" :tabs="sandboxTabs">
+				<template #overview><p>Overview panel</p></template>
+				<template #documents><p>Documents panel</p></template>
+				<template #tenants><p>Tenants panel</p></template>
+			</LnxTabs>
+			<p>Selected: {{ sandboxTab }}</p>
+			<div style="max-width: 260px">
+				<LnxTabs v-model="sandboxFilter" aria-label="Status" :tabs="sandboxFilters" />
+			</div>
 		</section>
 	</main>
 </template>

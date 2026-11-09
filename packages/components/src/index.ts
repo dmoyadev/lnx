@@ -20,3 +20,4 @@ export * from './toaster';
 export * from './checkbox';
 export * from './textarea';
 export * from './radio-group';
+export * from './tabs';
