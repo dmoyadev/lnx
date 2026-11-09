@@ -26,6 +26,7 @@ import {
 	LnxTextarea,
 	LnxRadioGroup,
 	LnxTabs,
+	LnxSwitch,
 } from 'lnxjs-components/src';
 import VariantGrid from './VariantGrid.vue';
 
@@ -38,6 +39,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'switch': 'LnxSwitch',
 	'tabs': 'LnxTabs',
 	'radio-group': 'LnxRadioGroup',
 	'textarea': 'LnxTextarea',
@@ -158,6 +160,7 @@ const sandboxTabs = [
 ];
 const sandboxFilter = ref('open');
 const sandboxFilters = ['All', 'Open', 'Closed', 'Draft', 'Archived', 'Deleted'].map(label => ({ value: label.toLowerCase(), label, badge: label.length }));
+const switchOn = ref(true);
 </script>
 
 <template>
@@ -861,6 +864,18 @@ const sandboxFilters = ['All', 'Open', 'Closed', 'Draft', 'Archived', 'Deleted']
 			<div style="max-width: 260px">
 				<LnxTabs v-model="sandboxFilter" aria-label="Status" :tabs="sandboxFilters" />
 			</div>
+		</section>
+		<section v-if="isShown('switch')">
+			<h2>LnxSwitch</h2>
+			<LnxSwitch v-model="switchOn">Email notifications ({{ switchOn }})</LnxSwitch>
+			<div style="max-width: 360px">
+				<LnxSwitch v-model="switchOn" label-position="start">
+					A settings row with a long label that wraps onto a second line
+					<template #helper>Helper text</template>
+				</LnxSwitch>
+			</div>
+			<LnxSwitch :model-value="switchOn" is-loading>Saving</LnxSwitch>
+			<LnxSwitch disabled>Disabled</LnxSwitch>
 		</section>
 	</main>
 </template>
