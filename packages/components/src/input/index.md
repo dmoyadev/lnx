@@ -4,6 +4,7 @@ category: Forms
 
 <script setup lang="ts">
 import { LnxInput } from '.';
+import { LnxButton } from '../button';
 import { useComponent } from './docs.js';
 import { ref } from 'vue';
 
@@ -78,6 +79,16 @@ The default slot is the label. Use the `helper` slot for a hint below the field.
   Email
   <template #helper>We only use it to send you the receipt</template>
 </LnxInput>
+```
+
+### Size
+`lnx-size-small` and `lnx-size-large` resize a field, or every field and button inside a container, so they keep lining up. See [Sizing](/get-started#sizing) for other sizes.
+
+```vue example
+<div class="lnx-size-small" style="display: flex; gap: 8px; align-items: end">
+  <LnxInput placeholder="Search" />
+  <LnxButton>Filter</LnxButton>
+</div>
 ```
 
 ### Search

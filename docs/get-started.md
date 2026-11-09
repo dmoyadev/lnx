@@ -107,8 +107,19 @@ Buttons and form fields (input, select, date picker, OTP) share the same CSS var
 | `--lnx-control-radius` | `var(--lnx-radius-2)` | Corner radius |
 | `--lnx-control-border-width` | `1px` | Border width |
 | `--lnx-control-gap` | `var(--lnx-spacing-1)` | Space between a field, its label and its messages |
+| `--lnx-control-height-small` | `var(--lnx-spacing-5)` | Height inside `.lnx-size-small` |
+| `--lnx-control-height-large` | `var(--lnx-spacing-7)` | Height inside `.lnx-size-large` |
 
-Set them on `:root` to resize the whole app, or on any element to resize only what is inside it:
+For the usual cases there are two classes, `lnx-size-small` and `lnx-size-large`. Put one on a button or a field, or on a container to resize everything inside it, so a row of controls keeps the same height:
+```vue
+<div class="lnx-size-small">
+  <LnxInput placeholder="Search" />
+  <LnxSelect v-model="status" :options="statuses" />
+  <LnxButton>Filter</LnxButton>
+</div>
+```
+
+For other sizes, set the variables on `:root` to resize the whole app, or on any element to resize only what is inside it:
 ::: code-group
 ```scss [custom-theme.scss]
 :root {

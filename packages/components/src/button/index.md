@@ -99,6 +99,15 @@ While the action runs, `is-loading` disables the button and makes it pulse, keep
 <LnxButton is-loading>Saving</LnxButton>
 ```
 
+### Size
+`lnx-size-small` and `lnx-size-large` resize a button, or every button and field inside a container. See [Sizing](/get-started#sizing) for other sizes.
+
+```vue example
+<LnxButton class="lnx-size-small">Small</LnxButton>
+<LnxButton>Default</LnxButton>
+<LnxButton class="lnx-size-large">Large</LnxButton>
+```
+
 ### In a form
 A button is `type="button"` by default, so it never submits a form by accident. Set `type="submit"` on the one that should.
 

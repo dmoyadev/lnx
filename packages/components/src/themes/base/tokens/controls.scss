@@ -10,6 +10,23 @@
 	--lnx-control-border-width: 1px;
 	--lnx-control-gap: var(--lnx-spacing-1); /* Between the label, the control and its messages */
 
+	/* Heights of the size classes below. Change them here, since a class can't read the value it overrides */
+	--lnx-control-height-small: var(--lnx-spacing-5);
+	--lnx-control-height-large: var(--lnx-spacing-7);
+
 	/* Floating panels: dropdowns, calendars, modals */
 	--lnx-surface-radius: var(--lnx-radius-3);
+}
+
+/* Smaller or bigger controls inside an element, or on a single button or field */
+.lnx-size-small {
+	--lnx-control-height: var(--lnx-control-height-small);
+	--lnx-control-padding-x: var(--lnx-spacing-2);
+	--lnx-control-font-size: var(--lnx-font-size-legal);
+}
+
+.lnx-size-large {
+	--lnx-control-height: var(--lnx-control-height-large);
+	--lnx-control-padding-x: var(--lnx-spacing-5);
+	--lnx-control-font-size: var(--lnx-font-size-body);
 }

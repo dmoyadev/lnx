@@ -39,6 +39,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'sizes': 'Size classes',
 	'switch': 'LnxSwitch',
 	'tabs': 'LnxTabs',
 	'radio-group': 'LnxRadioGroup',
@@ -161,6 +162,8 @@ const sandboxTabs = [
 const sandboxFilter = ref('open');
 const sandboxFilters = ['All', 'Open', 'Closed', 'Draft', 'Archived', 'Deleted'].map(label => ({ value: label.toLowerCase(), label, badge: label.length }));
 const switchOn = ref(true);
+const sizeSelect = ref('One');
+const sizeDate = ref<string>();
 </script>
 
 <template>
@@ -876,6 +879,27 @@ const switchOn = ref(true);
 			</div>
 			<LnxSwitch :model-value="switchOn" is-loading>Saving</LnxSwitch>
 			<LnxSwitch disabled>Disabled</LnxSwitch>
+		</section>
+		<section v-if="isShown('sizes')">
+			<h2>Size classes</h2>
+			<div class="lnx-size-small" style="display: flex; gap: 8px; align-items: end; margin-bottom: 12px">
+				<LnxButton>Button</LnxButton>
+				<LnxInput placeholder="Input" />
+				<LnxSelect v-model="sizeSelect" :options="['One', 'Two']" />
+				<LnxDatePicker v-model="sizeDate" />
+			</div>
+			<div class="" style="display: flex; gap: 8px; align-items: end; margin-bottom: 12px">
+				<LnxButton>Button</LnxButton>
+				<LnxInput placeholder="Input" />
+				<LnxSelect v-model="sizeSelect" :options="['One', 'Two']" />
+				<LnxDatePicker v-model="sizeDate" />
+			</div>
+			<div class="lnx-size-large" style="display: flex; gap: 8px; align-items: end; margin-bottom: 12px">
+				<LnxButton>Button</LnxButton>
+				<LnxInput placeholder="Input" />
+				<LnxSelect v-model="sizeSelect" :options="['One', 'Two']" />
+				<LnxDatePicker v-model="sizeDate" />
+			</div>
 		</section>
 	</main>
 </template>
