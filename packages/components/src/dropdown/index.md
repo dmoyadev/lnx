@@ -52,10 +52,10 @@ This component is used to create a dropdown under an element.
 ## Examples
 
 ### Menu of actions
-The dropdown doesn't open or close by itself: set `is-open` from your state, and close it when an option is picked or the user clicks outside. `fit-content` lets the panel be wider than the button.
+The dropdown doesn't open or close by itself: set `is-open` from your state, and close it when an option is picked or the user clicks outside. `width="content"` makes the panel as wide as its own content instead of as wide as the button.
 
 ```vue example
-<LnxDropdown :is-open="isMenuOpen" fit-content>
+<LnxDropdown :is-open="isMenuOpen" width="content">
   <LnxButton mode="outline" @click="isMenuOpen = !isMenuOpen">
     Options
   </LnxButton>
@@ -71,3 +71,8 @@ The dropdown doesn't open or close by itself: set `is-open` from your state, and
 ```
 
 <!--@api-->
+
+## Types
+
+### DropdownWidth
+<<< ./types.ts#DropdownWidth

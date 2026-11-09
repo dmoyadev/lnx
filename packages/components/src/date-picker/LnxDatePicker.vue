@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, Ref, ref, useAttrs, useTemplateRef } from 'vue';
-import { LnxDropdown } from '../dropdown';
+import { DROPDOWN_WIDTHS, LnxDropdown } from '../dropdown';
 import { onClickOutside } from '../select/onClickOutside';
 import { CALENDAR_VIEW_TYPES, CalendarViewType, Item, LnxDatePickerWindow } from '../date-picker-window';
 import { DATE_FORMATS, formatDate } from './helpers';
@@ -134,7 +134,7 @@ const inputValue = computed(() => {
 		:style="$attrs.style"
 		:is-open="isOpen"
 		:offset-y="dropdownOffsetY"
-		fit-content
+		:width="DROPDOWN_WIDTHS.CONTENT"
 	>
 		<div
 			@click="open()"

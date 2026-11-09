@@ -351,6 +351,25 @@ function toggleDarkMode() {
 			</form>
 		</section>
 
+		<section v-if="isShown('date-picker')">
+			<h3>Calendar keeps its own width</h3>
+			<div style="display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap">
+				<LnxDatePicker
+					v-model="datePickerModel"
+					is-block
+					style="width: 600px; max-width: 100%"
+				>
+					In a 600px field
+				</LnxDatePicker>
+				<LnxDatePicker
+					v-model="datePickerModel"
+					style="width: 150px"
+				>
+					In a 150px field
+				</LnxDatePicker>
+			</div>
+		</section>
+
 		<section v-if="isShown('date-picker-window')">
 			<h2>LnxDatePickerWindow</h2>
 			<pre class="state">single: {{ datePickerWindowModel }}&#10;start:  {{ datePickerWindowStartModel }}&#10;end:    {{ datePickerWindowEndModel }}</pre>

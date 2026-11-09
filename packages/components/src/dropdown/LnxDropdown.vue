@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { useDropdownPosition } from './useDropdownPosition';
-import { Ref, ref, useTemplateRef, watch } from 'vue';
+import { computed, reactive, Ref, ref, useTemplateRef, watch } from 'vue';
+import { DROPDOWN_WIDTHS, DropdownWidth } from './types';
 
 const props = defineProps<{
 	isOpen?: boolean; /* Whether to show the dropdown */
 	offsetX?: number; /* Horizontal offset of the dropdown */
 	offsetY?: number; /* Vertical offset of the dropdown */
-	fitContent?: boolean; /* Lets the content be wider than the element that opens the dropdown */
+	width?: DropdownWidth; /* How wide the content is: as the element that opens it, at least as wide, or as its own content */
+	fitContent?: boolean; /* Deprecated: use `width="min-anchor"` */
 }>();
+
+const width = computed<DropdownWidth>(() => props.width ?? (props.fitContent ? DROPDOWN_WIDTHS.MIN_ANCHOR : DROPDOWN_WIDTHS.ANCHOR));
 
 defineSlots<{
 	default(): unknown; /* The element that triggers the dropdown */
@@ -16,7 +20,11 @@ defineSlots<{
 
 const $handler = useTemplateRef('$handler');
 const $dropdown = useTemplateRef('$dropdown');
-const { calculatePosition } = useDropdownPosition($dropdown as Ref<HTMLElement>, $handler as Ref<HTMLElement>, props);
+const { calculatePosition } = useDropdownPosition($dropdown as Ref<HTMLElement>, $handler as Ref<HTMLElement>, reactive({
+	offsetX: computed(() => props.offsetX),
+	offsetY: computed(() => props.offsetY),
+	width,
+}));
 // Inside a modal <dialog> (top layer) the content must live in the dialog, or it would be hidden behind it and inert
 const teleportTarget = ref<string | HTMLElement>('body');
 watch(() => props.isOpen, async (isOpen) => {
@@ -44,7 +52,7 @@ defineExpose({ calculatePosition });
 					v-if="isOpen"
 					ref="$dropdown"
 					class="wrapper"
-					:class="{ 'fit-content': fitContent }"
+					:class="{ 'fit-content': width !== DROPDOWN_WIDTHS.ANCHOR }"
 					tabindex="0"
 					v-bind="{ ...$attrs }"
 				>

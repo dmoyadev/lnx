@@ -1,15 +1,16 @@
 import { nextTick, onMounted, onUnmounted, Ref } from 'vue';
 import { isOutOfViewport, OutOfView } from '../helpers';
+import { DROPDOWN_WIDTHS, DropdownWidth } from './types';
 
 interface DropdownPositionOptions {
 	offsetX?: number;
 	offsetY?: number;
-	fitContent?: boolean;
+	width?: DropdownWidth;
 }
 
 export function useDropdownPosition($dropdown: Ref<HTMLElement>, $handler: Ref<HTMLElement>, options: DropdownPositionOptions = {}) {
 	async function calculatePosition() {
-		const { offsetX = 0, offsetY = 0, fitContent = false } = options;
+		const { offsetX = 0, offsetY = 0, width = DROPDOWN_WIDTHS.ANCHOR } = options;
 		await nextTick();
 		if (!$dropdown.value || !$handler.value) {
 			return;
@@ -17,7 +18,8 @@ export function useDropdownPosition($dropdown: Ref<HTMLElement>, $handler: Ref<H
 
 		const handlerPosition = $handler.value.getBoundingClientRect();
 
-		$dropdown.value.style[fitContent ? 'minWidth' : 'width'] = `${handlerPosition.width}px`;
+		$dropdown.value.style.width = width === DROPDOWN_WIDTHS.ANCHOR ? `${handlerPosition.width}px` : '';
+		$dropdown.value.style.minWidth = width === DROPDOWN_WIDTHS.MIN_ANCHOR ? `${handlerPosition.width}px` : '';
 
 		// Keep it inside the viewport on the right when it is wider than the handler
 		const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
