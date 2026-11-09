@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import {
 	LnxButton,
 	BUTTON_VARIANTS,
@@ -22,6 +22,7 @@ import {
 	toast,
 	dismiss,
 	toasts,
+	LnxCheckbox,
 } from 'lnxjs-components/src';
 import VariantGrid from './VariantGrid.vue';
 
@@ -34,6 +35,7 @@ const COMPONENTS = {
 	'date-picker-window': 'LnxDatePickerWindow',
 	'select': 'LnxSelect',
 	'file-uploader': 'LnxFileUploader',
+	'checkbox': 'LnxCheckbox',
 	'toaster': 'toast',
 	'shortcuts': 'useShortcut',
 	'confirm': 'useConfirm',
@@ -123,6 +125,16 @@ function toastSave() {
 	toastReceipts.value++;
 	toast(`Receipt saved. You have ${toastReceipts.value}`, { undo: () => { toastReceipts.value--; } });
 }
+
+const checkboxBool = ref(false);
+const checkboxTerms = ref(false);
+const checkboxSubmitted = ref(false);
+const checkboxList = ref<string[]>(['email']);
+const checkboxAll = computed({
+	get: () => checkboxList.value.length === 3,
+	set: (checked: boolean) => { checkboxList.value = checked ? ['email', 'sms', 'push'] : []; },
+});
+
 </script>
 
 <template>
@@ -767,6 +779,24 @@ function toastSave() {
 				<LnxButton mode="outline" @click="[...toasts].forEach(item => dismiss(item.id))">Dismiss all</LnxButton>
 			</div>
 			<pre class="state">receipts: {{ toastReceipts }}</pre>
+		</section>
+		<section v-if="isShown('checkbox')">
+			<h2>LnxCheckbox</h2>
+			<form style="display: grid; gap: 12px; max-width: 360px" @submit.prevent="checkboxSubmitted = true">
+				<LnxCheckbox v-model="checkboxBool">Boolean</LnxCheckbox>
+				<LnxCheckbox v-model="checkboxAll" :indeterminate="checkboxList.length > 0 && !checkboxAll">All channels</LnxCheckbox>
+				<LnxCheckbox v-for="c in ['email', 'sms', 'push']" :key="c" v-model="checkboxList" :value="c" style="margin-left: 26px">{{ c }}</LnxCheckbox>
+				<LnxCheckbox v-model="checkboxBool">Send me a summary of the minutes after every meeting of the board, with the agreements and the votes of each member</LnxCheckbox>
+				<LnxCheckbox :model-value="true" is-loading>Loading</LnxCheckbox>
+				<LnxCheckbox is-loading>Loading empty</LnxCheckbox>
+				<LnxCheckbox disabled>Disabled</LnxCheckbox>
+				<LnxCheckbox v-model="checkboxTerms" required :has-error="!checkboxTerms" custom-validity="Accept the terms">
+					I accept the terms
+					<template #helper>Required</template>
+				</LnxCheckbox>
+				<LnxButton type="submit">Submit</LnxButton>
+			</form>
+			<pre class="state">bool: {{ checkboxBool }}, list: {{ checkboxList }}, submitted: {{ checkboxSubmitted }}</pre>
 		</section>
 	</main>
 </template>

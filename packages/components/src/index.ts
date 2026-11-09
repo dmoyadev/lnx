@@ -17,3 +17,4 @@ export * from './skeleton';
 export * from './confirm';
 export * from './shortcuts';
 export * from './toaster';
+export * from './checkbox';
