@@ -5,6 +5,34 @@
 
 Here new features, changes in the UI/UX, bug fixes, refactors and new documentation added will be registered.
 
+## [v0.10.0](https://github.com/dmoyadev/lnx/compare/v0.9.0...v0.10.0)
+
+<small>📅 Released on: 10 November 2026</small>
+
+- ⚠️ [`[button]`](https://lnx.dmoya.dev/components/button) Render buttons as type="button" so they only submit a form with an explicit type="submit" [`b334071`](https://github.com/dmoyadev/lnx/commit/b334071b4b985f319a1c256e813bb858f59aa44e) <small>Daniel Moya</small>
+- ✨ [`[themes]`](https://lnx.dmoya.dev/components/themes) Add lnx-size-small and lnx-size-large classes to resize a control or every control inside a container [`f5ee06a`](https://github.com/dmoyadev/lnx/commit/f5ee06ac8af9c9c797db3ffa7630085b71b914e4) <small>Daniel Moya</small>
+- ✨ [`[switch]`](https://lnx.dmoya.dev/components/switch) Add LnxSwitch to turn a setting on or off, with the label at the start or the end and a loading thumb [`5088b04`](https://github.com/dmoyadev/lnx/commit/5088b04724756c2c74e6703d6b8b01356f6bd161) <small>Daniel Moya</small>
+- ✨ [`[tabs]`](https://lnx.dmoya.dev/components/tabs) Add LnxTabs with keyboard navigation, a sliding indicator, panels per slot and tabs that follow the route [`30b4ec6`](https://github.com/dmoyadev/lnx/commit/30b4ec673a19cd3f504ef11f09279f9deab46fd2) <small>Daniel Moya</small>
+- ✨ [`[radio-group]`](https://lnx.dmoya.dev/components/radio-group) Add LnxRadioGroup to pick one or several options as chips, a segmented control or a list [`a2d6e5a`](https://github.com/dmoyadev/lnx/commit/a2d6e5af7bc43a35ee54ff0c508a2ae0ffeb6b5f) <small>Daniel Moya</small>
+- ✨ [`[textarea]`](https://lnx.dmoya.dev/components/textarea) Add LnxTextarea with auto grow up to a number of rows and a character count [`932d6c1`](https://github.com/dmoyadev/lnx/commit/932d6c1ffb34f5758f798f4b8ed2838f4b91487e) <small>Daniel Moya</small>
+- ✨ [`[checkbox]`](https://lnx.dmoya.dev/components/checkbox) Add LnxCheckbox with boolean or array v-model, indeterminate and loading states [`d2f96ce`](https://github.com/dmoyadev/lnx/commit/d2f96cec97b34a514d2fbdc38ecf3b4ef415c962) <small>Daniel Moya</small>
+- ✨ [`[toaster]`](https://lnx.dmoya.dev/components/toaster) Add toast, dismiss and undo to show messages that can be undone with a button or mod+z [`768eb68`](https://github.com/dmoyadev/lnx/commit/768eb686c4df58ebea18bd5f254be1edb6b24c68) <small>Daniel Moya</small>
+- ✨ [`[shortcuts]`](https://lnx.dmoya.dev/components/shortcuts) Add useShortcut, LnxKbd and LnxShortcutsSheet for keyboard shortcuts that work with KeepAlive [`d5c2894`](https://github.com/dmoyadev/lnx/commit/d5c28947c2ca2642a72793564103c4521b20850d) <small>Daniel Moya</small>
+- ✨ [`[confirm]`](https://lnx.dmoya.dev/components/confirm) Add useConfirm to ask for confirmation in a themed dialog instead of window.confirm [`32f96fc`](https://github.com/dmoyadev/lnx/commit/32f96fcc73f5e76c4bf9bbaa648144dbe1924dbc) <small>Daniel Moya</small>
+- ✨ [`[skeleton]`](https://lnx.dmoya.dev/components/skeleton) Add LnxSkeleton and the lnx-skeleton and lnx-appear classes for loading states [`5e8cb22`](https://github.com/dmoyadev/lnx/commit/5e8cb2218480212aec5ffddc982949be5b39d592) <small>Daniel Moya</small>
+- ✨ [`[date-picker]`](https://lnx.dmoya.dev/components/date-picker) Add value-format iso-date for YYYY-MM-DD values and min/max limits [`5a46b68`](https://github.com/dmoyadev/lnx/commit/5a46b6895166e1fae91f516ec040c65e4d5d464e) <small>Daniel Moya</small>
+- ✨ [`[config]`](https://lnx.dmoya.dev/components/config) Add createLnx to set the locale and texts of every component in one place [`673e4af`](https://github.com/dmoyadev/lnx/commit/673e4af12e8d698166c4fdc37422de2b97508f57) <small>Daniel Moya</small>
+- 🐛 [`[date-picker]`](https://lnx.dmoya.dev/components/date-picker) Open the calendar at its own width with a new width option on the dropdown [`17c02be`](https://github.com/dmoyadev/lnx/commit/17c02be93f5e30c31d0d148d8f1b4a42255c30f2) <small>Daniel Moya</small>
+- 🐛 [`[select]`](https://lnx.dmoya.dev/components/select) Show '' and 0 as chosen values, only null and undefined are empty [`ab92a52`](https://github.com/dmoyadev/lnx/commit/ab92a52f46a6e9d75a5d55ca28e199c53c9a299b) <small>Daniel Moya</small>
+- 🐛 [`[select]`](https://lnx.dmoya.dev/components/select) Lay the selected option over the input box so it lines up with any label and line height [`ffe9bb5`](https://github.com/dmoyadev/lnx/commit/ffe9bb5884591a842afde847d8f99129377f8045) <small>Daniel Moya</small>
+- 📝 [`[docs]`](https://lnx.dmoya.dev/components/docs) Show live components in the home hero and add a theme builder [`3a77467`](https://github.com/dmoyadev/lnx/commit/3a77467740a14c8fb6c26490344344dbc9c4c47c) <small>Daniel Moya</small>
+- 💄 [`[button]`](https://lnx.dmoya.dev/components/button) Pulse the button while loading instead of overlaying a spinner on its content [`f82a37a`](https://github.com/dmoyadev/lnx/commit/f82a37a792923ae3b6ee4858bed2d8544528dacc) <small>Daniel Moya</small>
+- 🐛 [`[select]`](https://lnx.dmoya.dev/components/select) Show the v-model value the select starts with [`20804eb`](https://github.com/dmoyadev/lnx/commit/20804ebaf5cb22f444282935f506d8d66ec96636) <small>Daniel Moya</small>
+- 📝 [`[docs]`](https://lnx.dmoya.dev/components/docs) Add when-to-use guidance and live examples to every component page [`312461b`](https://github.com/dmoyadev/lnx/commit/312461bbd6c81764f0c798924baec1ea0c445fed) <small>Daniel Moya</small>
+- 📝 [`[docs]`](https://lnx.dmoya.dev/components/docs) Show base and theme tokens as visual swatches, scales and type samples [`b35d00f`](https://github.com/dmoyadev/lnx/commit/b35d00fb5fce49865598f747c85fba181117bf3c) <small>Daniel Moya</small>
+- 📝 [`[docs]`](https://lnx.dmoya.dev/components/docs) Group components by category in the sidebar, enable previous/next links and list H3s in the outline [`27463eb`](https://github.com/dmoyadev/lnx/commit/27463eb0550857f85153130c44fef06981553ce2) <small>Daniel Moya</small>
+- 📝 [`[docs]`](https://lnx.dmoya.dev/components/docs) Generate component API tables from the playground data and add a 0.8 to 0.9 migration guide [`9ca9b96`](https://github.com/dmoyadev/lnx/commit/9ca9b9649ea552a4a5250a4dcb1db490a15a5f1c) <small>Daniel Moya</small>
+
 ## [v0.9.0](https://github.com/dmoyadev/lnx/compare/v0.8.0...v0.9.0)
 
 <small>📅 Released on: 2 November 2026</small>
